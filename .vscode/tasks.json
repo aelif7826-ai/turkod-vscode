@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Derle (tsc)",
+      "detail": "TypeScript derlemesi. npm shim'ine bağımlı değil, doğrudan node ile çalışır.",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "./",
+        "--pretty",
+        "false"
+      ],
+      "group": "build",
+      "problemMatcher": "$tsc",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "close": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "Derle (izle)",
+      "detail": "TypeScript'i izleme kipinde derler.",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "./",
+        "--watch",
+        "--pretty",
+        "false"
+      ],
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Uzantıyı Aç (dev pencere)",
+      "detail": "Debugger olmadan, yalnızca geliştirilen uzantıyla yeni bir VS Code penceresi açar.",
+      "type": "shell",
+      "command": "code",
+      "args": [
+        "--new-window",
+        "--disable-extensions",
+        "--disable-workspace-trust",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}"
+      ],
+      "dependsOn": "Derle (tsc)",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "close": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+# TürkUI ile dört işlem hesap makinesi
+içe_aktar TürkUI
+
+değişken uygulama := TürkUI.pencere("Türkod Hesap Makinesi")
+uygulama.genişlik := 360
+uygulama.yükseklik := 460
+uygulama.minGenişlik := 320
+uygulama.minYükseklik := 420
+uygulama.arkaPlan := renk.hex("#111827")
+uygulama.merkezle()
+
+değişken başlık := uygulama.metin("🧮 Hesap Makinesi")
+başlık.renk := renk.beyaz
+başlık.yazıBoyutu := 26
+başlık.kalın := Doğru
+başlık.hizalama := "center"
+
+değişken açıklama := uygulama.metin("İki sayı gir, işlemini seç")
+açıklama.renk := renk.hex("#9ca3af")
+açıklama.hizalama := "center"
+
+değişken ilkSayı := uygulama.giriş("Birinci sayı")
+ilkSayı.yazıBoyutu := 18
+
+değişken ikinciSayı := uygulama.giriş("İkinci sayı")
+ikinciSayı.yazıBoyutu := 18
+
+değişken sonuç := uygulama.metin("Sonuç burada görünür")
+sonuç.renk := renk.turkuaz
+sonuç.yazıBoyutu := 24
+sonuç.kalın := Doğru
+sonuç.hizalama := "center"
+
+değişken topla := uygulama.buton("➕ Topla")
+değişken çıkar := uygulama.buton("➖ Çıkar")
+değişken çarp := uygulama.buton("✖ Çarp")
+değişken böl := uygulama.buton("➗ Böl")
+değişken temizle := uygulama.buton("Temizle")
+
+topla.arkaPlan := renk.hex("#2563eb")
+çıkar.arkaPlan := renk.hex("#2563eb")
+çarp.arkaPlan := renk.hex("#2563eb")
+böl.arkaPlan := renk.hex("#2563eb")
+temizle.arkaPlan := renk.hex("#374151")
+
+topla.renk := renk.beyaz
+çıkar.renk := renk.beyaz
+çarp.renk := renk.beyaz
+böl.renk := renk.beyaz
+temizle.renk := renk.beyaz
+
+topla.yuvarlaklık := 8
+çıkar.yuvarlaklık := 8
+çarp.yuvarlaklık := 8
+böl.yuvarlaklık := 8
+temizle.yuvarlaklık := 8
+
+topla.tıklandığında
+    eğer sayıMı(ilkSayı.değer) ve sayıMı(ikinciSayı.değer) ise
+        sonuç.içerik := "Sonuç: " + metne(sayıya(ilkSayı.değer) + sayıya(ikinciSayı.değer))
+    değilse
+        sonuç.içerik := "Lütfen iki geçerli sayı gir."
+    son
+son
+
+çıkar.tıklandığında
+    eğer sayıMı(ilkSayı.değer) ve sayıMı(ikinciSayı.değer) ise
+        sonuç.içerik := "Sonuç: " + metne(sayıya(ilkSayı.değer) - sayıya(ikinciSayı.değer))
+    değilse
+        sonuç.içerik := "Lütfen iki geçerli sayı gir."
+    son
+son
+
+çarp.tıklandığında
+    eğer sayıMı(ilkSayı.değer) ve sayıMı(ikinciSayı.değer) ise
+        sonuç.içerik := "Sonuç: " + metne(sayıya(ilkSayı.değer) * sayıya(ikinciSayı.değer))
+    değilse
+        sonuç.içerik := "Lütfen iki geçerli sayı gir."
+    son
+son
+
+böl.tıklandığında
+    eğer sayıMı(ilkSayı.değer) ve sayıMı(ikinciSayı.değer) ise
+        eğer sayıya(ikinciSayı.değer) = 0 ise
+            sonuç.içerik := "Sıfıra bölme yapılamaz."
+        değilse
+            sonuç.içerik := "Sonuç: " + metne(sayıya(ilkSayı.değer) / sayıya(ikinciSayı.değer))
+        son
+    değilse
+        sonuç.içerik := "Lütfen iki geçerli sayı gir."
+    son
+son
+
+temizle.tıklandığında
+    ilkSayı.değer := ""
+    ikinciSayı.değer := ""
+    sonuç.içerik := "Sonuç burada görünür"
+son
+
+uygulama.göster()

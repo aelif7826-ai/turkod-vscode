@@ -1,0 +1,9 @@
+nesne Kisi
+	değişken ad := "Varsayılan"
+	fonksiyon selamla()
+		geri_döndür "Selam " + ad
+	son
+son
+değişken k := Kisi()
+yazdır("nesne:", k)
+yazdır(k.selamla())

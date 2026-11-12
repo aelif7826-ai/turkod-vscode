@@ -1,0 +1,20 @@
+{
+  // Editör, projedeki TypeScript sürümünü ve tip tanımlarını kullansın.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.maxTsServerMemory": 3072,
+  // Geliştirme penceresi açılırken eski görev terminallerinin yeniden
+  // çalıştırılmasını engeller (tsc yazarken exthost'un çökmesini önler).
+  "terminal.integrated.enablePersistentSessions": false,
+  // .uygulama-test klasöründe ~1,5 GB'lık paketleme çıktıları var. VS Code
+  // bunları izleyip taramasın: geliştirme penceresi açılırken bellek/disk
+  // yükü binlerce megabayta çıkıp extension host'u zorluyordu.
+  "files.watcherExclude": {
+    "**/.uygulama-test/**": true,
+    "**/node_modules/**": true
+  },
+  "search.exclude": {
+    "**/.uygulama-test/**": true,
+    "**/node_modules/**": true
+  }
+}

@@ -1,0 +1,20 @@
+# değilse-eğer (else-if) zinciri fonksiyon ve döngü içinde doğru çalışmalı.
+# Bu dosya, zincirin kapanış `son` satırlarını yanlışlıkla yutmadığını denetler.
+
+fonksiyon sınıflandır(sayı)
+    eğer sayı < 0 ise
+        geri_döndür "negatif"
+    değilse-eğer sayı == 0 ise
+        geri_döndür "sıfır"
+    değilse-eğer sayı < 10 ise
+        geri_döndür "küçük"
+    değilse
+        geri_döndür "büyük"
+    son
+son
+
+için s içinde [-5, 0, 3, 42]
+    yazdır(s, "->", sınıflandır(s))
+son
+
+yazdır("bitti")

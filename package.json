@@ -1,0 +1,299 @@
+{
+  "name": "turkod-vscode",
+  "displayName": "Türkod",
+  "description": "Türkçe programlama dili Türkod için tam dil desteği: renklendirme, otomatik tamamlama, canlı hata denetimi, TürkUI arayüzleri ve tek tuşla çalıştırma.",
+  "version": "0.8.0",
+  "publisher": "turkod",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "turkod",
+    "türkod",
+    "turkce",
+    "türkçe",
+    "programlama",
+    "dil"
+  ],
+  "main": "./out/extension.js",
+  "bin": {
+    "türküi": "./bin/turkui.js",
+    "turkui": "./bin/turkui.js",
+    "türkod": "./bin/turkod.js",
+    "turkod": "./bin/turkod.js"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "turkod",
+        "aliases": [
+          "Türkod",
+          "turkod"
+        ],
+        "extensions": [
+          ".tr"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "turkod",
+        "scopeName": "source.turkod",
+        "path": "./syntaxes/turkod.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "turkod",
+        "path": "./snippets/turkod.json"
+      }
+    ],
+    "configurationDefaults": {
+      "workbench.iconTheme": "turkod-file-icons",
+      "files.associations": {
+        "*.tr": "turkod"
+      },
+      "[turkod]": {
+        "editor.tabCompletion": "on"
+      }
+    },
+    "commands": [
+      {
+        "command": "turkod.calistir",
+        "title": "Türkod: Çalıştır",
+        "category": "Türkod",
+        "icon": "$(play)"
+      },
+      {
+        "command": "turkod.hataAyikla",
+        "title": "Türkod: Hata Ayıkla (satır satır)",
+        "category": "Türkod",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "turkod.imleceKadarCalistir",
+        "title": "Türkod: İmlece Kadar Çalıştır",
+        "category": "Türkod"
+      },
+      {
+        "command": "turkod.secimiCalistir",
+        "title": "Türkod: Seçimi Çalıştır",
+        "category": "Türkod"
+      },
+      {
+        "command": "turkod.durdur",
+        "title": "Türkod: Durdur",
+        "category": "Türkod",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "turkod.uygulamaPaketle",
+        "title": "Türkod: Uygulama Olarak Paketle (.exe)",
+        "category": "Türkod",
+        "icon": "$(package)"
+      },
+      {
+        "command": "turkod.aciklama",
+        "title": "Türkod: Açıklama Panelini Aç",
+        "category": "Türkod"
+      },
+      {
+        "command": "turkod.modulIndir",
+        "title": "Türkod: TürkUI Modülünü İndir (türküi)",
+        "category": "Türkod",
+        "icon": "$(cloud-download)"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "turkod.calistir",
+          "when": "resourceLangId == turkod",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "turkod.hataAyikla",
+          "when": "resourceLangId == turkod",
+          "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "turkod.calistir",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@1"
+        },
+        {
+          "command": "turkod.hataAyikla",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@2"
+        },
+        {
+          "command": "turkod.imleceKadarCalistir",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@3"
+        },
+        {
+          "command": "turkod.secimiCalistir",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@4"
+        },
+        {
+          "command": "turkod.durdur",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@5"
+        },
+        {
+          "command": "turkod.uygulamaPaketle",
+          "when": "resourceLangId == turkod",
+          "group": "turkod@6"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "turkod.calistir",
+          "when": "resourceLangId == turkod"
+        },
+        {
+          "command": "turkod.hataAyikla",
+          "when": "resourceLangId == turkod"
+        },
+        {
+          "command": "turkod.imleceKadarCalistir",
+          "when": "resourceLangId == turkod"
+        },
+        {
+          "command": "turkod.secimiCalistir",
+          "when": "resourceLangId == turkod"
+        },
+        {
+          "command": "turkod.durdur"
+        },
+        {
+          "command": "turkod.uygulamaPaketle",
+          "when": "resourceLangId == turkod"
+        },
+        {
+          "command": "turkod.modulIndir"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "turkod.calistir",
+        "key": "f5",
+        "when": "editorLangId == turkod",
+        "mac": "cmd+r"
+      },
+      {
+        "command": "turkod.calistir",
+        "key": "ctrl+f5",
+        "when": "editorLangId == turkod"
+      },
+      {
+        "command": "turkod.hataAyikla",
+        "key": "shift+f5",
+        "when": "editorLangId == turkod",
+        "mac": "shift+cmd+r"
+      },
+      {
+        "command": "turkod.imleceKadarCalistir",
+        "key": "ctrl+shift+f5",
+        "when": "editorLangId == turkod"
+      },
+      {
+        "command": "turkod.secimiCalistir",
+        "key": "ctrl+enter",
+        "when": "editorLangId == turkod && editorHasSelection"
+      },
+      {
+        "command": "turkod.durdur",
+        "key": "ctrl+f2",
+        "when": "editorLangId == turkod"
+      }
+    ],
+    "configuration": {
+      "title": "Türkod",
+      "properties": {
+        "turkod.oyunModuluEtkin": {
+          "type": "boolean",
+          "default": false,
+          "description": "Oyun modülünü (Oyun.sahne ve Ursina desteği) etkinleştirir."
+        },
+        "turkod.terminaldeCalistir": {
+          "type": "boolean",
+          "default": true,
+          "description": "Programlar VS Code terminalinde çalıştırılsın (TürkUI programları webview pencereleri için uzantı içinde çalışır)."
+        },
+        "turkod.turkuiPencereModu": {
+          "type": "string",
+          "enum": [
+            "masaustu",
+            "editor"
+          ],
+          "enumDescriptions": [
+            "Yedek yol: TürkUI pencereleri VS Code'dan bağımsız masaüstü pencerelerinde açılır.",
+            "Yedek yol: TürkUI pencereleri editör sekmesindeki webview panelinde açılır."
+          ],
+          "default": "editor",
+          "description": "Yalnızca uygulama paketlenemediğinde (Electron yoksa veya satır satır hata ayıklarken) kullanılan yedek gösterim."
+        },
+        "turkod.electronKlasoru": {
+          "type": "string",
+          "default": "",
+          "description": "TürkUI uygulamalarını .exe olarak çalıştırmak/paketlemek için kullanılan Electron klasörü (electron.exe'nin bulunduğu klasör). Boş bırakılırsa TURKOD Studio kurulumu ve TURKOD_ELECTRON ortam değişkeni aranır."
+        },
+        "turkod.kaydetVeCalistir": {
+          "type": "boolean",
+          "default": true,
+          "description": "Çalıştırmadan önce dosyayı kaydet."
+        },
+        "turkod.durdurmaKisayolu": {
+          "type": "string",
+          "default": "ctrl+f2",
+          "description": "Çalışan programı durduran tuş bileşimi (değiştirmek için tuş bağlamalarını düzenleyin)."
+        }
+      }
+    },
+    "iconThemes": [
+      {
+        "id": "turkod-file-icons",
+        "path": "./icons/turkod-icon-theme.json",
+        "label": "Türkod"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "baslatici": "powershell -ExecutionPolicy Bypass -File scripts/baslatici-derle.ps1",
+    "test": "node test/denetleyici.cjs && node test/kir.cjs && node test/turkui.cjs && node test/stil.cjs && node test/betik.cjs && node test/turkuiPenceresi.cjs && node test/uygulamaPaketleyici.cjs && node test/tamamla.cjs && node test/baglama.cjs && node test/proje.cjs && node test/turkodModul.cjs && node test/zaman.cjs",
+    "package": "vsce package --out turkod-vscode.vsix",
+    "pretest": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.1",
+    "typescript": "^5.7.2"
+  },
+  "author": "Metogram Studios",
+  "type": "commonjs",
+  "icon": "icons/turkod-file.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aelif7826-ai/turkod-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aelif7826-ai/turkod-vscode/issues"
+  },
+  "homepage": "https://github.com/aelif7826-ai/turkod-vscode#readme"
+}

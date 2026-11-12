@@ -1,0 +1,58 @@
+içe_aktar TürkUI
+
+# ─── stil { } bloğu örneği ────────────────────────────────────────────
+# HTML yok, İngilizce CSS yok: sadece Türkçe özellik ve değerler.
+
+değişken uygulama := TürkUI.pencere("stil örneği")
+uygulama.genişlik := 460
+uygulama.yükseklik := 340
+uygulama.arkaPlan := "#181825"
+
+değişken başlık := uygulama.metin("TÜRKÇE STİL")
+değişken kutu := uygulama.dikeyDüzen()
+değişken buton1 := uygulama.buton("Kırmızı")
+değişken buton2 := uygulama.buton("Mavi")
+değişken buton3 := uygulama.buton("Degrade yok")
+
+TürkUI.stil {
+    başlık(
+        yazıBoyutu: 22px
+        yazıKalınlığı: 700
+        harfAralığı: 2px
+        renk: mavi
+        metinHizalama: merkez
+    )
+    kutu(
+        içBoşluk: 16px
+        aralık: 10px
+        arkaPlan: #1e1e2e
+        kenar: 1px düz #313244
+        kenarYuvarlaklığı: 14px
+    )
+    buton1(
+        arkaPlanRengi: kırmızı
+        renk: siyah
+        geçiş: 0.2s
+        üzerineGelince(
+            arkaPlanRengi: mavi
+        )
+        basılıyken(
+            arkaPlanRengi: mor
+        )
+    )
+    buton2(
+        arkaPlanRengi: renk.rgb(137, 180, 250)
+        renk: siyah
+    )
+    buton3(
+        arkaPlanRengi: turuncu
+        kenarYuvarlaklığı: 18px
+        gölge: 0 6px 18px #fab38740
+    )
+}
+
+kutu.ekle(buton1)
+kutu.ekle(buton2)
+kutu.ekle(buton3)
+
+uygulama.göster()

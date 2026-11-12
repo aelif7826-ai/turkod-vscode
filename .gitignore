@@ -1,0 +1,12 @@
+node_modules/
+out/
+*.vsix
+.vscode-test/
+*.log
+
+# test/paketleme çıktıları ve araç klasörleri
+.uygulama-test/
+.cloud-attachments/
+.freebuff/
+.kombai/
+.abacusai-bot/

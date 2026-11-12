@@ -1,0 +1,274 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Türkod",
+  "scopeName": "source.turkod",
+  "patterns": [
+    {
+      "include": "#hex-colors"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#style-block"
+    },
+    {
+      "include": "#function-declaration"
+    },
+    {
+      "include": "#object-declaration"
+    },
+    {
+      "include": "#import-module"
+    },
+    {
+      "include": "#keyword-storage"
+    },
+    {
+      "include": "#keyword-control"
+    },
+    {
+      "include": "#keyword-operator"
+    },
+    {
+      "include": "#constant-boolean"
+    },
+    {
+      "include": "#constant-null"
+    },
+    {
+      "include": "#constant-builtin"
+    },
+    {
+      "include": "#turkui-module"
+    },
+    {
+      "include": "#turkui-constant"
+    },
+    {
+      "include": "#turkui-event"
+    },
+    {
+      "include": "#turkui-method"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#property-access"
+    },
+    {
+      "include": "#object-key"
+    },
+    {
+      "include": "#function-call"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "hex-colors": {
+      "name": "constant.other.color.turkod",
+      "match": "#[0-9a-fA-F]{3,8}(?![0-9a-zA-Z])"
+    },
+    "comments": {
+      "name": "comment.line.number-sign.turkod",
+      "match": "#.*$"
+    },
+    "strings": {
+      "name": "string.quoted.double.turkod",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.turkod",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "numbers": {
+      "name": "constant.numeric.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])\\d+(?:\\.\\d+)?(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "function-declaration": {
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(fonksiyon)(\\s+)([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)(?=\\s*\\()",
+      "captures": {
+        "1": {
+          "name": "storage.type.function.turkod"
+        },
+        "3": {
+          "name": "entity.name.function.turkod"
+        }
+      }
+    },
+    "object-declaration": {
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(nesne)(\\s+)([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])",
+      "captures": {
+        "1": {
+          "name": "storage.type.object.turkod"
+        },
+        "3": {
+          "name": "entity.name.type.turkod"
+        }
+      }
+    },
+    "style-block": {
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])([Tt][üÜ]rk[Uu][İIiı])(\\s*\\.\\s*)(stil|betik)(\\s*)(\\{)",
+      "captures": {
+        "1": {
+          "name": "entity.name.type.turkod"
+        },
+        "3": {
+          "name": "keyword.control.turkod"
+        },
+        "5": {
+          "name": "punctuation.section.block.begin.turkod"
+        }
+      }
+    },
+    "game-scene-block": {
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(Oyun)(\\s*\\.\\s*)(sahne)(\\s*)(\\{)",
+      "captures": {
+        "1": { "name": "entity.name.type.turkod" },
+        "3": { "name": "keyword.control.turkod" },
+        "5": { "name": "punctuation.section.block.begin.turkod" }
+      }
+    },
+    "keyword-storage": {
+      "name": "storage.type.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:değişken|OndalıklıDeğişken|fonksiyon|nesne)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "keyword-control": {
+      "name": "keyword.control.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:yazdır|eğer|değilse-eğer|değilse\\s+eğer|değilse|ise|iste|son|döngü|kez|SonsuzDöngü|geri_döndür|dön|don|için|içinde|kır|dur|devam_et|içe_aktar|dışa_aktar|dene|yakala)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "keyword-operator": {
+      "name": "keyword.operator.logical.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:ve|veya|değil)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "constant-boolean": {
+      "name": "constant.language.boolean.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:Doğru|Yanlış)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "constant-null": {
+      "name": "constant.language.null.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])Boş(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "constant-builtin": {
+      "name": "support.constant.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:PI|E|TAU|SONSUZ|SÜRÜM|sayısal)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "turkui-module": {
+      "name": "support.class.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ.])(?:TürkUI|Oyun|Dosyaİşlemleri|Oyun2D|Dosya|Sistem|Web)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "turkui-constant": {
+      "name": "support.constant.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ.])(?:renk|gizle)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "turkui-event": {
+      "match": "(\\.)(tıklandığında|basıldığında|bırakıldığında|üzerineGelindiğinde|üzerindenÇıkıldığında|değiştiğinde|odaklandığında|odağıKaybettiğinde|tuşBasılınca|tuşBırakılınca|fareHareketinde|seçildiğinde|enterBasılınca|çiftTıklandığında|sağTıklandığında|fareTekerleği|pencereKapatılırken|pencereAçıldığında|yüklendiğinde|yüklenmeyeBaşladığında|adresDeğiştiğinde|başlıkDeğiştiğinde|hataOluştuğunda)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])",
+      "captures": {
+        "1": {
+          "name": "punctuation.accessor.turkod"
+        },
+        "2": {
+          "name": "keyword.other.event.turkod"
+        }
+      }
+    },
+    "turkui-method": {
+      "match": "(\\.)(pencere|metin|buton|giriş|kutu|liste|görsel|ilerleme|onayKutusu|seçimKutusu|sekme|dikeyDüzen|yatayDüzen|gridDüzen|esnekAlan|metinAlanı|kaydırıcı|anahtar|radyo|özel|canvas|tarayıcı|webTarayıcı|webBrowser|stil|css|çizgi|dikdörtgen|daire|yay|yazı|arkaPlanDoldur|htmlEkle|stilEkle|çocukEkle|çocukÇıkar|merkezle|odaklan|logo|pencereArkaPlanResmi|arkaPlanResmiAyarla|göster|gizle|küçült|büyüt|normal|kapat|uyarı|bilgi|onay|sor|dosyaSeç|dosyaKaydet|klasörSeç|bildirim|hepsiKapat|rgb|rgba|hex|geçiş|sağ|sol|aşağı|yukarı|değiştir|temizle|etkinleştir|devreDışıBırak|metinDeğiştir|ayarla|odağıKaldır|ekle|sil|seç|artır|azalt|sıfırla|kaldır|aç|çıkar|git|anaSayfayaGit|htmlYükle|belgeYaz|yakınlaştır|yakınlaştırmaSıfırla|yenile|durdur|geri|ileri)(?=\\s*\\()",
+      "captures": {
+        "1": {
+          "name": "punctuation.accessor.turkod"
+        },
+        "2": {
+          "name": "support.function.turkui.turkod"
+        }
+      }
+    },
+    "builtins": {
+      "name": "support.function.builtin.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])(?:anahtarlaraGöreSırala|rastgeleElemanlar|değereGöreSırala|desenEşleşiyorMu|aralık_to_liste|aralik_to_liste|basamaklarıAyır|birleştirSözlük|güvenliRastgele|rastgeleOndalık|çalışmaKlasörü|çarpanlaraAyır|filtreleSözlük|karaktereÇevir|kontrolToplamı|kullanıcıAdıMı|ortamDeğişkeni|rastgeleNormal|satırlaraSonek|yazdırılabilir|basamakSayısı|desenDeğiştir|kelimelereBöl|klasörOluştur|kume_birlesim|küme_birleşim|metinTekrarla|panoyaKopyala|rastgeleMetin|satırlaraÖnek|yukarıYuvarla|aşağıYuvarla|başlıkAyarla|başlıkBiçimi|dosyaListesi|haftanınGünü|karakterKodu|kelimeSayısı|kullanıcıAdı|kume_kesisim|küme_kesişim|rastgeleSayı|satırlaraBöl|sessizSayısı|tarihBiçimle|temizleEkran|varsayılanAl|yolBirleştir|yüzdeDeğişim|base64Kodla|bilgiYazdır|boşSözlükMü|csvAyrıştır|cümleBiçimi|cümleSayısı|diziOluştur|dosyaBoyutu|htmlKaçışla|ilkDeğiştir|ilkKarakter|klasörVarMı|kume_alt_mi|küme_alt_mı|onaltılıdan|ondalıklıya|ondalikliya|postaKoduMı|RastgeleSeç|sayıBiçimle|sesliSayısı|sonKarakter|sonKonumBul|uyarıYazdır|yerDeğiştir|anahtarlar|aralıktaMı|başlıyorMu|csvOluştur|derinKopya|dosyaVarMı|faktöriyel|harfSayısı|hataFırlat|hataYazdır|karakterAt|kısaKimlik|klasörYolu|mantıksala|onaltılıya|panodanOku|seçenekSor|sekizliden|tanımsızMı|tarihFarkı|tarihSaati|varsayılan|yaşHesapla|base64Çöz|benzerlik|benzersiz|birlestir|birleştir|bitiyorMu|bölVeKırp|bulİndeks|buyukHarf|büyükHarf|BÜYÜKHARF|doldurSağ|doldurSol|dosyaEkle|düzleştir|evKlasörü|ilkEleman|indeksBul|jsonKodla|kucukHarf|kume_fark|küçükHarf|KÜÇÜKHARF|küme_fark|mutlakYol|negatifMi|pozitifMi|sekizliye|sonEleman|şifreGücü|şifreÜret|tamSayıMı|tarihEkle|telefonMı|tersÇevir|yılınGünü|altMetin|boşListe|değerler|değiştir|desenBöl|desenBul|dosyaAdı|dosyaOku|dosyaSil|dosyaYaz|dönüştür|ekleBaşa|epostaMı|filtrele|girdiler|hexKodla|içeriyor|ikiliden|ilerleme|karıştır|karmaKod|komutlar|konumBul|ortalama|platform|sıkıştır|sözlükMü|tarihÇöz|tekrarEt|urlKodla|yazıTura|doğrula|enBüyük|enKüçük|ExeIcon|hiçbiri|htmlÇöz|ikiliye|indirge|jsonÇöz|karekök|kesişim|kopyala|listeye|parçala|sağKırp|sıfırMı|sınırla|solKırp|sözlüğe|süreÖlç|şimdiMs|tarihMı|uzunluk|yakınMı|yuvarla|aralık|aralik|asalMı|ayıkla|çiftMi|dakika|döndür|eşitMi|grupla|harfMi|hexÇöz|ibanMı|işaret|jsonMı|küpKök|mesafe|mutlak|onayla|saniye|sayıMı|sayıya|sayiya|sırala|sözlük|şablon|tcknMı|tur_mu|tür_mü|urlÇöz|uygula|uzantı|yardım|yardim|bekle|biçim|boşMu|bugün|çağır|dilim|kalan|liste|metne|silAt|sürüm|şimdi|tekMi|topla|urlMi|yüzde|zarAt|bazı|çarp|ebob|ekle|ekok|eşle|fark|ilkN|kırp|kirp|kume|küme|oran|özet|saat|sonN|uuid|bol|böl|bul|çık|gün|her|ilk|oku|say|seç|sil|tur|tür|yıl|aç|at|ay|üs)(?=\\s*\\()"
+    },
+    "property-access": {
+      "match": "(\\.)([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)",
+      "captures": {
+        "1": {
+          "name": "punctuation.accessor.turkod"
+        },
+        "2": {
+          "name": "variable.other.property.turkod"
+        }
+      }
+    },
+    "object-key": {
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)(\\s*)(:)(?!=)",
+      "captures": {
+        "1": {
+          "name": "support.type.property-name.turkod"
+        },
+        "3": {
+          "name": "punctuation.separator.key-value.turkod"
+        }
+      }
+    },
+    "function-call": {
+      "name": "entity.name.function.call.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)(?=\\s*\\()"
+    },
+    "variables": {
+      "name": "variable.other.turkod",
+      "match": "(?<![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])([A-Za-z_ğüşıöçĞÜŞİÖÇ][A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]*)(?![A-Za-z0-9_ğüşıöçĞÜŞİÖÇ])"
+    },
+    "operators": {
+      "name": "keyword.operator.turkod",
+      "match": ":=|=>|==|!=|>=|<=|[<>+*/%=!-]"
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.section.brackets.turkod",
+          "match": "[()\\[\\]{}]"
+        },
+        {
+          "name": "punctuation.separator.turkod",
+          "match": "[,;]"
+        },
+        {
+          "name": "punctuation.accessor.turkod",
+          "match": "\\."
+        },
+        {
+          "name": "punctuation.separator.key-value.turkod",
+          "match": ":"
+        }
+      ]
+    },
+    "import-module": {
+      "match": "(\\biçe_aktar\\s+)(\"[^\"]+\"|'[^']+'|[A-Za-z_ğüşıöçĞÜŞİÖÇ.][\\wğüşıöçĞÜŞİÖÇ./\\\\-]*)",
+      "captures": {
+        "1": {
+          "name": "keyword.control.turkod"
+        },
+        "2": {
+          "name": "entity.name.namespace.turkod"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,238 @@
+# Karanlık Zindan - Bir Metin Macera Oyunu
+
+yazdır("╔══════════════════════════════════════════╗")
+yazdır("║           KARANLIK ZİNDAN                ║")
+yazdır("║         Bir Metin Macera Oyunu           ║")
+yazdır("╚══════════════════════════════════════════╝")
+yazdır("")
+
+değişken oyuncuAdı := iste("Macera kahramanının adı nedir? ")
+yazdır("")
+yazdır("Hoş geldin, " + oyuncuAdı + "!")
+yazdır("")
+
+değişken can := 100
+değişken altın := 50
+değişken hasar := 15
+değişken zırh := 5
+değişken seviye := 1
+değişken tecrübe := 0
+değişken düşmanÖldürüldü := 0
+değişken envanter := ["Eski Kılıç", "Sağlık İksiri x2"]
+
+fonksiyon durumGoster()
+    yazdır("")
+    yazdır("═══════════ DURUM ═══════════")
+    yazdır("Kahraman: " + oyuncuAdı)
+    yazdır("Can: " + can + "/100 | Seviye: " + seviye)
+    yazdır("Altın: " + altın + " | Hasar: " + hasar + " | Zırh: " + zırh)
+    yazdır("Tecrübe: " + tecrübe + "/100")
+    yazdır("Öldürülen Düşman: " + düşmanÖldürüldü)
+    yazdır("Envanter: " + birleştir(envanter, ", "))
+    yazdır("═══════════════════════════════")
+    yazdır("")
+geri_döndür Boş
+son
+
+fonksiyon savaş(düşmanAdı, düşmanCan, düşmanHasar)
+    yazdır("")
+    yazdır("⚔️  " + düşmanAdı + " ile karşılaştın!")
+    değişken düşmanCanAktif := düşmanCan
+    
+    SonsuzDöngü düşmanCanAktif > 0 ve can > 0
+        yazdır("Sen: " + can + " HP | " + düşmanAdı + ": " + düşmanCanAktif + " HP")
+        yazdır("1) Saldır  2) İksir Kullan  3) Kaç")
+        değişken seçim := iste("Seçimin: ")
+        
+        eğer seçim == "1" ise
+            değişken verdiğinHasar := hasar + rastgeleSayı(1, 10)
+            düşmanCanAktif := düşmanCanAktif - verdiğinHasar
+            yazdır("⚡ " + verdiğinHasar + " hasar verdin!")
+            
+            eğer düşmanCanAktif > 0 ise
+                değişken düşmanVerdiğiHasar := düşmanHasar + rastgeleSayı(1, 5)
+                düşmanVerdiğiHasar := düşmanVerdiğiHasar - zırh
+                eğer düşmanVerdiğiHasar < 0 ise
+                    düşmanVerdiğiHasar := 0
+                son
+                can := can - düşmanVerdiğiHasar
+                yazdır("💥 " + düşmanAdı + " sana " + düşmanVerdiğiHasar + " hasar verdi!")
+            son
+        değilse-eğer seçim == "2" ise
+            eğer içeriyor(envanter, "Sağlık İksiri") ise
+                can := can + 40
+                eğer can > 100 ise
+                    can := 100
+                son
+                yazdır("🧪 Sağlık iksiri kullandın! Can +40")
+            değilse
+                yazdır("İksirin yok!")
+            son
+        değilse-eğer seçim == "3" ise
+            eğer rastgeleSayı(1, 100) > 60 ise
+                yazdır("🏃 Kaçmayı başardın!")
+                geri_döndür "kaçtı"
+            değilse
+                yazdır("Kaçamadın!")
+                değişken düşmanVerdiğiHasar := düşmanHasar - zırh
+                eğer düşmanVerdiğiHasar < 0 ise
+                    düşmanVerdiğiHasar := 0
+                son
+                can := can - düşmanVerdiğiHasar
+                yazdır("💥 " + düşmanAdı + " sana " + düşmanVerdiğiHasar + " hasar verdi!")
+            son
+        değilse
+            yazdır("Geçersiz seçim!")
+        son
+        
+        eğer can <= 0 ise
+            dur
+        son
+    son
+    
+    eğer can > 0 ve düşmanCanAktif <= 0 ise
+        yazdır("")
+        yazdır("🎉 " + düşmanAdı + "'ı yendin!")
+        düşmanÖldürüldü := düşmanÖldürüldü + 1
+        değişken kazanılanAltın := rastgeleSayı(10, 30)
+        değişken kazanılanTecrübe := rastgeleSayı(15, 25)
+        altın := altın + kazanılanAltın
+        tecrübe := tecrübe + kazanılanTecrübe
+        yazdır("💰 " + kazanılanAltın + " altın kazandın!")
+        yazdır("⭐ " + kazanılanTecrübe + " tecrübe kazandın!")
+        
+        eğer tecrübe >= 100 ise
+            tecrübe := tecrübe - 100
+            seviye := seviye + 1
+            can := 100
+            hasar := hasar + 5
+            zırh := zırh + 2
+            yazdır("")
+            yazdır("🎊 SEVİYE ATLADIN! Seviye: " + seviye)
+            yazdır("Can tamamen yenilendi, Hasar +5, Zırh +2")
+        son
+        geri_döndür "kazandı"
+    değilse
+        yazdır("")
+        yazdır("💀 Öldün... Macera burada sona erdi.")
+        geri_döndür "öldü"
+    son
+geri_döndür "bitti"
+son
+
+yazdır("Zindana girdin... Karanlık ve ürkütücü.")
+durumGoster()
+
+değişken oyunDevam := Doğru
+SonsuzDöngü oyunDevam
+    yazdır("")
+    yazdır("═══════════ MENÜ ═══════════")
+    yazdır("1) İlerle")
+    yazdır("2) Durum Görüntüle")
+    yazdır("3) Envanter")
+    yazdır("4) Mağaza")
+    yazdır("5) Çıkış")
+    yazdır("════════════════════════════")
+    değişken menüSeçim := iste("Seçimin: ")
+    
+    eğer menüSeçim == "1" ise
+        değişken olay := rastgeleSayı(1, 100)
+        eğer olay <= 40 ise
+            değişken düşmanSeç := rastgeleSayı(1, 3)
+            eğer düşmanSeç == 1 ise
+                değişken sonuc := savaş("Yaşlı Kurt", 30, 12)
+                eğer sonuc == "öldü" ise
+                    oyunDevam := Yanlış
+                son
+            değilse-eğer düşmanSeç == 2 ise
+                değişken sonuc := savaş("Zombi Asker", 45, 15)
+                eğer sonuc == "öldü" ise
+                    oyunDevam := Yanlış
+                son
+            değilse
+                değişken sonuc := savaş("Kemik Şövalye", 65, 18)
+                eğer sonuc == "öldü" ise
+                    oyunDevam := Yanlış
+                son
+            son
+        değilse-eğer olay <= 70 ise
+            değişken hazineAltın := rastgeleSayı(20, 50)
+            altın := altın + hazineAltın
+            yazdır("")
+            yazdır("💎 Eski bir sandık buldun!")
+            yazdır("💰 İçinden " + hazineAltın + " altın çıktı!")
+        değilse-eğer olay <= 90 ise
+            yazdır("")
+            yazdır("⚠️  Tuzak! Dikenli çukura düştün!")
+            değişken hasarTuzak := rastgeleSayı(10, 20)
+            can := can - hasarTuzak
+            yazdır("-" + hasarTuzak + " can kaybettin!")
+            eğer can <= 0 ise
+                yazdır("")
+                yazdır("💀 Tuzakta öldün...")
+                oyunDevam := Yanlış
+            son
+        değilse
+            yazdır("")
+            yazdır("✨ Kutsal su kaynağı buldun!")
+            can := can + 30
+            eğer can > 100 ise
+                can := 100
+            son
+            yazdır("❤️ Can +30 yenilendi!")
+        son
+    değilse-eğer menüSeçim == "2" ise
+        durumGoster()
+    değilse-eğer menüSeçim == "3" ise
+        yazdır("")
+        yazdır("═══════════ ENVANTER ═══════════")
+        için eşya içinde envanter
+            yazdır("• " + eşya)
+        son
+        yazdır("═══════════════════════════════")
+    değilse-eğer menüSeçim == "4" ise
+        yazdır("")
+        yazdır("═══════════ MAĞAZA ═══════════")
+        yazdır("1) Sağlık İksiri (30 altın) - Can +40")
+        yazdır("2) Keskin Kılıç (100 altın) - Hasar +10")
+        yazdır("3) Demir Zırh (80 altın) - Zırh +5")
+        yazdır("4) Geri Dön")
+        yazdır("══════════════════════════════")
+        değişken mağazaSeç := iste("Satın almak istediğin: ")
+        eğer mağazaSeç == "1" ise
+            eğer altın >= 30 ise
+                altın := altın - 30
+                envanter := birleştir(envanter, ["Sağlık İksiri"])
+                yazdır("Satın alındı! Sağlık İksiri")
+            değilse
+                yazdır("Yetersiz altın!")
+            son
+        değilse-eğer mağazaSeç == "2" ise
+            eğer altın >= 100 ise
+                altın := altın - 100
+                hasar := hasar + 10
+                yazdır("Satın alındı! Hasar +10")
+            değilse
+                yazdır("Yetersiz altın!")
+            son
+        değilse-eğer mağazaSeç == "3" ise
+            eğer altın >= 80 ise
+                altın := altın - 80
+                zırh := zırh + 5
+                yazdır("Satın alındı! Zırh +5")
+            değilse
+                yazdır("Yetersiz altın!")
+            son
+        son
+    değilse-eğer menüSeçim == "5" ise
+        yazdır("Güle güle, " + oyuncuAdı + "!")
+        oyunDevam := Yanlış
+    değilse
+        yazdır("Geçersiz seçim!")
+    son
+son
+
+yazdır("")
+yazdır("═══════════════════════════════")
+yazdır("Macera sona erdi!")
+durumGoster()

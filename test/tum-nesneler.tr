@@ -1,0 +1,779 @@
+
+içe_aktar TürkUI
+
+değişken uygulama := TürkUI.pencere("🧩 TürkUI · Tüm Nesneler")
+uygulama.genişlik := 800
+uygulama.yükseklik := 780
+uygulama.minGenişlik := 560
+uygulama.minYükseklik := 460
+uygulama.merkezle()
+
+değişken resim1 := "nesneler.png"
+değişken resim2 := "nesneler2.png"
+
+# ─── başlık ve durum satırı ─────────────────────────────────────────
+değişken başlık := uygulama.metin("TÜM TÜRKUI NESNELERİ")
+başlık.yazıBoyutu := 22
+başlık.kalın := Doğru
+başlık.hizalama := "center"
+
+değişken durum := uygulama.metin("Hazır — bir nesneye dokun")
+durum.yazıBoyutu := 12
+durum.renk := renk.gri
+durum.hizalama := "center"
+
+# ─── yardımcılar (kullanılmadan önce tanımlanmalı) ───────────────────
+fonksiyon bölüm(yazı)
+    değişken etiket := uygulama.metin("▸ " + yazı)
+    etiket.yazıBoyutu := 13
+    etiket.kalın := Doğru
+    etiket.renk := renk.turkuaz
+    geri_döndür etiket
+son
+
+fonksiyon bildir(yazı)
+    durum.değiştir(yazı)
+son
+
+# ─── 1) metin ───────────────────────────────────────────────────────
+bölüm("1 · metin · değiştir / temizle / göster / gizle / konum")
+
+değişken metinÖrnek := uygulama.metin("Metin bileşeni")
+metinÖrnek.yazıBoyutu := 14
+
+değişken satırMetin := uygulama.yatayDüzen()
+satırMetin.aralık := 8
+
+değişken btnMetinDeğiştir := uygulama.buton("metin.değiştir()")
+değişken btnMetinTemizle := uygulama.buton("metin.temizle()")
+değişken btnMetinGizle := uygulama.buton("metin.gizle()")
+değişken btnMetinGöster := uygulama.buton("metin.göster()")
+
+satırMetin.ekle(btnMetinDeğiştir)
+satırMetin.ekle(btnMetinTemizle)
+satırMetin.ekle(btnMetinGizle)
+satırMetin.ekle(btnMetinGöster)
+
+# tüm bileşenlerde ortak konum/hareket metotları
+btnMetinDeğiştir.tıklandığında
+    metinÖrnek.değiştir("değiştir() çalıştı")
+    bildir("metin · değiştir()")
+son
+
+btnMetinTemizle.tıklandığında
+    metinÖrnek.temizle()
+    bildir("metin · temizle()")
+son
+
+btnMetinGizle.tıklandığında
+    metinÖrnek.gizle()
+    bildir("metin · gizle()")
+son
+
+btnMetinGöster.tıklandığında
+    metinÖrnek.göster()
+    metinÖrnek.sol(100)
+    metinÖrnek.aşağı(2)
+    metinÖrnek.yukarı(2)
+    metinÖrnek.sağ(0)
+    bildir("metin · göster() + sağ/sol/aşağı/yukarı")
+son
+
+# ─── 2) buton ───────────────────────────────────────────────────────
+bölüm("2 · buton · tıklandığında / etkinleştir / devreDışıBırak")
+
+değişken sayaç := 0
+değişken sayaçYazı := uygulama.metin("Sayaç: 0")
+
+değişken satırButon := uygulama.yatayDüzen()
+satırButon.aralık := 8
+
+değişken btnArtır := uygulama.buton("+1")
+değişken btnAzalt := uygulama.buton("-1")
+değişken btnSıfırla := uygulama.buton("Sıfırla")
+değişken btnKilit := uygulama.buton("Sıfırla'yı kilitle")
+
+satırButon.ekle(btnArtır)
+satırButon.ekle(btnAzalt)
+satırButon.ekle(btnSıfırla)
+satırButon.ekle(btnKilit)
+
+değişken kilitli := Yanlış
+
+btnArtır.tıklandığında
+    sayaç := sayaç + 1
+    sayaçYazı.değiştir("Sayaç: " + sayaç)
+    bildir("buton · tıklandığında → " + sayaç)
+son
+
+btnAzalt.tıklandığında
+    sayaç := sayaç - 1
+    sayaçYazı.değiştir("Sayaç: " + sayaç)
+    bildir("buton · tıklandığında → " + sayaç)
+son
+
+btnSıfırla.tıklandığında
+    sayaç := 0
+    sayaçYazı.değiştir("Sayaç: 0")
+    bildir("buton · tıklandığında → sıfırlandı")
+son
+
+btnKilit.tıklandığında
+    eğer kilitli ise
+        btnSıfırla.etkinleştir()
+        btnKilit.metinDeğiştir("Sıfırla'yı kilitle")
+        kilitli := Yanlış
+        bildir("buton · etkinleştir()")
+    değilse
+        btnSıfırla.devreDışıBırak()
+        btnKilit.metinDeğiştir("Sıfırla'yı aç")
+        kilitli := Doğru
+        bildir("buton · devreDışıBırak()")
+    son
+son
+
+btnArtır.üzerineGelindiğinde
+    bildir("buton · üzerineGelindiğinde")
+son
+
+# ─── 3) giriş ───────────────────────────────────────────────────────
+bölüm("3 · giriş · değer / temizle / odaklan")
+
+değişken adGiriş := uygulama.giriş("Adınızı yazın…")
+değişken adYazı := uygulama.metin("Merhaba, misafir")
+
+adGiriş.değiştiğinde
+    eğer adGiriş.değer == "" ise
+        adYazı.değiştir("Merhaba, misafir")
+    değilse
+        adYazı.değiştir("Merhaba, " + adGiriş.değer)
+    son
+    bildir("giriş · değiştiğinde")
+son
+
+adGiriş.enterBasılınca
+    bildir("giriş · enterBasılınca → " + adGiriş.değer)
+son
+
+değişken btnGirişTemizle := uygulama.buton("giriş.temizle() + odaklan()")
+btnGirişTemizle.tıklandığında
+    adGiriş.temizle()
+    adGiriş.odaklan()
+    adYazı.değiştir("Merhaba, misafir")
+    bildir("giriş · temizle() + odaklan()")
+son
+
+değişken btnGirişAyarla := uygulama.buton("giriş.ayarla(\"Metin\")")
+değişken btnGirişBırak := uygulama.buton("giriş.odağıKaldır()")
+
+btnGirişAyarla.tıklandığında
+    adGiriş.ayarla("Metin")
+    adYazı.değiştir("Merhaba, " + adGiriş.değer)
+    bildir("giriş · ayarla()")
+son
+
+btnGirişBırak.tıklandığında
+    adGiriş.odağıKaldır()
+    bildir("giriş · odağıKaldır()")
+son
+
+# ─── 4) metinAlanı ──────────────────────────────────────────────────
+bölüm("4 · metinAlanı · ekle / temizle / satır")
+
+değişken notAlanı := uygulama.metinAlanı("Notlarınız…")
+notAlanı.satır := 3
+notAlanı.değer := "İlk satır"
+
+notAlanı.değiştiğinde
+    bildir("metinAlanı · değiştiğinde")
+son
+
+değişken btnNotEkle := uygulama.buton("metinAlanı.ekle()")
+değişken btnNotTemizle := uygulama.buton("metinAlanı.temizle()")
+
+btnNotEkle.tıklandığında
+    notAlanı.ekle("\n• yeni satır")
+    bildir("metinAlanı · ekle()")
+son
+
+btnNotTemizle.tıklandığında
+    notAlanı.temizle()
+    bildir("metinAlanı · temizle()")
+son
+
+# ─── 5) kutu ────────────────────────────────────────────────────────
+bölüm("5 · kutu · ekle / çıkar / temizle")
+
+değişken kutu := uygulama.kutu()
+kutu.aralık := 6
+kutu.kenar := 1
+kutu.kenarRengi := renk.gri
+
+değişken kutuMetin1 := uygulama.metin("kutu içinde · 1")
+değişken kutuMetin2 := uygulama.metin("kutu içinde · 2")
+değişken kutuMetin3 := uygulama.metin("kutu içinde · 3")
+
+kutu.ekle(kutuMetin1)
+kutu.ekle(kutuMetin2)
+
+değişken btnKutuEkle := uygulama.buton("kutu.ekle()")
+değişken btnKutuÇıkar := uygulama.buton("kutu.çıkar()")
+değişken btnKutuTemizle := uygulama.buton("kutu.temizle()")
+
+btnKutuEkle.tıklandığında
+    kutu.ekle(kutuMetin3)
+    bildir("kutu · ekle()")
+son
+
+btnKutuÇıkar.tıklandığında
+    kutu.çıkar(kutuMetin3)
+    bildir("kutu · çıkar()")
+son
+
+btnKutuTemizle.tıklandığında
+    kutu.temizle()
+    bildir("kutu · temizle() → kutu boşaltıldı")
+son
+
+# ─── 6) liste ───────────────────────────────────────────────────────
+bölüm("6 · liste · ekle / sil / seç / seçildiğinde")
+
+değişken şehirler := uygulama.liste()
+şehirler.ekle("İstanbul")
+şehirler.ekle("Ankara")
+şehirler.ekle("İzmir")
+şehirler.ekle("Bursa")
+şehirler.seç(0)
+
+değişken şehirYazı := uygulama.metin("Seçili şehir: İstanbul")
+
+şehirler.seçildiğinde
+    şehirYazı.değiştir("Seçili şehir: " + şehirler.seçili)
+    bildir("liste · seçildiğinde → " + şehirler.seçili)
+son
+
+değişken btnListeSil := uygulama.buton("liste.sil(0)")
+btnListeSil.tıklandığında
+    şehirler.sil(0)
+    bildir("liste · sil(0)")
+son
+
+değişken btnListeTemizle := uygulama.buton("liste.temizle()")
+değişken btnListeDoldur := uygulama.buton("listeyi yeniden doldur")
+
+btnListeTemizle.tıklandığında
+    şehirler.temizle()
+    şehirYazı.değiştir("Seçili şehir: -")
+    bildir("liste · temizle()")
+son
+
+btnListeDoldur.tıklandığında
+    şehirler.temizle()
+    şehirler.ekle("İstanbul")
+    şehirler.ekle("Ankara")
+    şehirler.ekle("İzmir")
+    şehirler.ekle("Bursa")
+    şehirler.seç(0)
+    şehirYazı.değiştir("Seçili şehir: " + şehirler.seçili)
+    bildir("liste · ekle() x4 + seç(0)")
+son
+
+# ─── 7) seçimKutusu ─────────────────────────────────────────────────
+bölüm("7 · seçimKutusu · ekle / seç / seçildiğinde")
+
+değişken diller := uygulama.seçimKutusu()
+diller.ekle("Türkod")
+diller.ekle("Python")
+diller.ekle("JavaScript")
+diller.ekle("Rust")
+diller.seç(0)
+
+değişken dilYazı := uygulama.metin("Seçili dil: Türkod")
+
+diller.seçildiğinde
+    dilYazı.değiştir("Seçili dil: " + diller.seçili)
+    bildir("seçimKutusu · seçildiğinde → " + diller.seçili)
+son
+
+değişken btnDilSil := uygulama.buton("seçimKutusu.sil(Rust)")
+değişken btnDilTemizle := uygulama.buton("seçimKutusu.temizle()")
+
+değişken btnDilDoldur := uygulama.buton("seçenekleri yeniden doldur")
+
+btnDilSil.tıklandığında
+    diller.sil("Rust")
+    bildir("seçimKutusu · sil(Rust)")
+son
+
+btnDilTemizle.tıklandığında
+    diller.temizle()
+    dilYazı.değiştir("Seçili dil: -")
+    bildir("seçimKutusu · temizle()")
+son
+
+btnDilDoldur.tıklandığında
+    diller.temizle()
+    diller.ekle("Türkod")
+    diller.ekle("Python")
+    diller.ekle("JavaScript")
+    diller.ekle("Rust")
+    diller.seç(0)
+    dilYazı.değiştir("Seçili dil: " + diller.seçili)
+    bildir("seçimKutusu · ekle() x4 + seç(0)")
+son
+
+# ─── 8) görsel ──────────────────────────────────────────────────────
+bölüm("8 · görsel · değiştir / doldur / oran / tıklandığında")
+
+değişken resim := uygulama.görsel(resim1)
+resim.genişlik := 320
+resim.yükseklik := 180
+
+değişken resimYazı := uygulama.metin("görsel · " + resim1)
+değişken sıcakResim := Yanlış
+değişken doldurMu := Yanlış
+değişken oranıKoru := Doğru
+
+resim.tıklandığında
+    eğer sıcakResim ise
+        resim.değiştir(resim1)
+        resimYazı.değiştir("görsel · " + resim1)
+        sıcakResim := Yanlış
+    değilse
+        resim.değiştir(resim2)
+        resimYazı.değiştir("görsel · " + resim2)
+        sıcakResim := Doğru
+    son
+    bildir("görsel · tıklandığında → değiştir()")
+son
+
+değişken btnResimDoldur := uygulama.buton("görsel.doldur (aç/kapa)")
+değişken btnResimOran := uygulama.buton("görsel.oran (aç/kapa)")
+
+btnResimDoldur.tıklandığında
+    eğer doldurMu ise
+        resim.doldur := Yanlış
+        doldurMu := Yanlış
+    değilse
+        resim.doldur := Doğru
+        doldurMu := Doğru
+    son
+    bildir("görsel · doldur → " + doldurMu)
+son
+
+btnResimOran.tıklandığında
+    eğer oranıKoru ise
+        resim.oran := Yanlış
+        oranıKoru := Yanlış
+    değilse
+        resim.oran := Doğru
+        oranıKoru := Doğru
+    son
+    bildir("görsel · oran → " + oranıKoru)
+son
+
+# ─── 9) ilerleme ────────────────────────────────────────────────────
+bölüm("9 · ilerleme · artır / azalt / sıfırla")
+
+değişken ilerleme := uygulama.ilerleme()
+ilerleme.minimum := 0
+ilerleme.maksimum := 100
+ilerleme.değer := 40
+
+değişken ilerlemeYazı := uygulama.metin("%40")
+
+değişken btnİlerleArtır := uygulama.buton("ilerleme.artır(10)")
+değişken btnİlerleAzalt := uygulama.buton("ilerleme.azalt(10)")
+değişken btnİlerleSıfırla := uygulama.buton("ilerleme.sıfırla()")
+
+btnİlerleArtır.tıklandığında
+    ilerleme.artır(10)
+    ilerlemeYazı.değiştir("%" + ilerleme.değer)
+    bildir("ilerleme · artır(10) → " + ilerleme.değer)
+son
+
+btnİlerleAzalt.tıklandığında
+    ilerleme.azalt(10)
+    ilerlemeYazı.değiştir("%" + ilerleme.değer)
+    bildir("ilerleme · azalt(10) → " + ilerleme.değer)
+son
+
+btnİlerleSıfırla.tıklandığında
+    ilerleme.sıfırla()
+    ilerlemeYazı.değiştir("%" + ilerleme.değer)
+    bildir("ilerleme · sıfırla()")
+son
+
+# ─── 10) onayKutusu ─────────────────────────────────────────────────
+bölüm("10 · onayKutusu · seç / kaldır / değiştiğinde")
+
+değişken onay := uygulama.onayKutusu("TürkUI'yi beğendim")
+değişken onayYazı := uygulama.metin("onay: kapalı")
+
+onay.değiştiğinde
+    eğer onay.seçili ise
+        onayYazı.değiştir("onay: açık")
+    değilse
+        onayYazı.değiştir("onay: kapalı")
+    son
+    bildir("onayKutusu · değiştiğinde → " + onay.seçili)
+son
+
+değişken btnOnaySeç := uygulama.buton("onay.seç()")
+değişken btnOnayKaldır := uygulama.buton("onay.kaldır()")
+
+btnOnaySeç.tıklandığında
+    onay.seç()
+    onayYazı.değiştir("onay: açık")
+    bildir("onayKutusu · seç()")
+son
+
+btnOnayKaldır.tıklandığında
+    onay.kaldır()
+    onayYazı.değiştir("onay: kapalı")
+    bildir("onayKutusu · kaldır()")
+son
+
+# ─── 11) sekme ──────────────────────────────────────────────────────
+bölüm("11 · sekme · ekle / sil / seç")
+
+değişken sekmeler := uygulama.sekme()
+sekmeler.ekle("Genel")
+sekmeler.ekle("Detay")
+sekmeler.ekle("Hakkında")
+sekmeler.seç("Genel")
+
+değişken sekmeYazı := uygulama.metin("sekme: Genel")
+
+sekmeler.değiştiğinde
+    sekmeYazı.değiştir("sekme: " + sekmeler.seçili)
+    bildir("sekme · değiştiğinde → " + sekmeler.seçili)
+son
+
+değişken btnSekmeEkle := uygulama.buton("sekme.ekle(\"Yeni\")")
+değişken btnSekmeSil := uygulama.buton("sekme.sil(\"Yeni\")")
+
+btnSekmeEkle.tıklandığında
+    sekmeler.ekle("Yeni")
+    bildir("sekme · ekle(\"Yeni\")")
+son
+
+btnSekmeSil.tıklandığında
+    sekmeler.sil("Yeni")
+    bildir("sekme · sil(\"Yeni\")")
+son
+
+# ─── 12) kaydırıcı ──────────────────────────────────────────────────
+bölüm("12 · kaydırıcı · değer / adım / değiştiğinde")
+
+değişken sürgü := uygulama.kaydırıcı(0, 100)
+sürgü.adım := 5
+sürgü.değer := 30
+
+değişken sürgüYazı := uygulama.metin("kaydırıcı değeri: 30")
+
+sürgü.değiştiğinde
+    sürgüYazı.değiştir("kaydırıcı değeri: " + sürgü.değer)
+    bildir("kaydırıcı · değiştiğinde → " + sürgü.değer)
+son
+
+# ─── 13) anahtar ────────────────────────────────────────────────────
+bölüm("13 · anahtar · aç / kapat / değiştir")
+
+değişken tema := uygulama.anahtar("Karanlık tema")
+değişken temaYazı := uygulama.metin("anahtar: kapalı")
+
+tema.değiştiğinde
+    eğer tema.açık ise
+        temaYazı.değiştir("anahtar: açık")
+    değilse
+        temaYazı.değiştir("anahtar: kapalı")
+    son
+    bildir("anahtar · değiştiğinde → " + tema.açık)
+son
+
+değişken btnAnahtar := uygulama.buton("anahtar.değiştir()")
+btnAnahtar.tıklandığında
+    tema.değiştir()
+    eğer tema.açık ise
+        temaYazı.değiştir("anahtar: açık")
+    değilse
+        temaYazı.değiştir("anahtar: kapalı")
+    son
+    bildir("anahtar · değiştir() → " + tema.açık)
+son
+
+değişken btnAnahtarAç := uygulama.buton("anahtar.aç()")
+btnAnahtarAç.tıklandığında
+    tema.aç()
+    temaYazı.değiştir("anahtar: açık")
+    bildir("anahtar · aç()")
+son
+
+değişken btnAnahtarKapat := uygulama.buton("anahtar.kapat()")
+btnAnahtarKapat.tıklandığında
+    tema.kapat()
+    temaYazı.değiştir("anahtar: kapalı")
+    bildir("anahtar · kapat()")
+son
+
+# ─── 14) radyo ──────────────────────────────────────────────────────
+bölüm("14 · radyo · ekle / seç / seçildiğinde")
+
+değişken boyutlar := ["Küçük", "Orta", "Büyük"]
+değişken boyutRadyo := uygulama.radyo(boyutlar)
+boyutRadyo.seç(1)
+
+değişken boyutYazı := uygulama.metin("radyo: Orta")
+
+boyutRadyo.seçildiğinde
+    boyutYazı.değiştir("radyo: " + boyutRadyo.seçili)
+    bildir("radyo · seçildiğinde → " + boyutRadyo.seçili)
+son
+
+değişken btnRadyoEkle := uygulama.buton("radyo.ekle(\"Çok büyük\")")
+btnRadyoEkle.tıklandığında
+    boyutRadyo.ekle("Çok büyük")
+    bildir("radyo · ekle()")
+son
+
+değişken btnRadyoSil := uygulama.buton("radyo.sil(Çok büyük)")
+btnRadyoSil.tıklandığında
+    boyutRadyo.sil("Çok büyük")
+    bildir("radyo · sil()")
+son
+
+değişken btnRadyoTemizle := uygulama.buton("radyo.temizle()")
+btnRadyoTemizle.tıklandığında
+    boyutRadyo.temizle()
+    boyutYazı.değiştir("radyo: -")
+    bildir("radyo · temizle()")
+son
+
+# ─── 15) dikeyDüzen ─────────────────────────────────────────────────
+bölüm("15 · dikeyDüzen · ekle / çıkar")
+
+değişken dikey := uygulama.dikeyDüzen()
+dikey.aralık := 6
+
+değişken dikey1 := uygulama.metin("dikeyDüzen · satır 1")
+değişken dikey2 := uygulama.metin("dikeyDüzen · satır 2")
+
+dikey.ekle(dikey1)
+dikey.ekle(dikey2)
+
+değişken btnDikeyÇıkar := uygulama.buton("dikeyDüzen.çıkar()")
+değişken btnDikeyEkle := uygulama.buton("dikeyDüzen.ekle()")
+değişken btnDikeyTemizle := uygulama.buton("dikeyDüzen.temizle()")
+
+btnDikeyÇıkar.tıklandığında
+    dikey.çıkar(dikey2)
+    bildir("dikeyDüzen · çıkar()")
+son
+
+btnDikeyEkle.tıklandığında
+    dikey.ekle(dikey2)
+    bildir("dikeyDüzen · ekle()")
+son
+
+btnDikeyTemizle.tıklandığında
+    dikey.temizle()
+    dikey.ekle(dikey1)
+    dikey.ekle(dikey2)
+    bildir("dikeyDüzen · temizle() + ekle() x2")
+son
+
+# ─── 16) yatayDüzen ─────────────────────────────────────────────────
+bölüm("16 · yatayDüzen · sarma / ekle")
+
+değişken yatay := uygulama.yatayDüzen()
+yatay.aralık := 6
+yatay.sarma := Doğru
+
+değişken yatay1 := uygulama.metin("yatay · A")
+değişken yatay2 := uygulama.metin("yatay · B")
+değişken yatay3 := uygulama.metin("yatay · C")
+değişken yatay4 := uygulama.metin("yatay · D")
+
+yatay.ekle(yatay1)
+yatay.ekle(yatay2)
+yatay.ekle(yatay3)
+yatay.ekle(yatay4)
+
+# ─── 17) gridDüzen ──────────────────────────────────────────────────
+bölüm("17 · gridDüzen · sütun / satır / ekle")
+
+değişken ızgara := uygulama.gridDüzen()
+ızgara.sütun := 3
+ızgara.aralık := 6
+
+değişken hücre1 := uygulama.metin("hücre 1")
+değişken hücre2 := uygulama.metin("hücre 2")
+değişken hücre3 := uygulama.metin("hücre 3")
+değişken hücre4 := uygulama.metin("hücre 4")
+değişken hücre5 := uygulama.metin("hücre 5")
+değişken hücre6 := uygulama.metin("hücre 6")
+
+ızgara.ekle(hücre1)
+ızgara.ekle(hücre2)
+ızgara.ekle(hücre3)
+ızgara.ekle(hücre4)
+ızgara.ekle(hücre5)
+ızgara.ekle(hücre6)
+
+# ─── 18) esnekAlan ──────────────────────────────────────────────────
+bölüm("18 · esnekAlan · büyüme")
+
+değişken esnekSatır := uygulama.yatayDüzen()
+esnekSatır.aralık := 6
+
+değişken esnekSol := uygulama.metin("sol")
+değişken esnek := uygulama.esnekAlan()
+esnek.büyüme := 1
+değişken esnekSağ := uygulama.metin("sağ")
+
+esnekSatır.ekle(esnekSol)
+esnekSatır.ekle(esnek)
+esnekSatır.ekle(esnekSağ)
+
+# ─── 19) özel ───────────────────────────────────────────────────────
+bölüm("19 · özel · html / css / değiştir / htmlEkle / stilEkle")
+
+değişken kart := uygulama.özel("<div class='kart'><h3>Özel HTML</h3><p>Shadow DOM içinde güvenli içerik</p></div>", ".kart{padding:10px;border:1px solid #45475a;border-radius:8px} .kart h3{margin:0 0 4px 0}")
+
+değişken özelSayaç := 0
+
+değişken btnÖzelEkle := uygulama.buton("özel.htmlEkle() + stilEkle()")
+değişken btnÖzelDeğiştir := uygulama.buton("özel.değiştir()")
+
+btnÖzelEkle.tıklandığında
+    özelSayaç := özelSayaç + 1
+    kart.htmlEkle("<p>ek parça " + özelSayaç + "</p>")
+    kart.stilEkle(".kart p{margin:2px 0;color:#a6e3a1}")
+    bildir("özel · htmlEkle() + stilEkle()")
+son
+
+btnÖzelDeğiştir.tıklandığında
+    kart.değiştir("<div class='kart'><h3>Sıfırlandı</h3><p>değiştir() çağrıldı</p></div>")
+    özelSayaç := 0
+    bildir("özel · değiştir()")
+son
+
+# ─── 20) canvas ─────────────────────────────────────────────────────
+bölüm("20 · canvas · arkaPlanDoldur / çizgi / dikdörtgen / daire / yay / yazı / görsel / temizle")
+
+değişken tuval := uygulama.canvas(360, 200)
+tuval.arkaPlanDoldur(renk.hex("#181825"))
+tuval.dikdörtgen(10, 10, 100, 60, renk.mor, Doğru)
+tuval.daire(180, 40, 28, renk.mavi, Doğru)
+tuval.çizgi(10, 88, 350, 88, renk.turkuaz, 3)
+tuval.yay(260, 40, 26, 0, 3.14, renk.sarı, 3)
+tuval.yazı("TürkUI canvas", 12, 108, 16, renk.beyaz)
+tuval.görsel(resim1, 190, 100, 120, 68)
+
+değişken btnTuvalTemizle := uygulama.buton("canvas.temizle()")
+değişken btnTuvalÇiz := uygulama.buton("canvas · yeniden çiz")
+
+btnTuvalTemizle.tıklandığında
+    tuval.temizle()
+    bildir("canvas · temizle()")
+son
+
+btnTuvalÇiz.tıklandığında
+    tuval.temizle()
+    tuval.arkaPlanDoldur(renk.hex("#181825"))
+    tuval.daire(90, 60, 40, renk.yeşil, Doğru)
+    tuval.dikdörtgen(150, 20, 180, 80, renk.turuncu, Doğru)
+    tuval.yazı("yeniden çizildi", 150, 110, 14, renk.beyaz)
+    tuval.görsel(resim2, 190, 130, 120, 60)
+    bildir("canvas · komutlar yeniden çalıştı")
+son
+
+# ─── 21) pencere işlevleri ────────────────────────────────────────
+bölüm("21 · pencere · gizle/göster · küçült/büyüt/normal · odaklan · stil · arka plan · kapat")
+
+değişken pencereSatır := uygulama.yatayDüzen()
+pencereSatır.aralık := 6
+pencereSatır.sarma := Doğru
+
+değişken btnPencereGizle := uygulama.buton("gizle() → 1 sn → göster()")
+değişken btnPencereKüçült := uygulama.buton("küçült()")
+değişken btnPencereBüyüt := uygulama.buton("büyüt()")
+değişken btnPencereNormal := uygulama.buton("normal()")
+değişken btnPencereOdak := uygulama.buton("odaklan()")
+değişken btnPencereStil := uygulama.buton("stil() / css()")
+değişken btnPencereArkaPlan := uygulama.buton("arka plan resmi (aç/kapa)")
+değişken btnPencereKapat := uygulama.buton("kapat()")
+
+pencereSatır.ekle(btnPencereGizle)
+pencereSatır.ekle(btnPencereKüçült)
+pencereSatır.ekle(btnPencereBüyüt)
+pencereSatır.ekle(btnPencereNormal)
+pencereSatır.ekle(btnPencereOdak)
+pencereSatır.ekle(btnPencereStil)
+pencereSatır.ekle(btnPencereArkaPlan)
+pencereSatır.ekle(btnPencereKapat)
+
+btnPencereGizle.tıklandığında
+    uygulama.gizle()
+    bekle(1000)
+    uygulama.göster()
+    bildir("pencere · gizle() + göster()")
+son
+
+btnPencereKüçült.tıklandığında
+    uygulama.küçült()
+    bildir("pencere · küçült()")
+son
+
+btnPencereBüyüt.tıklandığında
+    uygulama.büyüt()
+    bildir("pencere · büyüt()")
+son
+
+btnPencereNormal.tıklandığında
+    uygulama.normal()
+    bildir("pencere · normal()")
+son
+
+btnPencereOdak.tıklandığında
+    uygulama.odaklan()
+    bildir("pencere · odaklan()")
+son
+
+btnPencereStil.tıklandığında
+    uygulama.stil(".turkui-text { letter-spacing: 0.2px; }")
+    uygulama.css(".turkui-button { cursor: pointer; }")
+    bildir("pencere · stil() + css()")
+son
+
+değişken arkaPlanVar := Yanlış
+
+btnPencereArkaPlan.tıklandığında
+    eğer arkaPlanVar ise
+        uygulama.pencereArkaPlanResmi("")
+        arkaPlanVar := Yanlış
+    değilse
+        uygulama.arkaPlanResmiAyarla(resim2)
+        arkaPlanVar := Doğru
+    son
+    bildir("pencere · pencereArkaPlanResmi() → " + arkaPlanVar)
+son
+
+btnPencereKapat.tıklandığında
+    eğer TürkUI.onay("Pencere kapatılsın mı?") ise
+        uygulama.kapat()
+    son
+son
+
+# ─── bitiş ──────────────────────────────────────────────────────────
+değişken bitiş := uygulama.metin("20 nesne · 33 pencere üyesi · hazır")
+bitiş.hizalama := "center"
+bitiş.renk := renk.yeşil
+
+uygulama.göster()
+
+yazdır("TürkUI · tüm nesneler çalışıyor:")
+yazdır("  metin, buton, giriş, metinAlanı, kutu, liste, seçimKutusu,")
+yazdır("  görsel, ilerleme, onayKutusu, sekme, kaydırıcı, anahtar, radyo,")
+yazdır("  dikeyDüzen, yatayDüzen, gridDüzen, esnekAlan, özel, canvas")

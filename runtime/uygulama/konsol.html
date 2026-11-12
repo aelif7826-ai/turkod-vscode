@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>Konsol</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #11111b;
+      color: #cdd6f4;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 13px;
+    }
+    #cikti {
+      flex: 1;
+      margin: 0;
+      padding: 10px 12px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #satir {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-top: 1px solid #313244;
+      background: #181825;
+    }
+    #istem { color: #89b4fa; white-space: pre; }
+    #girdi {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #cdd6f4;
+      font: inherit;
+    }
+    #girdi::placeholder { color: #585b70; }
+  </style>
+</head>
+<body>
+  <pre id="cikti"></pre>
+  <form id="satir">
+    <span id="istem">&gt;</span>
+    <input id="girdi" autocomplete="off" spellcheck="false" />
+  </form>
+  <script>
+    const cikti = document.getElementById('cikti');
+    const girdi = document.getElementById('girdi');
+    const istem = document.getElementById('istem');
+    const satir = document.getElementById('satir');
+
+    satir.addEventListener('submit', (olay) => {
+      olay.preventDefault();
+      const deger = girdi.value;
+      girdi.value = '';
+      cikti.textContent += deger + '\n';
+      window.turkuiPencere.gonder('turkui:konsol-girdi', deger);
+      cikti.scrollTop = cikti.scrollHeight;
+      girdi.focus();
+    });
+
+    window.turkuiPencere.dinle('turkui:konsol-yazi', (metin) => {
+      cikti.textContent += String(metin || '');
+      cikti.scrollTop = cikti.scrollHeight;
+    });
+
+    window.turkuiPencere.dinle('turkui:konsol-soru', (soru) => {
+      cikti.textContent += String(soru || '');
+      cikti.scrollTop = cikti.scrollHeight;
+      girdi.focus();
+    });
+
+    window.addEventListener('load', () => girdi.focus());
+  </script>
+</body>
+</html>

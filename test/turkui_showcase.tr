@@ -1,0 +1,503 @@
+# ═══════════════════════════════════════════════════════════════
+# TÜRKUI MASAÜSTÜ UYGULAMA ŞOVU
+# TürkUI ile tam özellikli bir masaüstü grafik arayüzü
+# ═══════════════════════════════════════════════════════════════
+
+içe_aktar TürkUI
+
+# ─── ANA PENCERE ──────────────────────────────────────────────────
+
+değişken uygulama := TürkUI.pencere("🚀 TÜRKOD Studio - TürkUI Şovu")
+
+# Pencere özelliklerini ayarla
+uygulama.genişlik := 900
+uygulama.yükseklik := 700
+uygulama.minGenişlik := 600
+uygulama.minYükseklik := 400
+uygulama.arkaPlan := renk.hex("#1a1a2e")
+uygulama.şeffaflık := 0.98
+uygulama.merkezle()
+
+# ─── RENK PALETİ ──────────────────────────────────────────────────
+
+değişken renk1 := renk.kırmızı
+değişken renk2 := renk.mavi
+değişken renk3 := renk.yeşil
+değişken renk4 := renk.sarı
+değişken renk5 := renk.turuncu
+değişken renk6 := renk.mor
+değişken renk7 := renk.pembe
+değişken renk8 := renk.turkuaz
+
+# Özel RGB renkler
+değişken arkaPlanKoyu := renk.rgb(26, 26, 46)
+değişken arkaPlanAçık := renk.rgba(100, 100, 200, 0.3)
+değişken özelRenk := renk.hex("#e8a838")
+
+# ─── BAŞLIK BÖLÜMÜ ────────────────────────────────────────────────
+
+değişken başlık := uygulama.metin("🎨 TÜRKUI MASAÜSTÜ ŞOV")
+başlık.renk := renk.turkuaz
+başlık.yazıBoyutu := 32
+başlık.kalın := Doğru
+başlık.hizalama := "center"
+başlık.genişlik := 800
+
+değişken altBaşlık := uygulama.metin("TürkUI ile oluşturulmuş kapsamlı masaüstü grafik arayüzü")
+altBaşlık.renk := renk.gri
+altBaşlık.yazıBoyutu := 14
+altBaşlık.hizalama := "center"
+altBaşlık.genişlik := 800
+
+değişken bilgiMetin := uygulama.metin("TürkUI | TURKOD Studio v1.0")
+bilgiMetin.renk := renk.beyaz
+bilgiMetin.yazıBoyutu := 12
+bilgiMetin.italik := Doğru
+bilgiMetin.hizalama := "center"
+bilgiMetin.genişlik := 800
+
+# ─── BUTONLAR ──────────────────────────────────────────────────────
+
+değişken btnKirmizi := uygulama.buton("🔴 Kırmızı")
+btnKirmizi.arkaPlan := renk.kırmızı
+btnKirmizi.renk := renk.beyaz
+btnKirmizi.yuvarlaklık := 8
+btnKirmizi.genişlik := 120
+btnKirmizi.yükseklik := 40
+
+değişken btnMavi := uygulama.buton("🔵 Mavi")
+btnMavi.arkaPlan := renk.mavi
+btnMavi.renk := renk.beyaz
+btnMavi.yuvarlaklık := 8
+btnMavi.genişlik := 120
+btnMavi.yükseklik := 40
+
+değişken btnYesil := uygulama.buton("🟢 Yeşil")
+btnYesil.arkaPlan := renk.yeşil
+btnYesil.renk := renk.beyaz
+btnYesil.yuvarlaklık := 8
+btnYesil.genişlik := 120
+btnYesil.yükseklik := 40
+
+değişken btnMor := uygulama.buton("🟣 Mor")
+btnMor.arkaPlan := renk.mor
+btnMor.renk := renk.beyaz
+btnMor.yuvarlaklık := 8
+btnMor.genişlik := 120
+btnMor.yükseklik := 40
+
+değişken btnTemizle := uygulama.buton("🗑 Temizle")
+btnTemizle.arkaPlan := renk.gri
+btnTemizle.renk := renk.beyaz
+btnTemizle.yuvarlaklık := 8
+btnTemizle.genişlik := 120
+btnTemizle.yükseklik := 40
+
+değişken btnOzel := uygulama.buton("✨ Özel Renk")
+btnOzel.arkaPlan := özelRenk
+btnOzel.renk := renk.siyah
+btnOzel.yuvarlaklık := 8
+btnOzel.genişlik := 120
+btnOzel.yükseklik := 40
+btnOzel.kalın := Doğru
+
+# ─── GİRİŞ KUTUSU ──────────────────────────────────────────────────
+
+değişken girisEtiket := uygulama.metin("📝 Mesaj Girin:")
+girisEtiket.renk := renk.beyaz
+girisEtiket.yazıBoyutu := 16
+girisEtiket.kalın := Doğru
+
+değişken giris := uygulama.giriş("Buraya mesaj yazın...")
+giris.genişlik := 400
+giris.renk := renk.beyaz
+giris.arkaPlan := renk.rgb(40, 40, 60)
+giris.yazıBoyutu := 14
+
+değişken girisCikti := uygulama.metin("Mesaj bekleniyor...")
+girisCikti.renk := renk.gri
+girisCikti.yazıBoyutu := 18
+girisCikti.kalın := Doğru
+
+# ─── İLERLEME ÇUBUĞU ──────────────────────────────────────────────
+
+değişken barEtiket := uygulama.metin("📊 İlerleme Durumu:")
+barEtiket.renk := renk.beyaz
+barEtiket.yazıBoyutu := 16
+barEtiket.kalın := Doğru
+
+değişken ilerleme := uygulama.ilerleme()
+ilerleme.genişlik := 400
+ilerleme.renk := renk.turkuaz
+ilerleme.arkaPlan := renk.rgb(40, 40, 60)
+ilerleme.minimum := 0
+ilerleme.maksimum := 100
+ilerleme.değer := 50
+
+değişken barDeger := uygulama.metin("%50")
+barDeger.renk := renk.turkuaz
+barDeger.yazıBoyutu := 14
+
+değişken btnArtir := uygulama.buton("➕ %10 Artır")
+btnArtir.arkaPlan := renk.yeşil
+btnArtir.renk := renk.beyaz
+btnArtir.yuvarlaklık := 6
+
+değişken btnAzalt := uygulama.buton("➖ %10 Azalt")
+btnAzalt.arkaPlan := renk.kırmızı
+btnAzalt.renk := renk.beyaz
+btnAzalt.yuvarlaklık := 6
+
+değişken btnSifirla := uygulama.buton("🔄 Sıfırla")
+btnSifirla.arkaPlan := renk.mor
+btnSifirla.renk := renk.beyaz
+btnSifirla.yuvarlaklık := 6
+
+# ─── LİSTE ─────────────────────────────────────────────────────────
+
+değişken listeEtiket := uygulama.metin("📋 Şehir Listesi:")
+listeEtiket.renk := renk.beyaz
+listeEtiket.yazıBoyutu := 16
+listeEtiket.kalın := Doğru
+
+değişken liste := uygulama.liste()
+liste.genişlik := 250
+liste.yükseklik := 180
+liste.arkaPlan := renk.rgb(40, 40, 60)
+liste.renk := renk.beyaz
+
+liste.ekle("İstanbul")
+liste.ekle("Ankara")
+liste.ekle("İzmir")
+liste.ekle("Bursa")
+liste.ekle("Antalya")
+liste.ekle("Adana")
+liste.ekle("Konya")
+liste.ekle("Gaziantep")
+
+değişken listeCikti := uygulama.metin("Hiçbir şehir seçilmedi")
+listeCikti.renk := renk.gri
+listeCikti.yazıBoyutu := 14
+
+# ─── ONAY KUTUSU ──────────────────────────────────────────────────
+
+değişken onay := uygulama.onayKutusu("✅ TürkUI'yi beğendim, kullanmaya devam edeceğim")
+onay.renk := renk.beyaz
+
+değişken onayDurum := uygulama.metin("Onay bekleniyor...")
+onayDurum.renk := renk.gri
+onayDurum.yazıBoyutu := 14
+
+# ─── SEÇİM KUTUSU ─────────────────────────────────────────────────
+
+değişken secimEtiket := uygulama.metin("📑 Favori Programlama Dili:")
+secimEtiket.renk := renk.beyaz
+secimEtiket.yazıBoyutu := 16
+secimEtiket.kalın := Doğru
+
+değişken secim := uygulama.seçimKutusu()
+secim.ekle("TÜRKOD")
+secim.ekle("Python")
+secim.ekle("JavaScript")
+secim.ekle("TypeScript")
+secim.ekle("C#")
+secim.ekle("C++")
+secim.ekle("Rust")
+secim.ekle("Go")
+
+değişken secimCikti := uygulama.metin("Henüz seçim yapılmadı")
+secimCikti.renk := renk.gri
+secimCikti.yazıBoyutu := 16
+secimCikti.kalın := Doğru
+
+# ─── SEKMELER ─────────────────────────────────────────────────────
+
+değişken sekmeEtiket := uygulama.metin("📑 Bilgi Sekmeleri:")
+sekmeEtiket.renk := renk.beyaz
+sekmeEtiket.yazıBoyutu := 16
+sekmeEtiket.kalın := Doğru
+
+değişken sekmeler := uygulama.sekme()
+sekmeler.ekle("Ana Sayfa")
+sekmeler.ekle("Hakkında")
+sekmeler.ekle("İletişim")
+sekmeler.ekle("Sürüm Notları")
+
+değişken sekmeBilgi := uygulama.metin("Ana Sayfa sekmesi aktif. Hoş geldiniz!")
+sekmeBilgi.renk := renk.turkuaz
+sekmeBilgi.yazıBoyutu := 14
+sekmeBilgi.italik := Doğru
+
+# ─── SAYAÇ ─────────────────────────────────────────────────────────
+
+değişken sayacEtiket := uygulama.metin("🔢 Sayaç:")
+sayacEtiket.renk := renk.beyaz
+sayacEtiket.yazıBoyutu := 16
+sayacEtiket.kalın := Doğru
+
+değişken sayi := 0
+değişken sayacDeger := uygulama.metin("0")
+sayacDeger.renk := renk.sarı
+sayacDeger.yazıBoyutu := 36
+sayacDeger.kalın := Doğru
+
+değişken btnSayacArtir := uygulama.buton("+1")
+btnSayacArtir.arkaPlan := renk.yeşil
+btnSayacArtir.renk := renk.beyaz
+btnSayacArtir.yuvarlaklık := 6
+btnSayacArtir.genişlik := 60
+
+değişken btnSayacAzalt := uygulama.buton("-1")
+btnSayacAzalt.arkaPlan := renk.kırmızı
+btnSayacAzalt.renk := renk.beyaz
+btnSayacAzalt.yuvarlaklık := 6
+btnSayacAzalt.genişlik := 60
+
+değişken btnSayacSifirla := uygulama.buton("0")
+btnSayacSifirla.arkaPlan := renk.mor
+btnSayacSifirla.renk := renk.beyaz
+btnSayacSifirla.yuvarlaklık := 6
+btnSayacSifirla.genişlik := 60
+
+# ─── OLAYLAR ──────────────────────────────────────────────────────
+
+# Renk butonları - arka planı değiştir
+btnKirmizi.tıklandığında
+    uygulama.arkaPlan := renk.rgb(40, 10, 10)
+    girisCikti.değiştir("🔴 Kırmızı tema uygulandı!")
+    girisCikti.renk := renk.kırmızı
+son
+
+btnMavi.tıklandığında
+    uygulama.arkaPlan := renk.rgb(10, 10, 40)
+    girisCikti.değiştir("🔵 Mavi tema uygulandı!")
+    girisCikti.renk := renk.mavi
+son
+
+btnYesil.tıklandığında
+    uygulama.arkaPlan := renk.rgb(10, 40, 10)
+    girisCikti.değiştir("🟢 Yeşil tema uygulandı!")
+    girisCikti.renk := renk.yeşil
+son
+
+btnMor.tıklandığında
+    uygulama.arkaPlan := renk.rgb(30, 10, 40)
+    girisCikti.değiştir("🟣 Mor tema uygulandı!")
+    girisCikti.renk := renk.mor
+son
+
+btnOzel.tıklandığında
+    uygulama.arkaPlan := arkaPlanKoyu
+    girisCikti.değiştir("✨ Varsayılan temaya dönüldü!")
+    girisCikti.renk := özelRenk
+son
+
+btnTemizle.tıklandığında
+    girisCikti.değiştir("Temizlendi!")
+    girisCikti.renk := renk.gri
+    giris.temizle()
+    giris.odaklan()
+son
+
+# Giriş kutusu olayları
+giris.değiştiğinde
+    değişken deger := giris.değer
+    eğer deger != "" ise
+        girisCikti.değiştir("✏️ " + deger)
+        girisCikti.renk := renk.beyaz
+    değilse
+        girisCikti.değiştir("Mesaj bekleniyor...")
+        girisCikti.renk := renk.gri
+    son
+son
+
+giris.enterBasılınca
+    yazdır("📨 Gönderilen mesaj:", giris.değer)
+    girisCikti.değiştir("📨 Gönderildi: " + giris.değer)
+    girisCikti.renk := renk.yeşil
+son
+
+# İlerleme çubuğu olayları
+btnArtir.tıklandığında
+    ilerleme.artır(10)
+    barDeger.değiştir("%" + ilerleme.değer)
+    eğer ilerleme.değer >= 80 ise
+        barDeger.renk := renk.yeşil
+    değilse
+        eğer ilerleme.değer >= 50 ise
+            barDeger.renk := renk.sarı
+        değilse
+            barDeger.renk := renk.turuncu
+        son
+    son
+son
+
+btnAzalt.tıklandığında
+    ilerleme.azalt(10)
+    barDeger.değiştir("%" + ilerleme.değer)
+    eğer ilerleme.değer >= 80 ise
+        barDeger.renk := renk.yeşil
+    değilse
+        eğer ilerleme.değer >= 50 ise
+            barDeger.renk := renk.sarı
+        değilse
+            barDeger.renk := renk.turuncu
+        son
+    son
+son
+
+btnSifirla.tıklandığında
+    ilerleme.sıfırla()
+    barDeger.değiştir("%0")
+    barDeger.renk := renk.turuncu
+son
+
+# Liste olayı
+liste.seçildiğinde
+    listeCikti.değiştir("📍 Seçilen şehir: " + liste.seçili)
+    listeCikti.renk := renk.turkuaz
+    yazdır("📍 Şehir seçildi:", liste.seçili)
+son
+
+# Onay kutusu olayı
+onay.değiştiğinde
+    eğer onay.seçili ise
+        onayDurum.değiştir("✅ Onaylandı! Teşekkürler!")
+        onayDurum.renk := renk.yeşil
+    değilse
+        onayDurum.değiştir("❌ Onay kaldırıldı")
+        onayDurum.renk := renk.kırmızı
+    son
+son
+
+# Seçim kutusu olayı
+secim.seçildiğinde
+    secimCikti.değiştir("⭐ " + secim.seçili + " harika bir seçim!")
+    secimCikti.renk := renk.turkuaz
+    yazdır("⭐ Seçilen dil:", secim.seçili)
+son
+
+# Sekme olayları
+sekmeler.değiştiğinde
+    eğer sekmeler.seçili == "Ana Sayfa" ise
+        sekmeBilgi.değiştir("🏠 Ana Sayfa - TürkUI şovuna hoş geldiniz!")
+        sekmeBilgi.renk := renk.turkuaz
+    değilse
+        eğer sekmeler.seçili == "Hakkında" ise
+            sekmeBilgi.değiştir("ℹ️ TürkUI - TURKOD için masaüstü grafik arayüz modülü")
+            sekmeBilgi.renk := renk.mavi
+        değilse
+            eğer sekmeler.seçili == "İletişim" ise
+                sekmeBilgi.değiştir("📧 İletişim: info@turkod.dev")
+                sekmeBilgi.renk := renk.sarı
+            değilse
+                sekmeBilgi.değiştir("📦 Sürüm 1.0.0 - TürkUI kararlı sürüm")
+                sekmeBilgi.renk := renk.yeşil
+            son
+        son
+    son
+    yazdır("📑 Sekme değişti:", sekmeler.seçili)
+son
+
+# Sayaç olayları
+btnSayacArtir.tıklandığında
+    sayi := sayi + 1
+    sayacDeger.değiştir(sayi)
+    eğer sayi > 0 ise
+        sayacDeger.renk := renk.yeşil
+    son
+son
+
+btnSayacAzalt.tıklandığında
+    sayi := sayi - 1
+    sayacDeger.değiştir(sayi)
+    eğer sayi < 0 ise
+        sayacDeger.renk := renk.kırmızı
+    değilse
+        eğer sayi == 0 ise
+            sayacDeger.renk := renk.sarı
+        son
+    son
+son
+
+btnSayacSifirla.tıklandığında
+    sayi := 0
+    sayacDeger.değiştir("0")
+    sayacDeger.renk := renk.sarı
+son
+
+# Buton üzerine gelme/çıkma olayları (örnek)
+btnKirmizi.üzerineGelindiğinde
+    btnKirmizi.genişlik := 140
+son
+
+btnKirmizi.üzerindenÇıkıldığında
+    btnKirmizi.genişlik := 120
+son
+
+btnMavi.üzerineGelindiğinde
+    btnMavi.genişlik := 140
+son
+
+btnMavi.üzerindenÇıkıldığında
+    btnMavi.genişlik := 120
+son
+
+# ─── ÖZEL HTML/CSS BİLEŞENİ ──────────────────────────────────────
+
+değişken özelKart := uygulama.özel("<div class='kart'><h3>Özel HTML</h3><p>Shadow DOM içinde güvenli HTML/CSS</p></div>", ".kart { padding: 16px; border-radius: 12px; background: linear-gradient(135deg, #313244, #45475a); color: #cdd6f4; } .kart h3 { margin-bottom: 6px; color: #89b4fa; }")
+özelKart.sınıf := "ozel-kart"
+özelKart.stil := "margin-top: 8px;"
+
+# ─── CANVAS ÇİZİM TUVALİ ─────────────────────────────────────────
+
+değişken tuval := uygulama.canvas(480, 220)
+tuval.arkaPlanDoldur(renk.hex("#181825"))
+tuval.daire(80, 110, 55, renk.mavi, Doğru)
+tuval.daire(80, 110, 25, arkaPlanKoyu, Doğru)
+tuval.çizgi(160, 55, 440, 55, renk.turkuaz, 3)
+tuval.çizgi(160, 165, 440, 165, renk.turuncu, 3)
+tuval.yazı("TürkUI Canvas", 170, 95, 22, renk.beyaz)
+
+# ─── PENCERE DÜZEYİ STİL ─────────────────────────────────────────
+
+uygulama.stil(".ozel-kart { transition: transform 0.2s ease; } .ozel-kart:hover { transform: translateY(-2px); }")
+
+# ─── ÇIKTI PANELİ ─────────────────────────────────────────────────
+
+yazdır("═══════════════════════════════════════")
+yazdır("  🚀 TÜRKUI MASAÜSTÜ UYGULAMA ŞOVU")
+yazdır("═══════════════════════════════════════")
+yazdır("  Tarih:", "TürkUI")
+yazdır("  Saat:", "VS Code")
+yazdır("═══════════════════════════════════════")
+yazdır("  Kullanılan bileşenler:")
+yazdır("  ✅ Pencere + Özellikler")
+yazdır("  ✅ Metin (Label)")
+yazdır("  ✅ Butonlar + Renklendirme")
+yazdır("  ✅ Giriş Kutusu + Olaylar")
+yazdır("  ✅ İlerleme Çubuğu")
+yazdır("  ✅ Liste + Seçim")
+yazdır("  ✅ Onay Kutusu")
+yazdır("  ✅ Seçim Kutusu (Combo Box)")
+yazdır("  ✅ Sekme Sistemi")
+yazdır("  ✅ Sayaç")
+yazdır("  ✅ Renk Sistemi (RGB/RGBA/Hex)")
+yazdır("  ✅ Olaylar (tıklandı/basıldı/üzerineGelindi)")
+yazdır("  ✅ Özel HTML/CSS Bileşeni")
+yazdır("  ✅ Canvas Çizim API'si")
+yazdır("  ✅ Sınıf/Stil Desteği")
+yazdır("═══════════════════════════════════════")
+yazdır("  Pencereyi kapatınca program sonlanır.")
+yazdır("═══════════════════════════════════════")
+
+# ─── PENCEREYİ GÖSTER ─────────────────────────────────────────────
+
+uygulama.göster()
+
+# ─── PROGRAM SONU ──────────────────────────────────────────────────
+
+yazdır("───────────────────────────────────────")
+yazdır("  ✅ Program başarıyla tamamlandı!")
+yazdır("  TürkUI şovu sona erdi.")
+yazdır("───────────────────────────────────────")

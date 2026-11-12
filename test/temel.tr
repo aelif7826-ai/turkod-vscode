@@ -1,0 +1,67 @@
+# Temel özellikler
+değişken ad := "Metehan"
+değişken yas := 30
+OndalıklıDeğişken pi := 3,14
+yazdır("Merhaba", ad, yas, pi)
+yazdır(büyükHarf("merhaba dünya"), "|", küçükHarf("MERHABA"))
+
+eğer yas >= 18 ise
+	yazdır("Yetişkin")
+değilse
+	yazdır("Çocuk")
+son
+
+döngü 3 kez
+	yazdır("tekrar")
+
+son
+
+değişken toplam := 0
+döngü 1 kez
+	toplam := 10
+son
+SonsuzDöngü toplam > 0 ise
+	toplam := toplam - 3
+	yazdır("toplam:", toplam)
+son
+
+fonksiyon topla(a, b)
+	geri_döndür a + b
+son
+yazdır("topla:", topla(3, 4))
+
+değişken liste := [3, 1, 2]
+liste.ekle(5)
+yazdır("liste:", liste, "uzunluk:", uzunluk(liste))
+yazdır("sıralı:", liste.sırala())
+yazdır("ilk:", liste.ilk_eleman(), "son:", liste.son_eleman())
+
+için x içinde [1, 2, 3]
+	yazdır("eleman", x)
+son
+
+değişken kisi := {"ad": "Ali", "yas": 25}
+yazdır("sözlük:", kisi, kisi["ad"])
+kisi["yas"] := 26
+yazdır("yaş:", kisi.yas)
+
+değişken s := "merhaba dünya"
+yazdır("böl:", böl(s, " "), "içeriyor:", içeriyor(s, "dünya"), "uzunluk:", s.uzunluk)
+yazdır("birleştir:", birleştir(["a", "b"], "-"))
+yazdır("json:", jsonKodla(kisi))
+yazdır("karekök:", karekök(16), "yuvarla:", yuvarla(2.7))
+
+dene
+	hataFırlat("bir sorun oldu")
+yakala h
+	yazdır("yakalandı:", h)
+son
+
+nesne Kisi
+	değişken ad := "Varsayılan"
+	fonksiyon selamla()
+		geri_döndür "Selam " + ad
+	son
+son
+değişken k := Kisi()
+yazdır("nesne:", k, k.selamla())

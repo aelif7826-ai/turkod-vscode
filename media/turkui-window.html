@@ -1,0 +1,2894 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data: blob: https: http:; media-src data: blob: https: http: file:; script-src 'nonce-__TURKUI_NONCE__'; frame-src 'self' data: blob: file: https: http: about:; child-src 'self' data: blob: file: https: http: about:;">
+  <title>TürkUI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #turkui-root {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    /* Metin */
+    .turkui-text {
+      font-size: 15px;
+      color: #cdd6f4;
+      line-height: 1.5;
+    }
+
+    /* Buton */
+    .turkui-button {
+      padding: 10px 20px;
+      background: #89b4fa;
+      color: #1e1e2e;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+      align-self: flex-start;
+    }
+    .turkui-button:hover { filter: brightness(1.1); }
+    .turkui-button:active { filter: brightness(0.9); }
+    .turkui-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Giriş */
+    .turkui-input {
+      padding: 10px 14px;
+      background: #313244;
+      color: #cdd6f4;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+      max-width: 320px;
+    }
+    .turkui-input:focus { border-color: #89b4fa; }
+
+    /* Kutu */
+    .turkui-box {
+      background: transparent;
+      border: 1px solid #45475a;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+
+    /* Liste */
+    .turkui-list {
+      background: #313244;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      overflow: hidden;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .turkui-list-item {
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background 0.1s;
+      font-size: 13px;
+      color: #cdd6f4;
+      border-bottom: 1px solid #45475a;
+    }
+    .turkui-list-item:last-child { border-bottom: none; }
+    .turkui-list-item:hover { background: #45475a; }
+    .turkui-list-item.selected { background: #89b4fa; color: #1e1e2e; }
+
+    /* Görsel */
+    .turkui-image {
+      max-width: 100%;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+    .turkui-image.cover { object-fit: cover; }
+
+    /* İlerleme Çubuğu */
+    .turkui-progress-wrap {
+      width: 100%;
+      max-width: 320px;
+      background: #313244;
+      border-radius: 6px;
+      overflow: hidden;
+      height: 20px;
+    }
+    .turkui-progress-fill {
+      height: 100%;
+      background: #89b4fa;
+      border-radius: 6px;
+      transition: width 0.2s;
+    }
+
+    /* Onay Kutusu */
+    .turkui-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+    .turkui-checkbox-box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #45475a;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .turkui-checkbox-box.checked {
+      background: #89b4fa;
+      border-color: #89b4fa;
+    }
+    .turkui-checkbox-box.checked::after {
+      content: '✓';
+      color: #1e1e2e;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .turkui-checkbox-label {
+      font-size: 13px;
+      color: #cdd6f4;
+    }
+
+    /* Seçim Kutusu */
+    .turkui-combo {
+      padding: 8px 12px;
+      background: #313244;
+      color: #cdd6f4;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      width: 100%;
+      max-width: 320px;
+      cursor: pointer;
+    }
+    .turkui-combo:focus { border-color: #89b4fa; }
+
+    /* Sekme */
+    .turkui-tab-bar {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid #45475a;
+    }
+    .turkui-tab-item {
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #6c7086;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .turkui-tab-item:hover { color: #cdd6f4; }
+    .turkui-tab-item.active { color: #89b4fa; border-bottom-color: #89b4fa; }
+
+    /* Metin Alanı */
+    .turkui-textarea {
+      padding: 10px 14px; background: #313244; color: #cdd6f4;
+      border: 1px solid #45475a; border-radius: 6px; font-size: 14px;
+      outline: none; width: 100%; max-width: 320px; resize: vertical;
+      font-family: inherit; line-height: 1.5;
+    }
+    .turkui-textarea:focus { border-color: #89b4fa; }
+
+    /* Kaydırıcı */
+    .turkui-slider { width: 100%; max-width: 320px; accent-color: #89b4fa; display: block; }
+    .turkui-slider.dikey { writing-mode: vertical-lr; direction: rtl; min-height: 150px; width: auto; }
+
+    /* Anahtar */
+    .turkui-switch { display: flex; align-items: center; gap: 10px; cursor: pointer; align-self: flex-start; }
+    .turkui-switch-track { width: 44px; height: 24px; background: #45475a; border-radius: 12px; position: relative; transition: background 0.15s; flex-shrink: 0; }
+    .turkui-switch-track.on { background: #89b4fa; }
+    .turkui-switch-thumb { width: 18px; height: 18px; background: #cdd6f4; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: left 0.15s; }
+    .turkui-switch-track.on .turkui-switch-thumb { left: 23px; }
+    .turkui-switch-label { font-size: 13px; color: #cdd6f4; }
+
+    /* Radyo Grubu */
+    .turkui-radio-group { display: flex; flex-direction: column; gap: 6px; align-self: flex-start; }
+    .turkui-radio-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .turkui-radio-dot { width: 16px; height: 16px; border: 2px solid #45475a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.15s; }
+    .turkui-radio-item.selected .turkui-radio-dot { border-color: #89b4fa; }
+    .turkui-radio-item.selected .turkui-radio-dot::after { content: ''; width: 8px; height: 8px; background: #89b4fa; border-radius: 50%; }
+    .turkui-radio-label { font-size: 13px; color: #cdd6f4; }
+
+    /* Düzenler */
+    /*
+     * Düzenler içeriğine göre yer kaplar (`flex-basis: auto`) ve
+     * `min-height: auto` sayesinde içerik sıkıştırılıp komşusunun üstüne
+     * binmez. Yer varsa `flex-grow: 1` ile boşluğu doldurur.
+     */
+    .turkui-layout-dikey {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1 1 auto;
+      min-height: auto;
+      min-width: 0;
+      position: relative;
+    }
+    .turkui-layout-yatay {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      flex-wrap: nowrap;
+      flex: 1 1 auto;
+      min-height: auto;
+      min-width: 0;
+      position: relative;
+    }
+    .turkui-layout-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+      flex: 1 1 auto;
+      min-height: auto;
+      min-width: 0;
+      position: relative;
+    }
+
+    /* Layout içindeki butonlar çapraz eksende esneyebilsin */
+    .turkui-layout-dikey > .turkui-button,
+    .turkui-layout-yatay > .turkui-button { align-self: auto; }
+
+    /* Esnek alan: kalan boşluğu otomatik doldurur (flex: 1) */
+    .turkui-spacer {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    /* Serbest HTML/CSS bileşeni ve canvas */
+    .turkui-ozel {
+      display: block;
+      min-width: 0;
+      min-height: 0;
+    }
+    .turkui-canvas {
+      display: block;
+      max-width: 100%;
+      border-radius: 6px;
+      touch-action: none;
+    }
+
+    /* Gömülü web tarayıcı */
+    .turkui-webbrowser {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      min-height: 120px;
+      overflow: hidden;
+      background: #ffffff;
+      border-radius: 6px;
+      display: block;
+    }
+    .turkui-webbrowser > iframe,
+    .turkui-webbrowser > webview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #ffffff;
+    }
+    .turkui-webbrowser > webview {
+      /* Electron webview kendi konumlandırmasını ister. */
+      display: flex;
+    }
+
+    /* ─── Faz 3: açılış animasyonları ─────────────────────────────── */
+    @keyframes turkuiSolma { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes turkuiKayma { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    @keyframes turkuiBuyume { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+    #turkui-root.anim-solma { animation: turkuiSolma 0.28s ease-out; }
+    #turkui-root.anim-kayma { animation: turkuiKayma 0.32s ease-out; }
+    #turkui-root.anim-buyume { animation: turkuiBuyume 0.28s ease-out; }
+
+    /* ─── Faz 3: arka plan resmi ───────────────────────────────────── */
+    body.arka-plan-resimli {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* ─── Faz 3: özel başlık çubuğu (çerçevesiz pencereler) ────────── */
+    #turkui-baslik-cubugu { display: none; }
+    .turkui-tb-sol { display: flex; align-items: center; gap: 8px; }
+    #turkui-baslik-logo {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      border-radius: 4px;
+      display: none;
+    }
+    body.baslik-cubuklu { padding: 0; }
+    body.baslik-cubuklu #turkui-root { padding: 20px; }
+    body.baslik-cubuklu #turkui-baslik-cubugu {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 34px;
+      padding: 0 6px 0 12px;
+      background: #181825;
+      color: #cdd6f4;
+      font-size: 13px;
+      -webkit-app-region: drag;
+      user-select: none;
+      flex: 0 0 auto;
+    }
+    .turkui-tb-dugme {
+      -webkit-app-region: no-drag;
+      width: 34px;
+      height: 26px;
+      border: none;
+      background: transparent;
+      color: #cdd6f4;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .turkui-tb-dugme:hover { background: #313244; }
+    .turkui-tb-kapat:hover { background: #f38ba8; color: #1e1e2e; }
+
+    /* Gizli */
+    .turkui-hidden { display: none !important; }
+
+    /* ── Ses bileşeni ────────────────────────────────────────────────── */
+    .turkui-audio { display: none; }
+    .turkui-audio.kontrollu { display: block; width: 100%; }
+
+    /* ── Tablo bileşeni ──────────────────────────────────────────────── */
+    .turkui-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+      color: #cdd6f4;
+      background: #1e1e2e;
+    }
+    .turkui-table th,
+    .turkui-table td {
+      border: 1px solid #45475a;
+      padding: 6px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .turkui-table th { background: #313244; font-weight: 600; }
+    .turkui-table tbody tr { cursor: default; }
+    .turkui-table tbody tr.seritli { background: rgba(255, 255, 255, 0.03); }
+    .turkui-table tbody tr.secilmis { background: rgba(137, 180, 250, 0.22); }
+
+    /* ── Modal (katman) bileşeni ─────────────────────────────────────── */
+    .turkui-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 900;
+    }
+    .turkui-modal-kart {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      max-width: 92vw;
+      max-height: 88vh;
+      overflow: auto;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border: 1px solid #45475a;
+      border-radius: 12px;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    }
+    .turkui-modal-ustsatir {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .turkui-modal-baslik { font-size: 15px; font-weight: 600; }
+    .turkui-modal-kapat {
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: #a6adc8;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .turkui-modal-kapat:hover { background: #313244; color: #f38ba8; }
+  </style>
+</head>
+<body>
+  <!-- Faz 3: çerçevesiz pencereler için özel başlık çubuğu (isteğe bağlı) -->
+  <div id="turkui-baslik-cubugu">
+    <div class="turkui-tb-sol">
+      <img id="turkui-baslik-logo" alt="" />
+      <span id="turkui-baslik-yazi">TürkUI</span>
+    </div>
+    <div>
+      <button class="turkui-tb-dugme" id="turkui-tb-kucult" title="Küçült">─</button>
+      <button class="turkui-tb-dugme" id="turkui-tb-buyut" title="Büyüt">□</button>
+      <button class="turkui-tb-dugme turkui-tb-kapat" id="turkui-tb-kapat" title="Kapat">✕</button>
+    </div>
+  </div>
+  <div id="turkui-root"></div>
+  <script nonce="__TURKUI_NONCE__">
+    // Electron `ipcRenderer` yerine VS Code webview köprüsü.
+    // Gelen/giden mesajlar `{ channel, data }` zarfıyla taşınır.
+    const vscodeApi = acquireVsCodeApi();
+    const ipcRenderer = {
+      send(channel, data) {
+        vscodeApi.postMessage({ channel, data });
+      },
+      on(channel, listener) {
+        window.addEventListener('message', (event) => {
+          const message = event.data;
+          if (!message || message.channel !== channel) return;
+          listener({}, message.data);
+        });
+      },
+    };
+    const root = document.getElementById('turkui-root');
+    const components = {};
+    // Betik çalıştırırken kullanılacak CSP nonce'u (sayfa yüklenirken yakalanır).
+    const SAYFA_NONCE = (document.currentScript && document.currentScript.nonce) || '';
+
+    // ─── Faz 3: açılış animasyonu ────────────────────────────────────────
+    // animasyonAd: 'solma' | 'kayma' | 'büyüme' | 'yok' | ''
+    function acilisAnimasyonuUygula(animasyonAd) {
+      const siniflar = ['anim-solma', 'anim-kayma', 'anim-buyume'];
+      for (const s of siniflar) root.classList.remove(s);
+      const ad = String(animasyonAd || '').toLowerCase();
+      let sinif = '';
+      if (ad === 'solma') sinif = 'anim-solma';
+      else if (ad === 'kayma') sinif = 'anim-kayma';
+      else if (ad === 'büyüme' || ad === 'buyume' || ad === 'buyüme' || ad === 'büyume') sinif = 'anim-buyume';
+      if (!sinif) return;
+      void root.offsetWidth; // animasyonu yeniden başlat
+      root.classList.add(sinif);
+    }
+
+    // ─── Faz 3: özel başlık çubuğu düğmeleri ─────────────────────────────
+    const tbKucult = document.getElementById('turkui-tb-kucult');
+    const tbBuyut = document.getElementById('turkui-tb-buyut');
+    const tbKapat = document.getElementById('turkui-tb-kapat');
+    if (tbKucult) tbKucult.addEventListener('click', () => ipcRenderer.send('turkui:windowMinimize'));
+    if (tbBuyut) tbBuyut.addEventListener('click', () => ipcRenderer.send('turkui:windowMaximize'));
+    if (tbKapat) tbKapat.addEventListener('click', () => ipcRenderer.send('turkui:windowClose'));
+
+    function setVisibleState(el, visible, transitionS) {
+      clearTimeout(el._turkuiHideTimeout);
+      if (visible) {
+        el.classList.remove('turkui-hidden');
+        if (transitionS > 0 && el.isConnected) {
+          el.style.transition = 'opacity ' + transitionS + 's ease';
+          el.style.opacity = '0';
+          void el.offsetWidth;
+          el.style.opacity = '1';
+        } else {
+          el.style.transition = '';
+          el.style.opacity = '';
+        }
+        return;
+      }
+      if (transitionS > 0 && el.isConnected) {
+        const onEnd = () => {
+          el.classList.add('turkui-hidden');
+          el.removeEventListener('transitionend', onEnd);
+        };
+        el.addEventListener('transitionend', onEnd);
+        el.style.transition = 'opacity ' + transitionS + 's ease';
+        el.style.opacity = '0';
+        el._turkuiHideTimeout = setTimeout(() => {
+          el.classList.add('turkui-hidden');
+        }, transitionS * 1000 + 100);
+      } else {
+        el.classList.add('turkui-hidden');
+        el.style.transition = '';
+        el.style.opacity = '';
+      }
+    }
+
+    function sinifUygula(el, deger) {
+      if (!el) return;
+      if (el._turkuiSiniflar) {
+        for (const s of el._turkuiSiniflar) el.classList.remove(s);
+      }
+      const liste = String(deger || '')
+        .split(/\s+/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+      el._turkuiSiniflar = liste;
+      for (const s of liste) el.classList.add(s);
+    }
+
+    // ─── Türkçe CSS ─────────────────────────────────────────────────────
+    // Türkod bir Türkçe dildir: stil yazımı da Türkçe olmalıdır.
+    // `genişlik: 100%`, `arkaPlan: #181825`, `kenarYuvarlaklığı: 12px` ...
+    const TURKCE_CSS_OZELLIK = {
+      genişlik: 'width', yükseklik: 'height',
+      enAzGenişlik: 'min-width', enAzYükseklik: 'min-height',
+      enÇokGenişlik: 'max-width', enÇokYükseklik: 'max-height',
+      içBoşluk: 'padding', dışBoşluk: 'margin',
+      üstDışBoşluk: 'margin-top', sağDışBoşluk: 'margin-right',
+      altDışBoşluk: 'margin-bottom', solDışBoşluk: 'margin-left',
+      arkaPlan: 'background', arkaPlanRengi: 'background-color',
+      renk: 'color', yazıRengi: 'color', metinRengi: 'color', kenar: 'border',
+      üstKenar: 'border-top', sağKenar: 'border-right',
+      altKenar: 'border-bottom', solKenar: 'border-left',
+      kenarRengi: 'border-color', kenarKalınlığı: 'border-width',
+      kenarBiçimi: 'border-style', kenarYuvarlaklığı: 'border-radius',
+      yazıBoyutu: 'font-size', yazıKalınlığı: 'font-weight',
+      yazıTipi: 'font-family', satırYüksekliği: 'line-height',
+      harfAralığı: 'letter-spacing', metinHizalama: 'text-align',
+      gösterim: 'display', yön: 'flex-direction', esneklik: 'flex',
+      esnekBüyüme: 'flex-grow', esnekKüçülme: 'flex-shrink',
+      esnekTaban: 'flex-basis', aralık: 'gap',
+      hizalamaÖğeleri: 'align-items', hizalamaKendisi: 'align-self',
+      yaslama: 'justify-content',
+      konum: 'position', üst: 'top', sağ: 'right', alt: 'bottom', sol: 'left',
+      taşma: 'overflow', taşmaX: 'overflow-x', taşmaY: 'overflow-y',
+      gölge: 'box-shadow', geçiş: 'transition', imleç: 'cursor',
+      opaklık: 'opacity', sıra: 'order', dönüşüm: 'transform',
+      sütunlar: 'grid-template-columns', satırlar: 'grid-template-rows',
+      sütunAralığı: 'column-gap', satırAralığı: 'row-gap',
+      kutuBoyutlandırma: 'box-sizing', görünürlük: 'visibility',
+    };
+
+    const TURKCE_CSS_DEGER = {
+      esnek: 'flex', merkez: 'center', orta: 'center',
+      aralıklı: 'space-between', çevreli: 'space-around',
+      başlangıç: 'flex-start', bitiş: 'flex-end',
+      gizli: 'hidden', görünür: 'visible', otomatik: 'auto',
+      satır: 'row', sütun: 'column',
+      kalın: 'bold', eğik: 'italic',
+      mutlak: 'absolute', göreli: 'relative',
+      sabit: 'fixed', yapışkan: 'sticky',
+      kutulu: 'border-box', içerikKadar: 'fit-content',
+      tam: '100%', elle: 'pointer', yok: 'none',
+      düz: 'solid', kesikli: 'dashed', noktalı: 'dotted',
+      sarmalı: 'wrap', sarmasız: 'nowrap',
+      tekrar: 'repeat', doğrusal: 'linear', ızgara: 'grid',
+      // Hazır renk paleti (TürkUI paletiyle aynı)
+      kırmızı: '#f38ba8', mavi: '#89b4fa', yeşil: '#a6e3a1', sarı: '#f9e2af',
+      turuncu: '#fab387', mor: '#cba6f7', pembe: '#f5c2e7', beyaz: '#cdd6f4',
+      siyah: '#11111b', gri: '#6c7086', turkuaz: '#94e2d5', şeffaf: 'transparent',
+      sol: 'left', sağ: 'right', üst: 'top', alt: 'bottom',
+    };
+
+    const TURKCE_CSS_SECICI = {
+      tümü: '*', belge: 'html, body', gövde: 'body',
+      uygulama: '#turkui-root',
+      seçiliListeÖğesi: '.turkui-list-item.selected',
+      listeÖğesi: '.turkui-list-item',
+      liste: '.turkui-list',
+      metin: '.turkui-text',
+      buton: '.turkui-button',
+      giriş: '.turkui-input',
+      seçim: '.turkui-combo',
+      ilerlemeDolgusu: '.turkui-progress-fill',
+      ilerleme: '.turkui-progress-wrap',
+    };
+
+    // `TürkUI.stil { buton( üzerineGelince( ... ) ) }` durum karşılıkları.
+    // `src/veri/stilDurumlari.ts` ile birebir aynı olmalıdır (test doğrular).
+    const TURKCE_CSS_DURUM = {
+      üzerineGelince: ':hover',
+      basılıyken: ':active',
+      odaklıyken: ':focus',
+      odakİçindeyken: ':focus-within',
+      seçiliyken: ':checked',
+      etkinken: ':enabled',
+      devreDışıyken: ':disabled',
+      ilkÇocukken: ':first-child',
+      sonÇocukken: ':last-child',
+      tekÇocukken: ':only-child',
+      boşken: ':empty',
+      geçerliyken: ':valid',
+      geçersizken: ':invalid',
+      zorunluyken: ':required',
+      bağlantıyken: ':link',
+      ziyaretEdilmişken: ':visited',
+      hedefken: ':target',
+    };
+
+    // Değer içindeki Türkçe CSS işlevleri: `ölçek(1.05)` → `scale(1.05)`.
+    // Bunlar hazır değer listesinde (stilDegerleri.ts) tek başına yer almaz.
+    const TURKCE_CSS_ISLEV = {
+      ölçek: 'scale', kaydır: 'translate', döndür: 'rotate',
+      eğiklik: 'skew', matris: 'matrix',
+    };
+
+    function turkceDegerler(deger) {
+      let sonuc = deger;
+      for (const [tr, en] of Object.entries(TURKCE_CSS_DEGER)) {
+        sonuc = sonuc.replace(
+          new RegExp('(^|[\\s,()/])' + tr + '(?=[\\s,()/]|$)', 'g'),
+          '$1' + en
+        );
+      }
+      for (const [tr, en] of Object.entries(TURKCE_CSS_ISLEV)) {
+        sonuc = sonuc.replace(
+          new RegExp('(^|[\\s,()/])' + tr + '(?=\\s*\\()', 'g'),
+          '$1' + en
+        );
+      }
+      return sonuc;
+    }
+
+    /** Seçicileri ve bildirimleri Türkçeden CSS'e çevirir. */
+    function turkceCss(css) {
+      const metin = String(css || '');
+      if (!metin.trim()) return '';
+
+      const seciciCevir = (secici) => {
+        let sonuc = secici;
+        // Durumlar önce çevrilir: `&üzerineGelince` → `&:hover`.
+        const durumlar = Object.keys(TURKCE_CSS_DURUM).sort((a, b) => b.length - a.length);
+        for (const tr of durumlar) {
+          sonuc = sonuc.replace(
+            new RegExp('(^|[\\s,>+~&])' + tr + '(?=[\\s,>+~)]|$)', 'g'),
+            '$1' + TURKCE_CSS_DURUM[tr]
+          );
+        }
+        const anahtarlar = Object.keys(TURKCE_CSS_SECICI).sort((a, b) => b.length - a.length);
+        for (const tr of anahtarlar) {
+          sonuc = sonuc.replace(
+            new RegExp('(^|[\\s,>+~(])' + tr + '(?=[\\s,>+~)]|$)', 'g'),
+            '$1' + TURKCE_CSS_SECICI[tr]
+          );
+        }
+        return sonuc;
+      };
+
+      const bildirimCevir = (govde) => {
+        const parcalar = [];
+        for (const ham of govde.replace(/önemli/g, '!important').split(';')) {
+          const parca = ham.trim();
+          if (!parca) continue;
+          const ikiNokta = parca.indexOf(':');
+          if (ikiNokta < 0) { parcalar.push(parca); continue; }
+          const ad = parca.slice(0, ikiNokta).trim();
+          const deger = parca.slice(ikiNokta + 1).trim();
+          const cssAd = TURKCE_CSS_OZELLIK[ad] || ad;
+          parcalar.push(cssAd + ': ' + turkceDegerler(deger));
+        }
+        return parcalar.join('; ');
+      };
+
+      // Kural bloğu yoksa düz bildirim listesi kabul edilir.
+      if (!metin.includes('{')) return bildirimCevir(metin);
+      return metin.replace(/([^{}]*)\{([^{}]*)\}/g, (_t, secici, govde) => {
+        return seciciCevir(secici) + '{ ' + bildirimCevir(govde) + ' }';
+      });
+    }
+
+    /**
+     * Çevrilmiş CSS'i bir kapsama bağlar.
+     *
+     * `&` kapsamın kendisidir: `& { ... }` → `#id { ... }`,
+     * `&:hover { ... }` → `#id:hover { ... }`. `&` yoksa kural kapsamın
+     * altına yazılır (eski davranış).
+     */
+    function stilKapsamla(css, kapsam) {
+      const metin = String(css || '');
+      if (!metin.trim()) return '';
+      if (!metin.includes('{')) return kapsam + ' { ' + metin + ' }';
+      return metin.replace(/([^{}]*)\{([^{}]*)\}/g, (_t, secici, govde) => {
+        const seciciler = String(secici)
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .map((s) => {
+            if (s === '&') return kapsam;
+            if (s.startsWith('&')) return kapsam + s.slice(1);
+            if (s.startsWith(':') || s.startsWith('::')) return kapsam + s;
+            return kapsam + ' ' + s;
+          });
+        if (seciciler.length === 0) return kapsam + ' { ' + govde.trim() + ' }';
+        return seciciler.join(', ') + ' { ' + govde.trim() + ' }';
+      });
+    }
+
+    function stilUygula(el, deger) {
+      if (!el || !el.id) return;
+      const stilId = 'turkui-stil-' + el.id;
+      let stil = document.getElementById(stilId);
+      if (!stil) {
+        stil = document.createElement('style');
+        stil.id = stilId;
+        document.head.appendChild(stil);
+      }
+      stil.textContent = stilKapsamla(turkceCss(deger || ''), '#' + el.id);
+    }
+
+    // ─── Türkçe Betik (Türkçe JavaScript) ───────────────────────────────
+    // `TürkUI.betik { pencere( ... ) }` bloğundaki Türkçe JavaScript'i gerçek
+    // JavaScript'e çevirir ve CSP nonce'u taşıyan <script> ile çalıştırır.
+    // Tablolar `src/veri/betikSozcukleri.ts` ile birebir aynı olmalıdır.
+    // >>> TURKCE_BETIK_BASLANGIC
+    const TURKCE_BETIK_ANAHTAR = {
+      değişken: 'let', sabit: 'const',
+      eğer: 'if', değilse: 'else',
+      için: 'for', iken: 'while', yap: 'do',
+      fonksiyon: 'function', geri_döndür: 'return', dön: 'return',
+      kır: 'break', devam_et: 'continue',
+      dene: 'try', yakala: 'catch', sonunda: 'finally', fırlat: 'throw',
+      yeni: 'new', sınıf: 'class', bu: 'this',
+      bekle: 'await', eşzamansız: 'async',
+      türü: 'typeof', sil: 'delete', içinde: 'in', ait: 'of',
+      ve: '&&', veya: '||', değil: '!',
+      Doğru: 'true', Yanlış: 'false', Boş: 'null', tanımsız: 'undefined',
+    };
+
+    const TURKCE_BETIK_GENEL = {
+      belge: 'document', pencere: 'window', konsol: 'console',
+      mesajKutusu: 'turkuiMessagebox',
+      Zaman: 'turkuiZaman',
+      matematik: 'Math', tarih: 'Date', json: 'JSON', söz: 'Promise',
+      depo: 'localStorage', oturumDeposu: 'sessionStorage',
+      zamanlayıcı: 'setTimeout', aralık: 'setInterval',
+      zamanlayıcıDurdur: 'clearTimeout', aralıkDurdur: 'clearInterval',
+      animasyonKaresi: 'requestAnimationFrame', animasyonDurdur: 'cancelAnimationFrame',
+      getir: 'fetch', uyarı: 'alert', onayla: 'confirm', istek: 'prompt',
+      tamsayı: 'parseInt', ondalık: 'parseFloat',
+      sayıya: 'Number', mantığa: 'Boolean', metne: 'String',
+      dizi: 'Array', nesne: 'Object',
+    };
+
+    // Tkinter messagebox benzeri, TürkUI penceresinde çalışan mesaj kutuları.
+    window.turkuiMessagebox = {
+      askokcancel: (title, message) => window.confirm(`${title || 'Onay'}\n\n${message || ''}`),
+      askquestion: (title, message) => window.confirm(`${title || 'Soru'}\n\n${message || ''}`) ? 'yes' : 'no',
+      askretrycancel: (title, message) => window.confirm(`${title || 'Yeniden dene'}\n\n${message || ''}`),
+      askyesno: (title, message) => window.confirm(`${title || 'Soru'}\n\n${message || ''}`),
+      showerror: (title, message) => { window.alert(`${title || 'Hata'}\n\n${message || ''}`); return 'ok'; },
+      showwarning: (title, message) => { window.alert(`${title || 'Uyarı'}\n\n${message || ''}`); return 'ok'; },
+      // `Mesaj` hem `yeni` ile hem de doğrudan çağrılabilir:
+      //   mesajKutusu.Mesaj("merhaba")                     → hemen gösterir
+      //   yeni mesajKutusu.Mesaj({başlık, ileti}).göster()  → hazırlar, göster() açar
+      Message: function MesajKutusu(secenekler) {
+        const metinMi = typeof secenekler === 'string' || typeof secenekler === 'number';
+        if (!(this instanceof MesajKutusu)) {
+          const kutu = new MesajKutusu(secenekler);
+          if (!metinMi) kutu.show();
+          return kutu;
+        }
+        if (metinMi) {
+          this.title = 'Mesaj'; this.message = String(secenekler); this.show();
+        } else {
+          const s = secenekler || {};
+          this.title = s.başlık ?? s.title ?? '';
+          this.message = s.ileti ?? s.message ?? '';
+        }
+      },
+    };
+    window.turkuiMessagebox.Message.prototype.show = function () {
+      window.alert(`${this.title || 'Mesaj'}\n\n${this.message ?? ''}`);
+      return 'ok';
+    };
+    window.turkuiZaman = {
+      bekle: (saniye) => new Promise((resolve) => setTimeout(resolve, Math.min(Math.max(0, Number(saniye) || 0) * 1000, 60000))),
+    };
+
+    const TURKCE_BETIK_UYE = {
+      içerik: 'textContent', metin: 'textContent', html: 'innerHTML', değer: 'value',
+      sınıfEkle: 'classList.add', sınıfSil: 'classList.remove',
+      sınıfDeğiştir: 'classList.toggle', sınıfVar: 'classList.contains',
+      sınıflar: 'classList',
+      olayDinle: 'addEventListener', olayKaldır: 'removeEventListener',
+      sorgula: 'querySelector', sorgulaTümü: 'querySelectorAll',
+      çocukEkle: 'appendChild', kaldır: 'remove',
+      odaklan: 'focus', odakKaldır: 'blur',
+      stilVer: 'style.setProperty', stilAl: 'style.getPropertyValue',
+      uzunluk: 'length', ekle: 'push', çıkar: 'pop',
+      baştanal: 'shift', başaEkle: 'unshift',
+      birleştir: 'join', böl: 'split', dilimle: 'slice', içerir: 'includes',
+      süz: 'filter', dönüştür: 'map', azalt: 'reduce',
+      sırala: 'sort', tersÇevir: 'reverse', bul: 'find', indeks: 'indexOf',
+      büyükHarf: 'toUpperCase', küçükHarf: 'toLowerCase',
+      kırp: 'trim', değiştir: 'replace', tekrarla: 'repeat',
+      başlar: 'startsWith', biter: 'endsWith', metneÇevir: 'toString',
+      sonra: 'then', yakala: 'catch',
+      yuvarla: 'round', taban: 'floor', tavan: 'ceil', mutlak: 'abs',
+      rastgele: 'random', üs: 'pow', karekök: 'sqrt', enAz: 'min', enÇok: 'max',
+      yaz: 'log', uyar: 'warn', hata: 'error', bilgi: 'info',
+      yerelSaatMetni: 'toLocaleTimeString', yerelTarihMetni: 'toLocaleDateString',
+      yerelMetin: 'toLocaleString',
+      engelle: 'preventDefault', tuş: 'key',
+      genişlik: 'width', yükseklik: 'height',
+      bağlamAl: 'getContext', dolguRengi: 'fillStyle', çizgiRengi: 'strokeStyle',
+      çizgiKalınlığı: 'lineWidth', yazıTipi: 'font', saydamlık: 'globalAlpha',
+      alanıTemizle: 'clearRect', dolguDikdörtgen: 'fillRect', çizgiDikdörtgen: 'strokeRect',
+      doldur: 'fill', çiz: 'stroke', yolBaşlat: 'beginPath', yolKapat: 'closePath',
+      taşı: 'moveTo', çizgiEkle: 'lineTo', yay: 'arc',
+      yazıYaz: 'fillText', çizgiYazı: 'strokeText', ölç: 'measureText',
+      kaydet: 'save', geriAl: 'restore', döndür: 'rotate', ötele: 'translate',
+      ölçekle: 'scale',
+      sinüs: 'sin', kosinüs: 'cos', tanjant: 'tan',
+      tamamİptalSor: 'askokcancel', Mesaj: 'Message', soruSor: 'askquestion',
+      yenidenDeneİptalSor: 'askretrycancel', evetHayırSor: 'askyesno',
+      hataGöster: 'showerror', uyarıGöster: 'showwarning', göster: 'show',
+    };
+
+    /** Metin olarak yazılan ama JavaScript'te sabit değer isteyen adlar. */
+    const TURKCE_BETIK_METIN = {
+      ikiBoyut: '2d',
+      ikiBoyutlu: '2d',
+      üçBoyut: 'webgl',
+    };
+
+    /**
+     * `olayDinle` / `olayKaldır` çağrısındaki Türkçe olay adları.
+     * Adlar dosya dilindeki olay bloklarıyla aynıdır (`tıklandığında`, ...).
+     */
+    const TURKCE_BETIK_OLAY = {
+      tıklandığında: 'click',
+      çiftTıklandığında: 'dblclick',
+      sağTıklandığında: 'contextmenu',
+      basıldığında: 'mousedown',
+      bırakıldığında: 'mouseup',
+      üzerineGelindiğinde: 'mouseenter',
+      üzerindenÇıkıldığında: 'mouseleave',
+      fareHareketinde: 'mousemove',
+      fareTekerleği: 'wheel',
+      tuşBasılınca: 'keydown',
+      tuşBırakılınca: 'keyup',
+      tuşBasımı: 'keypress',
+      değiştiğinde: 'change',
+      girdiğinde: 'input',
+      odaklandığında: 'focus',
+      odağıKaybettiğinde: 'blur',
+      gönderildiğinde: 'submit',
+      yüklendiğinde: 'load',
+    };
+
+    /** Yalnızca olay dinleyicisinin ilk argümanındaki adı çevirir. */
+    function olaylariCevir(kod) {
+      const olayli = kod.replace(
+        /(\.\s*(?:addEventListener|removeEventListener|olayDinle|olayKaldır)\s*\(\s*)(["'])([^"']*)\2/g,
+        (tam, onEk, tirnak, ad) => onEk + tirnak + (TURKCE_BETIK_OLAY[ad] || ad) + tirnak
+      );
+      // Olay dinleyicilerinde Zaman.bekle kullanımı için işleyiciyi eşzamansız yapıp beklemeyi otomatik uygula.
+      return olayli
+        .replace(/(\.\s*(?:addEventListener|olayDinle)\s*\(\s*["'][^"']+["']\s*,\s*)function\s*\(/g, '$1async function(')
+        .replace(/\bturkuiZaman\s*\.\s*bekle\s*\(/g, 'await turkuiZaman.bekle(');
+    }
+
+    /** `${ ... }` ifadesinin kapandığı `}` konumunu bulur. */
+    function betikIfadeSonu(metin, baslangic) {
+      let derinlik = 1;
+      for (let k = baslangic; k < metin.length; k++) {
+        const c = metin[k];
+        if (c === '\\') { k++; continue; }
+        if (c === '"' || c === "'" || c === '`') {
+          const kapanis = c;
+          k++;
+          while (k < metin.length) {
+            if (metin[k] === '\\') { k += 2; continue; }
+            if (metin[k] === kapanis) break;
+            k++;
+          }
+          continue;
+        }
+        if (c === '{') derinlik++;
+        else if (c === '}') {
+          derinlik--;
+          if (derinlik === 0) return k;
+        }
+      }
+      return metin.length;
+    }
+
+    /** Bir tanımlayıcının Türkçe karşılığını seçer (üye, anahtar veya genel). */
+    function betikAdiCevir(ad, onceki, onceki2, metin, konum) {
+      // Üye erişimi: `nesne.içerik` (yayma `...` hariç).
+      if (onceki === '.' && onceki2 !== '.') return TURKCE_BETIK_UYE[ad] || ad;
+      // Nesne anahtarı: `{ içerik: "x" }` — anahtar adları çevrilmez.
+      let k = konum;
+      while (k < metin.length && /\s/.test(metin[k])) k++;
+      if (metin[k] === ':' && metin[k + 1] !== '=') {
+        let g = konum - ad.length - 1;
+        while (g >= 0 && /\s/.test(metin[g])) g--;
+        if (g < 0 || metin[g] === '{' || metin[g] === ',') return ad;
+      }
+      return TURKCE_BETIK_ANAHTAR[ad] || TURKCE_BETIK_GENEL[ad] || ad;
+    }
+
+    /** Türkçe JavaScript kaynağını gerçek JavaScript'e çevirir. */
+    function turkceBetik(kaynak) {
+      const metin = String(kaynak || '');
+      let sonuc = '';
+      let i = 0;
+      let onceki = '';
+      let onceki2 = '';
+
+      const yaz = (parca) => {
+        sonuc += parca;
+        for (let k = parca.length - 1; k >= 0; k--) {
+          if (/\s/.test(parca[k])) continue;
+          onceki2 = onceki;
+          onceki = parca[k];
+          return;
+        }
+      };
+
+      while (i < metin.length) {
+        const c = metin[i];
+
+        // Satır yorumu
+        if (c === '/' && metin[i + 1] === '/') {
+          const son = metin.indexOf('\n', i);
+          const parca = son < 0 ? metin.slice(i) : metin.slice(i, son);
+          yaz(parca);
+          i += parca.length;
+          continue;
+        }
+        // Blok yorumu
+        if (c === '/' && metin[i + 1] === '*') {
+          const son = metin.indexOf('*/', i + 2);
+          const parca = son < 0 ? metin.slice(i) : metin.slice(i, son + 2);
+          yaz(parca);
+          i += parca.length;
+          continue;
+        }
+        // Metinler olduğu gibi korunur (yalnızca bilinen Türkçe adlar çevrilir).
+        if (c === '"' || c === "'") {
+          let j = i + 1;
+          while (j < metin.length) {
+            if (metin[j] === '\\') { j += 2; continue; }
+            if (metin[j] === c) { j++; break; }
+            j++;
+          }
+          const kapandi = j > i + 1 && metin[j - 1] === c;
+          const icerik = kapandi ? metin.slice(i + 1, j - 1) : '';
+          const cevrilmis = kapandi && TURKCE_BETIK_METIN[icerik] !== undefined;
+          yaz(cevrilmis ? '"' + TURKCE_BETIK_METIN[icerik] + '"' : metin.slice(i, j));
+          i = j;
+          continue;
+        }
+        // Şablon metni: `${ ... }` içi çevrilir, düz metin korunur.
+        if (c === '`') {
+          let j = i + 1;
+          let parca = '`';
+          while (j < metin.length) {
+            if (metin[j] === '\\') { parca += metin.slice(j, j + 2); j += 2; continue; }
+            if (metin[j] === '`') { parca += '`'; j++; break; }
+            if (metin[j] === '$' && metin[j + 1] === '{') {
+              const ic = betikIfadeSonu(metin, j + 2);
+              parca += '${' + turkceBetik(metin.slice(j + 2, ic)) + '}';
+              j = ic + 1;
+              continue;
+            }
+            parca += metin[j];
+            j++;
+          }
+          yaz(parca);
+          i = j;
+          continue;
+        }
+        // Sayılar
+        if (/[0-9]/.test(c)) {
+          let j = i + 1;
+          while (j < metin.length && /[0-9a-fA-FxX._eE]/.test(metin[j])) j++;
+          if (/[eE]/.test(metin[j - 1]) && (metin[j] === '+' || metin[j] === '-')) j++;
+          while (j < metin.length && /[0-9]/.test(metin[j])) j++;
+          yaz(metin.slice(i, j));
+          i = j;
+          continue;
+        }
+        // Tanımlayıcılar
+        if (/[A-Za-zÇĞİÖŞÜçğıöşü_$]/.test(c)) {
+          let j = i + 1;
+          while (j < metin.length && /[\wÇĞİÖŞÜçğıöşü$]/.test(metin[j])) j++;
+          const ad = metin.slice(i, j);
+          yaz(betikAdiCevir(ad, onceki, onceki2, metin, j));
+          i = j;
+          continue;
+        }
+        // `:=` ataması JavaScript'te `=` olur.
+        if (c === ':' && metin[i + 1] === '=') {
+          yaz('=');
+          i += 2;
+          continue;
+        }
+        yaz(c);
+        i++;
+      }
+      return olaylariCevir(sonuc);
+    }
+    // <<< TURKCE_BETIK_BITIS
+
+    /** Betik hatalarını pencerenin altında gösterir. */
+    function betikHatasiGoster(mesaj) {
+      let kutu = document.getElementById('turkui-betik-hatasi');
+      if (!kutu) {
+        kutu = document.createElement('div');
+        kutu.id = 'turkui-betik-hatasi';
+        kutu.style.cssText =
+          'position:fixed;left:12px;right:12px;bottom:12px;z-index:99999;' +
+          'background:#f38ba8;color:#11111b;font:13px/1.45 "Segoe UI",sans-serif;' +
+          'padding:10px 14px;border-radius:8px;box-shadow:0 6px 24px #00000055;' +
+          'white-space:pre-wrap;cursor:pointer;';
+        kutu.title = 'Kapatmak için tıklayın';
+        kutu.addEventListener('click', () => kutu.remove());
+        document.body.appendChild(kutu);
+      }
+      kutu.textContent = mesaj + '\n(Kapatmak için tıklayın)';
+    }
+
+    window.__turkuiBetikHatasi = function (e, temelSatir, onSatir) {
+      const mesaj = e && e.message ? e.message : String(e);
+      let satir = 0;
+      const eslesme = /:(\d+):\d+/.exec(String((e && e.stack) || ''));
+      if (eslesme) satir = Number(eslesme[1]);
+      const dosyaSatir = satir > onSatir ? temelSatir + satir - onSatir : temelSatir;
+      const baslik = dosyaSatir > 0 ? 'Betik hatası (satır ' + dosyaSatir + '): ' : 'Betik hatası: ';
+      betikHatasiGoster(baslik + mesaj);
+      try { console.error('[TürkUI] ' + baslik + mesaj); } catch (_) { /* yok say */ }
+    };
+
+    /** Bileşen kimliğinden DOM öğesini bulur (`turkui-` öneki ve kayıt defteri dahil). */
+    function bilesenBul(id) {
+      if (!id) return null;
+      const kayitli = components[String(id)];
+      if (kayitli) return kayitli;
+      return document.getElementById('turkui-' + id) || document.getElementById(id);
+    }
+
+    /** `TürkUI.betik` paketini çevirip çalıştırır. */
+    function betikCalistir(paket, deneme) {
+      const veri = paket && typeof paket === 'object' ? paket : { kod: String(paket || '') };
+      const kod = String(veri.kod || '');
+      if (!kod.trim()) return;
+      const harita = veri.harita && typeof veri.harita === 'object' ? veri.harita : {};
+      const temelSatir = Number(veri.satir) || 0;
+
+      // Bileşenler henüz yerleşmediyse birkaç kare bekle (pencere açılışı).
+      const adlar = Object.keys(harita).filter((ad) =>
+        /^[A-Za-zÇĞİÖŞÜçğıöşü_$][\wÇĞİÖŞÜçğıöşü$]*$/.test(ad)
+      );
+      const eksik = adlar.some((ad) => !bilesenBul(harita[ad]));
+      if (eksik && (deneme || 0) < 60) {
+        requestAnimationFrame(function () { betikCalistir(paket, (deneme || 0) + 1); });
+        return;
+      }
+
+      // Dosyadaki değişken adları DOM öğelerine bağlanır. Tek satırda tutulur
+      // ki hata satır numaraları kaymasın.
+      let onEk = '';
+      for (const ad of adlar) {
+        const id = String(harita[ad] || '');
+        if (!id) continue;
+        onEk += 'const ' + ad + ' = bilesenBul(' + JSON.stringify(id) + ');';
+      }
+
+      // Betik, pencerenin içinde çalıştığı için başka pencerelere doğrudan
+      // erişemez; adlar `göster`/`gizle`/`kapat` çağrılarını uzantıya ileten
+      // küçük köprülere bağlanır (`uygulama2.göster()`).
+      const pencereler =
+        veri.pencereler && typeof veri.pencereler === 'object' ? veri.pencereler : {};
+      const pencereAdlari = Object.keys(pencereler).filter(
+        (ad) =>
+          /^[A-Za-zÇĞİÖŞÜçğıöşü_$][\wÇĞİÖŞÜçğıöşü$]*$/.test(ad) &&
+          !harita[ad] &&
+          String(pencereler[ad] || '') !== '' &&
+          kod.indexOf(ad) >= 0
+      );
+      if (pencereAdlari.length > 0) {
+        onEk +=
+          'var __turkuiPencere = function (id) {' +
+          '  var komut = function (k) {' +
+          '    return function () {' +
+          '      ipcRenderer.send("turkui:pencereKomutu", { pencereId: id, komut: k });' +
+          '      return "";' +
+          '    };' +
+          '  };' +
+          '  return {' +
+          '    göster: komut("göster"), gizle: komut("gizle"), kapat: komut("kapat"),' +
+          '    küçült: komut("küçült"), büyüt: komut("büyüt"), normal: komut("normal")' +
+          '  };' +
+          '};';
+        for (const ad of pencereAdlari) {
+          onEk +=
+            'const ' + ad + ' = __turkuiPencere(' + JSON.stringify(String(pencereler[ad] || '')) + ');';
+        }
+      }
+
+      const onSatir = 3; // `(function () {` + `try {` + `onEk`
+      const govde = [
+        '(function () {',
+        'try {',
+        onEk,
+        turkceBetik(kod),
+        '} catch (e) {',
+        '  window.__turkuiBetikHatasi(e, ' + temelSatir + ', ' + onSatir + ');',
+        '}',
+        '})();',
+      ].join('\n');
+
+      const betik = document.createElement('script');
+      if (SAYFA_NONCE) betik.nonce = SAYFA_NONCE;
+      betik.textContent = govde;
+      document.head.appendChild(betik);
+      if (betik.parentNode) betik.remove();
+    }
+
+    function applyProps(el, props) {
+      if (!el || !props) return;
+      if (props.sınıf !== undefined) sinifUygula(el, props.sınıf);
+      if (props.stil !== undefined) stilUygula(el, props.stil);
+      if (props._visibleGeçiş !== undefined) {
+        el._visibleGeçiş = Number(props._visibleGeçiş) > 0 ? Number(props._visibleGeçiş) : 0;
+      }
+      if (props._visible === false) { setVisibleState(el, false, el._visibleGeçiş || 0); }
+      else if (props._visible === true) { setVisibleState(el, true, el._visibleGeçiş || 0); }
+    }
+
+    // ─── Ortak olaylar (tüm bileşenler) ─────────────────────────────────
+    function bindCommonEvents(el, id) {
+      el.addEventListener('dblclick', () => {
+        ipcRenderer.send('turkui:event', { componentId: id, eventName: 'çiftTıklandığında' });
+      });
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        ipcRenderer.send('turkui:event', { componentId: id, eventName: 'sağTıklandığında' });
+      });
+      el.addEventListener('wheel', () => {
+        ipcRenderer.send('turkui:event', { componentId: id, eventName: 'fareTekerleği' });
+      });
+      let _lastMove = 0;
+      el.addEventListener('mousemove', () => {
+        const now = Date.now();
+        if (now - _lastMove < 40) return;
+        _lastMove = now;
+        ipcRenderer.send('turkui:event', { componentId: id, eventName: 'fareHareketinde' });
+      });
+    }
+
+    // ─── İlerleme çubuğu ─────────────────────────────────────────────────
+    function progressYenile(el) {
+      if (!el || !el._fill) return;
+      const min = Number.isFinite(Number(el._min)) ? Number(el._min) : 0;
+      const max = Number.isFinite(Number(el._max)) ? Number(el._max) : 100;
+      const deger = Number(el._değer);
+      const aralik = max - min || 100;
+      const yuzde = ((Number.isFinite(deger) ? deger : min) - min) / aralik * 100;
+      el._fill.style.width = Math.max(0, Math.min(100, yuzde)) + '%';
+    }
+
+    // ─── Serbest HTML/CSS bileşeni ───────────────────────────────────────
+    function customYenile(el) {
+      if (!el || !el._shadow) return;
+      const css = turkceCss(el._customCss || '');
+      const html = String(el._customHtml || '');
+      el._shadow.innerHTML = '<style>' + css + '</style>' + html;
+    }
+
+    function bindCustomEvents(el, id) {
+      const kok = el._shadow || el;
+      let sonHareket = 0;
+      const hedef = (e) => {
+        try {
+          return (e.composedPath && e.composedPath()[0]) || e.target;
+        } catch {
+          return e.target;
+        }
+      };
+      const gonder = (olay, props) => {
+        const mesaj = { componentId: id, eventName: olay };
+        if (props) mesaj.props = props;
+        ipcRenderer.send('turkui:event', mesaj);
+      };
+      const degerProps = (e) => {
+        const t = hedef(e);
+        const p = {};
+        if (t && 'value' in t) p.değer = t.value;
+        if (t && 'checked' in t) p.seçili = !!t.checked;
+        return p;
+      };
+      kok.addEventListener('click', (e) => {
+        gonder('tıklandığında', { x: e.offsetX, y: e.offsetY, ...degerProps(e) });
+      });
+      kok.addEventListener('dblclick', () => gonder('çiftTıklandığında'));
+      kok.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        gonder('sağTıklandığında', { x: e.offsetX, y: e.offsetY });
+      });
+      kok.addEventListener('wheel', (e) => gonder('fareTekerleği', { tekerlek: e.deltaY }));
+      kok.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - sonHareket < 40) return;
+        sonHareket = now;
+        gonder('fareHareketinde', { x: e.offsetX, y: e.offsetY });
+      });
+      kok.addEventListener('input', (e) => gonder('değiştiğinde', degerProps(e)));
+      kok.addEventListener('change', (e) => gonder('değiştiğinde', degerProps(e)));
+      kok.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') gonder('enterBasılınca', { tuş: e.key });
+        gonder('tuşBasılınca', { tuş: e.key });
+      });
+      kok.addEventListener('keyup', (e) => gonder('tuşBırakılınca', { tuş: e.key }));
+      kok.addEventListener('focusin', () => gonder('odaklandığında'));
+      kok.addEventListener('focusout', () => gonder('odağıKaybettiğinde'));
+    }
+
+    // ─── Gömülü web tarayıcı ─────────────────────────────────────────────
+    function webAdresNormalize(ham) {
+      const s = String(ham || '').trim();
+      if (!s) return '';
+      if (/^(https?:|data:|file:|about:|blob:)/i.test(s)) return s;
+      if (s.startsWith('//')) return 'https:' + s;
+      // Windows yerel dosya yolu: C:\klasor\sayfa.html
+      if (/^[a-zA-Z]:[\\/]/.test(s)) return 'file:///' + s.replace(/\\/g, '/');
+      // UNC ağ yolu: \\sunucu\paylasim\sayfa.html
+      if (/^\\\\[^\\]+\\/.test(s)) return 'file://' + s.slice(2).replace(/\\/g, '/');
+      // Yerel geliştirme sunucuları genellikle HTTP kullanır.
+      if (/^(localhost|127\.0\.0\.1)(?::\d+)?(?:\/|$)/i.test(s)) return 'http://' + s;
+      return 'https://' + s;
+    }
+
+    function webYakınlaştırmaUygula(el) {
+      if (!el || !el._webFrame) return;
+      const ham = Number(el._webYakınlaştırma);
+      const oran = Number.isFinite(ham) && ham > 0 ? ham : 1;
+      if (el._webTuru === 'webview') {
+        const wv = el._webFrame;
+        try {
+          if (typeof wv.setZoomFactor === 'function') wv.setZoomFactor(oran);
+        } catch (_) {
+          /* misafir sayfa henüz hazır değil */
+        }
+      } else {
+        el._webFrame.style.zoom = String(oran);
+      }
+    }
+
+    function webDurumProp(el) {
+      const props = {
+        adres: String(el._webAdres || ''),
+        başlık: String(el._webBaslik || ''),
+        yükleniyor: !!el._webYukleniyor,
+        geriGidebilir: false,
+        ileriGidebilir: false,
+      };
+      if (el._webTuru === 'webview') {
+        try { props.geriGidebilir = !!el._webFrame.canGoBack(); } catch (_) { /* hazır değil */ }
+        try { props.ileriGidebilir = !!el._webFrame.canGoForward(); } catch (_) { /* hazır değil */ }
+      } else {
+        const indeks = Number(el._webGecmisIndex);
+        const uzunluk = (el._webGecmis || []).length;
+        props.geriGidebilir = indeks > 0;
+        props.ileriGidebilir = indeks >= 0 && indeks < uzunluk - 1;
+      }
+      return props;
+    }
+
+    function webOlayGonder(el, id, olay, ek) {
+      const props = Object.assign(webDurumProp(el), ek || {});
+      ipcRenderer.send('turkui:event', { componentId: id, eventName: olay, props });
+    }
+
+    function webBaslikAyarla(el, id, baslik) {
+      const yeni = String(baslik || '');
+      if (yeni === String(el._webBaslik || '')) return;
+      el._webBaslik = yeni;
+      webOlayGonder(el, id, 'başlıkDeğiştiğinde');
+    }
+
+    function webGit(el, id, hedef, kaydet) {
+      const url = webAdresNormalize(hedef);
+      if (!url) {
+        webHtmlYukle(el, id, '');
+        return;
+      }
+      el._webHazir = true;
+      el._webHtml = '';
+      el._webAdres = url;
+      el._webYukleniyor = true;
+      const cerceve = el._webFrame;
+      if (!cerceve) return;
+
+      if (el._webTuru === 'webview') {
+        try {
+          cerceve.src = url;
+        } catch (_) {
+          try { cerceve.loadURL(url); } catch (_) { /* yok say */ }
+        }
+      } else {
+        if (kaydet !== false) {
+          const liste = el._webGecmis || (el._webGecmis = []);
+          const indeks = Number(el._webGecmisIndex);
+          const ayni = indeks >= 0 && liste[indeks] === url;
+          if (!ayni) {
+            liste.splice(indeks + 1);
+            liste.push(url);
+            el._webGecmisIndex = liste.length - 1;
+          }
+        }
+        cerceve.removeAttribute('srcdoc');
+        cerceve.src = url;
+      }
+      webOlayGonder(el, id, 'adresDeğiştiğinde');
+      webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+    }
+
+    function webHtmlYukle(el, id, icerik) {
+      const html = String(icerik ?? '');
+      el._webHazir = true;
+      el._webHtml = html;
+      el._webAdres = '';
+      el._webYukleniyor = true;
+      const cerceve = el._webFrame;
+      if (!cerceve) return;
+      if (el._webTuru === 'webview') {
+        const veri = 'data:text/html;charset=utf-8,' + encodeURIComponent(html);
+        try {
+          if (typeof cerceve.loadURL === 'function') cerceve.loadURL(veri);
+          else cerceve.src = veri;
+        } catch (_) {
+          /* yok say */
+        }
+      } else {
+        el._webGecmis = [];
+        el._webGecmisIndex = -1;
+        cerceve.removeAttribute('src');
+        cerceve.srcdoc = html;
+      }
+      webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+    }
+
+    function webGeri(el, id) {
+      if (el._webTuru === 'webview') {
+        try {
+          if (el._webFrame.canGoBack()) el._webFrame.goBack();
+        } catch (_) {
+          /* geçmiş yok */
+        }
+        return;
+      }
+      const liste = el._webGecmis || [];
+      if (Number(el._webGecmisIndex) <= 0) return;
+      el._webGecmisIndex = Number(el._webGecmisIndex) - 1;
+      const url = liste[el._webGecmisIndex];
+      el._webAdres = url;
+      el._webYukleniyor = true;
+      el._webFrame.removeAttribute('srcdoc');
+      el._webFrame.src = url;
+      webOlayGonder(el, id, 'adresDeğiştiğinde');
+      webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+    }
+
+    function webIleri(el, id) {
+      if (el._webTuru === 'webview') {
+        try {
+          if (el._webFrame.canGoForward()) el._webFrame.goForward();
+        } catch (_) {
+          /* ileri geçmiş yok */
+        }
+        return;
+      }
+      const liste = el._webGecmis || [];
+      if (Number(el._webGecmisIndex) >= liste.length - 1) return;
+      el._webGecmisIndex = Number(el._webGecmisIndex) + 1;
+      const url = liste[el._webGecmisIndex];
+      el._webAdres = url;
+      el._webYukleniyor = true;
+      el._webFrame.removeAttribute('srcdoc');
+      el._webFrame.src = url;
+      webOlayGonder(el, id, 'adresDeğiştiğinde');
+      webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+    }
+
+    function webYenile(el, id) {
+      const cerceve = el._webFrame;
+      if (!cerceve) return;
+      el._webYukleniyor = true;
+      if (el._webTuru === 'webview') {
+        try { cerceve.reload(); } catch (_) { /* yok say */ }
+      } else if (el._webHtml) {
+        cerceve.srcdoc = el._webHtml;
+      } else {
+        try {
+          cerceve.contentWindow.location.reload();
+        } catch (_) {
+          cerceve.src = el._webAdres;
+        }
+      }
+      webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+    }
+
+    function webDurdur(el, id) {
+      const cerceve = el._webFrame;
+      if (!cerceve) return;
+      try {
+        if (typeof cerceve.stop === 'function') cerceve.stop();
+        else cerceve.contentWindow.stop();
+      } catch (_) {
+        /* yok say */
+      }
+      el._webYukleniyor = false;
+      webOlayGonder(el, id, 'yüklendiğinde');
+    }
+
+    function webTarayiciKur(el, id, props) {
+      el._web = true;
+      el._webTuru = window.turkuiWebview === true ? 'webview' : 'iframe';
+      el._webAdres = '';
+      el._webBaslik = '';
+      el._webHtml = '';
+      el._webHazir = false;
+      el._webYukleniyor = false;
+      el._webGecmis = [];
+      el._webGecmisIndex = -1;
+      el._webAnaSayfa = String(props.anaSayfa || '');
+      const yak = Number(props.yakınlaştırma);
+      el._webYakınlaştırma = Number.isFinite(yak) && yak > 0 ? yak : 1;
+
+      const webviewKullan = el._webTuru === 'webview';
+      const cerceve = webviewKullan ? document.createElement('webview') : document.createElement('iframe');
+      el._webFrame = cerceve;
+      if (!webviewKullan) {
+        cerceve.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        // Gömülü sayfa üst pencereyi ele geçiremesin; betik, form ve açılır
+        // pencere izinleri normal tarayıcı davranışı için açık bırakılır.
+        cerceve.setAttribute(
+          'sandbox',
+          'allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads'
+        );
+        // Pano ve tam ekran izinleri gömülü sayfalar için yararlıdır;
+        // betik/çerez erişimi verilmez.
+        cerceve.setAttribute('allow', 'clipboard-read; clipboard-write; fullscreen');
+        cerceve.addEventListener('load', () => {
+          if (!el._webHazir) return;
+          el._webYukleniyor = false;
+          try {
+            const belge = cerceve.contentDocument;
+            if (belge && belge.title) webBaslikAyarla(el, id, belge.title);
+            // Aynı kaynaklı bağlantılarda adres çubuğu ve geçmiş güncellenir.
+            // Çapraz kaynaklı sayfalarda tarayıcı güvenliği okumaya izin vermez.
+            if (!el._webHtml) {
+              const icAdres = cerceve.contentWindow && cerceve.contentWindow.location.href;
+              if (icAdres && icAdres !== 'about:blank' && icAdres !== el._webAdres) {
+                const liste = el._webGecmis || (el._webGecmis = []);
+                const indeks = Number(el._webGecmisIndex);
+                if (indeks < 0 || liste[indeks] !== icAdres) {
+                  liste.splice(indeks + 1);
+                  liste.push(icAdres);
+                  el._webGecmisIndex = liste.length - 1;
+                }
+                el._webAdres = icAdres;
+                webOlayGonder(el, id, 'adresDeğiştiğinde');
+              }
+            }
+          } catch (_) {
+            /* çapraz kaynak: başlık ve adres okunamaz */
+          }
+          webOlayGonder(el, id, 'yüklendiğinde');
+        });
+      } else {
+        cerceve.addEventListener('did-start-loading', () => {
+          if (!el._webHazir) return;
+          el._webYukleniyor = true;
+          webOlayGonder(el, id, 'yüklenmeyeBaşladığında');
+        });
+        cerceve.addEventListener('did-stop-loading', () => {
+          if (!el._webHazir) return;
+          el._webYukleniyor = false;
+          webOlayGonder(el, id, 'yüklendiğinde');
+        });
+        cerceve.addEventListener('did-navigate', (e) => {
+          if (!el._webHazir) return;
+          const adres = String(e.url || '');
+          // `htmlYükle` data: adresiyle çalışır; devasa veri URI'sini
+          // bileşen özelliğine taşımaya gerek yok.
+          if (/^data:/i.test(adres)) return;
+          if (el._webHtml) el._webHtml = '';
+          el._webAdres = adres;
+          webOlayGonder(el, id, 'adresDeğiştiğinde');
+        });
+        cerceve.addEventListener('did-navigate-in-page', (e) => {
+          if (!el._webHazir) return;
+          const adres = String(e.url || '');
+          if (/^data:/i.test(adres)) return;
+          if (el._webHtml) el._webHtml = '';
+          el._webAdres = adres;
+          webOlayGonder(el, id, 'adresDeğiştiğinde');
+        });
+        cerceve.addEventListener('page-title-updated', (e) => {
+          if (!el._webHazir) return;
+          webBaslikAyarla(el, id, e.title);
+        });
+        cerceve.addEventListener('did-fail-load', (e) => {
+          if (!el._webHazir) return;
+          if (e.isMainFrame === false) return; // alt çerçeve hatası
+          if (Number(e.errorCode) === -3) return; // kullanıcı durdurdu
+          el._webYukleniyor = false;
+          webOlayGonder(el, id, 'hataOluştuğunda', {
+            hata: String(e.errorDescription || 'Sayfa yüklenemedi.'),
+            hataKodu: Number(e.errorCode) || 0,
+          });
+        });
+        cerceve.addEventListener('dom-ready', () => {
+          webYakınlaştırmaUygula(el);
+        });
+      }
+
+      if (props.genişlik) el.style.width = props.genişlik + 'px';
+      if (props.yükseklik) el.style.height = props.yükseklik + 'px';
+      el.appendChild(cerceve);
+      // Başlangıç yakınlaştırmasını uygula (iframe için hemen, webview
+      // için `dom-ready` olayında yeniden uygulanır).
+      webYakınlaştırmaUygula(el);
+
+      if (String(props.html || '').trim()) {
+        webHtmlYukle(el, id, props.html);
+      } else if (String(props.adres || '').trim()) {
+        webGit(el, id, props.adres, true);
+      }
+    }
+
+    // ─── Canvas çizim komutları ─────────────────────────────────────────
+    function canvasRenk(v, varsayilan) {
+      if (v && typeof v === 'object') {
+        if (v._turkolRenk) return String(v.renk || varsayilan);
+        if (v._turkolGeçiş) return String(v.toColor || varsayilan);
+      }
+      return typeof v === 'string' && v ? v : varsayilan;
+    }
+
+    function canvasSayi(v, varsayilan) {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : varsayilan;
+    }
+
+    function canvasKomutCalistir(el, k) {
+      const ctx = el && el._ctx;
+      if (!ctx || !k || typeof k !== 'object') return;
+      switch (k.komut) {
+        case 'temizle': {
+          ctx.clearRect(0, 0, el.width, el.height);
+          if (el._canvasArkaPlan) {
+            ctx.fillStyle = el._canvasArkaPlan;
+            ctx.fillRect(0, 0, el.width, el.height);
+          }
+          break;
+        }
+        case 'arkaPlan': {
+          el._canvasArkaPlan = canvasRenk(k.renk, '');
+          if (el._canvasArkaPlan) {
+            ctx.fillStyle = el._canvasArkaPlan;
+            ctx.fillRect(0, 0, el.width, el.height);
+          }
+          break;
+        }
+        case 'çizgi': {
+          ctx.beginPath();
+          ctx.moveTo(canvasSayi(k.x1, 0), canvasSayi(k.y1, 0));
+          ctx.lineTo(canvasSayi(k.x2, 0), canvasSayi(k.y2, 0));
+          ctx.strokeStyle = canvasRenk(k.renk, '#89b4fa');
+          ctx.lineWidth = Math.max(1, canvasSayi(k.kalınlık, 2));
+          ctx.stroke();
+          break;
+        }
+        case 'dikdörtgen': {
+          const x = canvasSayi(k.x, 0);
+          const y = canvasSayi(k.y, 0);
+          const g = canvasSayi(k.genişlik, 0);
+          const y2 = canvasSayi(k.yükseklik, 0);
+          if (k.dolgu) {
+            ctx.fillStyle = canvasRenk(k.renk, '#89b4fa');
+            ctx.fillRect(x, y, g, y2);
+          } else {
+            ctx.strokeStyle = canvasRenk(k.renk, '#89b4fa');
+            ctx.lineWidth = Math.max(1, canvasSayi(k.kalınlık, 2));
+            ctx.strokeRect(x, y, g, y2);
+          }
+          break;
+        }
+        case 'daire': {
+          const x = canvasSayi(k.x, 0);
+          const y = canvasSayi(k.y, 0);
+          const r = Math.max(0, canvasSayi(k.yarıçap, 0));
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          if (k.dolgu) {
+            ctx.fillStyle = canvasRenk(k.renk, '#89b4fa');
+            ctx.fill();
+          } else {
+            ctx.strokeStyle = canvasRenk(k.renk, '#89b4fa');
+            ctx.lineWidth = Math.max(1, canvasSayi(k.kalınlık, 2));
+            ctx.stroke();
+          }
+          break;
+        }
+        case 'yay': {
+          ctx.beginPath();
+          ctx.arc(
+            canvasSayi(k.x, 0),
+            canvasSayi(k.y, 0),
+            Math.max(0, canvasSayi(k.yarıçap, 0)),
+            canvasSayi(k.başlangıç, 0),
+            canvasSayi(k.bitiş, Math.PI * 2)
+          );
+          ctx.strokeStyle = canvasRenk(k.renk, '#89b4fa');
+          ctx.lineWidth = Math.max(1, canvasSayi(k.kalınlık, 2));
+          ctx.stroke();
+          break;
+        }
+        case 'yazı': {
+          const boyut = Math.max(1, canvasSayi(k.boyut, 16));
+          ctx.font = boyut + 'px ' + String(k.yazıTipi || 'Segoe UI');
+          ctx.fillStyle = canvasRenk(k.renk, '#cdd6f4');
+          ctx.textBaseline = 'top';
+          ctx.fillText(String(k.metin ?? ''), canvasSayi(k.x, 0), canvasSayi(k.y, 0));
+          break;
+        }
+        case 'görsel': {
+          const img = new Image();
+          img.onload = () => {
+            const g = canvasSayi(k.genişlik, 0) || img.width;
+            const y = canvasSayi(k.yükseklik, 0) || img.height;
+            ctx.drawImage(img, canvasSayi(k.x, 0), canvasSayi(k.y, 0), g, y);
+          };
+          img.onerror = () => undefined;
+          img.src = String(k.kaynak || '');
+          break;
+        }
+      }
+    }
+
+    function canvasYenidenCiz(el) {
+      if (!el || !el._ctx) return;
+      el._ctx.clearRect(0, 0, el.width, el.height);
+      el._canvasArkaPlan = '';
+      for (const k of el._canvasKomutlar || []) canvasKomutCalistir(el, k);
+    }
+
+    // ─── Canlı TürkUI.fare / TürkUI.klavye durumu ────────────────────────
+    (function () {
+      function buttonState(e, down) {
+        const s = {};
+        if (e.button === 0) s.solTık = down;
+        if (e.button === 1) s.ortaTık = down;
+        if (e.button === 2) s.sağTık = down;
+        return s;
+      }
+      let _lastMoveSend = 0;
+      window.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - _lastMoveSend < 30) return;
+        _lastMoveSend = now;
+        ipcRenderer.send('turkui:mouseState', { x: e.clientX, y: e.clientY });
+      });
+      window.addEventListener('mousedown', (e) => {
+        ipcRenderer.send('turkui:mouseState', buttonState(e, true));
+      });
+      window.addEventListener('mouseup', (e) => {
+        ipcRenderer.send('turkui:mouseState', buttonState(e, false));
+      });
+      window.addEventListener('wheel', (e) => {
+        ipcRenderer.send('turkui:mouseState', { tekerlek: e.deltaY });
+      });
+      window.addEventListener('keydown', (e) => {
+        ipcRenderer.send('turkui:keyState', { tuş: e.key });
+      });
+    })();
+
+    // ─── Layout yardımcıları ─────────────────────────────────────────────
+    const pendingChildren = {}; // parentId -> [childId]
+
+    function flexAlignValue(v) {
+      const s = String(v).trim().toLowerCase().replace(/ı/g, 'i');
+      const map = {
+        'sol': 'flex-start', 'başlangic': 'flex-start', 'baslangic': 'flex-start', 'ust': 'flex-start', 'üst': 'flex-start', 'flex-start': 'flex-start',
+        'sag': 'flex-end', 'sağ': 'flex-end', 'son': 'flex-end', 'alt': 'flex-end', 'flex-end': 'flex-end',
+        'orta': 'center', 'center': 'center',
+        'ikiyana': 'space-between', 'iki-yana': 'space-between', 'arasinda': 'space-between', 'aralarinda': 'space-between', 'space-between': 'space-between',
+        'cevresinde': 'space-around', 'çevresinde': 'space-around', 'space-around': 'space-around',
+        'esitbosluk': 'space-evenly', 'eşitbosluk': 'space-evenly', 'space-evenly': 'space-evenly',
+        'doldur': 'stretch', 'germis': 'stretch', 'germiş': 'stretch', 'stretch': 'stretch',
+      };
+      return map[s] || 'flex-start';
+    }
+
+    function flexDirectionValue(v) {
+      const s = String(v).trim().toLowerCase();
+      if (s === 'dikey' || s === 'dikeydüzen' || s === 'column' || s === 'sütun' || s === 'sutun') return 'column';
+      if (s === 'yatay' || s === 'yataydüzen' || s === 'row' || s === 'satır' || s === 'satir') return 'row';
+      if (s === 'dikeyters' || s === 'column-reverse' || s === 'sütunters' || s === 'sutunters') return 'column-reverse';
+      if (s === 'yatayters' || s === 'row-reverse' || s === 'satırters' || s === 'satirters') return 'row-reverse';
+      return 'column';
+    }
+
+    function isLayout(el) {
+      return el.classList.contains('turkui-layout-dikey')
+        || el.classList.contains('turkui-layout-yatay')
+        || el.classList.contains('turkui-layout-grid');
+    }
+
+    function attachToParent(childId, parentId) {
+      const child = components[childId];
+      const parent = components[parentId];
+      if (!child || !parent) {
+        if (parentId) {
+          if (!pendingChildren[parentId]) pendingChildren[parentId] = [];
+          if (pendingChildren[parentId].indexOf(childId) < 0) pendingChildren[parentId].push(childId);
+        }
+        return;
+      }
+      const hedef = parent._childContainer || parent;
+      hedef.appendChild(child);
+      child._parentLayoutId = parentId;
+      child.style.alignSelf = 'auto';
+    }
+
+    function removeFromParent(childId, parentId) {
+      const child = components[childId];
+      if (child && child.parentNode) {
+        child.parentNode.removeChild(child);
+        delete child._parentLayoutId;
+        child.style.alignSelf = '';
+      }
+      if (pendingChildren[parentId]) {
+        pendingChildren[parentId] = pendingChildren[parentId].filter(c => c !== childId);
+      }
+    }
+
+    function isTransition(value) {
+      return value && typeof value === 'object' && value._turkolGeçiş;
+    }
+
+    // x/y/right artık pencerenin YÜZDE konumudur (0-100).
+    // Eksik ekseni de %0 yap ki pencere yeniden boyutlanınca
+    // bileşen hep pencereye bağlı göreli konumda kalsın (ölçeklenir).
+    function konumuDondur(el) {
+      if (!el || el.style.position !== 'absolute') return;
+      if (!el.style.top) el.style.top = '0%';
+      if (!el.style.left && !el.style.right) el.style.left = '0%';
+    }
+
+    const _transitionProps = new Map();
+
+    function startColorTransition(el, cssProp, cssValue, toColor, duration) {
+      const key = el.id + ':' + cssProp;
+      if (_transitionProps.has(key)) {
+        cancelAnimationFrame(_transitionProps.get(key).raf);
+      }
+      el.style.transition = cssProp + ' ' + duration + 's ease';
+      el.style[cssValue] = toColor;
+      const onEnd = () => {
+        el.style.transition = '';
+        el.removeEventListener('transitionend', onEnd);
+        _transitionProps.delete(key);
+      };
+      el.addEventListener('transitionend', onEnd);
+      _transitionProps.set(key, { raf: 0, end: onEnd });
+    }
+
+    ipcRenderer.on('turkui:addComponent', (_event, data) => {
+      const { type, id, props } = data;
+      console.log('[turkui-html] addComponent', type, id);
+      let el;
+
+      switch (type) {
+        case 'flexSpace': {
+          el = document.createElement('div');
+          el.className = 'turkui-spacer';
+          if (props.büyüme !== undefined && props.büyüme !== null) el.style.flexGrow = props.büyüme;
+          break;
+        }
+        case 'text': {
+          el = document.createElement('div');
+          el.className = 'turkui-text';
+          // Gösterim öncesi `içerik` ataması `text` başlangıç değerini geçersiz kılar.
+          el.textContent = props.içerik ?? props.text ?? '';
+          if (props.renk) el.style.color = props.renk;
+          if (props.yazıBoyutu) el.style.fontSize = props.yazıBoyutu + 'px';
+          if (props.kalın) el.style.fontWeight = '700';
+          if (props.italik) el.style.fontStyle = 'italic';
+          if (props.altıÇizili) el.style.textDecoration = 'underline';
+          if (props.hizalama) el.style.textAlign = props.hizalama;
+          if (props.yazıTipi) el.style.fontFamily = props.yazıTipi;
+          break;
+        }
+        case 'button': {
+          el = document.createElement('button');
+          el.className = 'turkui-button';
+          el.textContent = props.metin ?? props.label ?? 'Buton';
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          if (props.renk) el.style.color = props.renk;
+          if (props.yazıBoyutu) el.style.fontSize = props.yazıBoyutu + 'px';
+          if (props.yuvarlaklık) el.style.borderRadius = props.yuvarlaklık + 'px';
+          if (props.kenarKalınlığı) el.style.borderWidth = props.kenarKalınlığı + 'px';
+          if (props.kenarRengi) el.style.borderColor = props.kenarRengi;
+          if (props.kenarKalınlığı > 0) el.style.borderStyle = 'solid';
+          if (props.genişlik) el.style.width = props.genişlik + 'px';
+          if (props.yükseklik) el.style.height = props.yükseklik + 'px';
+          if (props.etkin === false) el.disabled = true;
+
+          el.addEventListener('click', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tıklandığında' });
+          });
+          el.addEventListener('mousedown', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'basıldığında' });
+          });
+          el.addEventListener('mouseup', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'bırakıldığında' });
+          });
+          el.addEventListener('mouseenter', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'üzerineGelindiğinde' });
+          });
+          el.addEventListener('mouseleave', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'üzerindenÇıkıldığında' });
+          });
+          el.addEventListener('keydown', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBasılınca' });
+          });
+          el.addEventListener('keyup', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBırakılınca' });
+          });
+          break;
+        }
+        case 'input': {
+          el = document.createElement('input');
+          el.className = 'turkui-input';
+          el.type = props.şifre ? 'password' : 'text';
+          el.placeholder = props.yerTutucu ?? props.placeholder ?? '';
+          if (props.değer) el.value = props.değer;
+          if (props.renk) el.style.color = props.renk;
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          if (props.yazıBoyutu) el.style.fontSize = props.yazıBoyutu + 'px';
+          if (props.etkin === false) el.disabled = true;
+
+          el.addEventListener('input', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'değiştiğinde', props: { değer: el.value } });
+          });
+          el.addEventListener('focus', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'odaklandığında' });
+          });
+          el.addEventListener('blur', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'odağıKaybettiğinde' });
+          });
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              ipcRenderer.send('turkui:event', { componentId: id, eventName: 'enterBasılınca' });
+            }
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBasılınca' });
+          });
+          el.addEventListener('keyup', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBırakılınca' });
+          });
+          break;
+        }
+        case 'box': {
+          el = document.createElement('div');
+          el.className = 'turkui-box';
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          if (props.genişlik) el.style.width = props.genişlik + 'px';
+          if (props.yükseklik) el.style.height = props.yükseklik + 'px';
+          if (props.yuvarlaklık) el.style.borderRadius = props.yuvarlaklık + 'px';
+          if (props.kenarKalınlığı) el.style.borderWidth = props.kenarKalınlığı + 'px';
+          if (props.kenarRengi) el.style.borderColor = props.kenarRengi;
+          if (props.dolgu) el.style.padding = props.dolgu + 'px';
+          if (props.aralık) el.style.gap = props.aralık + 'px';
+          break;
+        }
+        case 'list': {
+          el = document.createElement('div');
+          el.className = 'turkui-list';
+          el.style.width = (props.genişlik || 200) + 'px';
+          el.style.height = (props.yükseklik || 150) + 'px';
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          break;
+        }
+        case 'image': {
+          el = document.createElement('img');
+          el.className = 'turkui-image';
+          el.src = props.kaynak || '';
+          if (props.genişlik) el.style.width = props.genişlik + 'px';
+          if (props.yükseklik) el.style.height = props.yükseklik + 'px';
+          if (props.doldur) el.classList.add('cover');
+          el.addEventListener('click', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tıklandığında' });
+          });
+          break;
+        }
+        case 'progress': {
+          const wrap = document.createElement('div');
+          wrap.className = 'turkui-progress-wrap';
+          const fill = document.createElement('div');
+          fill.className = 'turkui-progress-fill';
+          wrap._fill = fill;
+          wrap._min = props.minimum !== undefined && props.minimum !== null ? Number(props.minimum) : 0;
+          wrap._max = props.maksimum !== undefined && props.maksimum !== null ? Number(props.maksimum) : 100;
+          wrap._değer = props.değer !== undefined && props.değer !== null ? Number(props.değer) : wrap._min;
+          progressYenile(wrap);
+          if (props.renk) fill.style.background = props.renk;
+          if (props.arkaPlan) wrap.style.background = props.arkaPlan;
+          wrap.appendChild(fill);
+          el = wrap;
+          break;
+        }
+        case 'checkbox': {
+          const wrap = document.createElement('div');
+          wrap.className = 'turkui-checkbox-wrap';
+          const box = document.createElement('div');
+          box.className = 'turkui-checkbox-box' + (props.seçili ? ' checked' : '');
+          const label = document.createElement('span');
+          label.className = 'turkui-checkbox-label';
+          label.textContent = props.metin || '';
+          if (props.renk) label.style.color = props.renk;
+          wrap.appendChild(box);
+          wrap.appendChild(label);
+          wrap.addEventListener('click', () => {
+            const checked = !box.classList.contains('checked');
+            box.classList.toggle('checked', checked);
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'değiştiğinde', props: { seçili: checked } });
+          });
+          el = wrap;
+          el._checkboxBox = box;
+          break;
+        }
+        case 'combo': {
+          el = document.createElement('select');
+          el.className = 'turkui-combo';
+          el.addEventListener('change', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'seçildiğinde', props: { seçili: el.value, seçiliİndeks: el.selectedIndex } });
+          });
+          break;
+        }
+        case 'tab': {
+          el = document.createElement('div');
+          const bar = document.createElement('div');
+          bar.className = 'turkui-tab-bar';
+          el.appendChild(bar);
+          el._tabBar = bar;
+          break;
+        }
+        case 'textarea': {
+          el = document.createElement('textarea');
+          el.className = 'turkui-textarea';
+          el.placeholder = props.yerTutucu ?? props.placeholder ?? '';
+          if (props.değer) el.value = props.değer;
+          if (props.renk) el.style.color = props.renk;
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          if (props.yazıBoyutu) el.style.fontSize = props.yazıBoyutu + 'px';
+          if (props.satır) el.rows = props.satır;
+          if (props.sütun) el.cols = props.sütun;
+          if (props.saltOkunur) el.readOnly = true;
+          if (props.sözcükKaydırma === false) el.style.whiteSpace = 'nowrap';
+          if (props.etkin === false) el.disabled = true;
+          el.addEventListener('input', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'değiştiğinde', props: { değer: el.value } });
+          });
+          el.addEventListener('focus', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'odaklandığında' });
+          });
+          el.addEventListener('blur', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'odağıKaybettiğinde' });
+          });
+          el.addEventListener('keydown', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBasılınca' });
+          });
+          el.addEventListener('keyup', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'tuşBırakılınca' });
+          });
+          break;
+        }
+        case 'slider': {
+          el = document.createElement('input');
+          el.type = 'range';
+          el.className = 'turkui-slider';
+          el.min = String(props.minimum !== undefined && props.minimum !== null ? props.minimum : 0);
+          el.max = String(props.maksimum !== undefined && props.maksimum !== null ? props.maksimum : 100);
+          el.step = String(props.adım !== undefined && props.adım !== null ? props.adım : 1);
+          el.value = String(props.değer !== undefined && props.değer !== null ? props.değer : props.minimum ?? 0);
+          if (props.dikey) el.classList.add('dikey');
+          el.addEventListener('input', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'değiştiğinde', props: { değer: Number(el.value) } });
+          });
+          break;
+        }
+        case 'switch': {
+          const wrap = document.createElement('div');
+          wrap.className = 'turkui-switch';
+          const track = document.createElement('div');
+          track.className = 'turkui-switch-track' + (props.açık ? ' on' : '');
+          const thumb = document.createElement('div');
+          thumb.className = 'turkui-switch-thumb';
+          track.appendChild(thumb);
+          const label = document.createElement('span');
+          label.className = 'turkui-switch-label';
+          label.textContent = props.metin || '';
+          if (props.renk) label.style.color = props.renk;
+          wrap.appendChild(track);
+          wrap.appendChild(label);
+          wrap.addEventListener('click', () => {
+            const on = !track.classList.contains('on');
+            track.classList.toggle('on', on);
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'değiştiğinde', props: { açık: on } });
+          });
+          el = wrap;
+          el._switchTrack = track;
+          el._switchLabel = label;
+          break;
+        }
+        case 'radio': {
+          el = document.createElement('div');
+          el.className = 'turkui-radio-group';
+          el._pendingSelectIndex = (props.seçiliİndeks !== undefined && props.seçiliİndeks !== null && Number(props.seçiliİndeks) >= 0) ? Number(props.seçiliİndeks) : -1;
+          break;
+        }
+        case 'custom': {
+          el = document.createElement('div');
+          el.className = 'turkui-ozel';
+          el._shadow = el.attachShadow({ mode: 'open' });
+          el._customHtml = props.html !== undefined && props.html !== null ? String(props.html) : '';
+          el._customCss = props.css !== undefined && props.css !== null ? String(props.css) : '';
+          customYenile(el);
+          break;
+        }
+        case 'canvas': {
+          el = document.createElement('canvas');
+          el.className = 'turkui-canvas';
+          const cg = Number(props.genişlik);
+          const cy = Number(props.yükseklik);
+          el.width = Number.isFinite(cg) && cg > 0 ? Math.round(cg) : 640;
+          el.height = Number.isFinite(cy) && cy > 0 ? Math.round(cy) : 360;
+          el._ctx = el.getContext('2d');
+          el._canvasKomutlar = [];
+          el._canvasArkaPlan = '';
+          break;
+        }
+        case 'dikeyLayout': {
+          el = document.createElement('div');
+          el.className = 'turkui-layout-dikey';
+          if (props.aralık) el.style.gap = props.aralık + 'px';
+          if (props.dolgu) el.style.padding = props.dolgu + 'px';
+          if (props.hizalama !== undefined && props.hizalama !== null) el.style.justifyContent = flexAlignValue(props.hizalama);
+          if (props.çaprazHizalama !== undefined && props.çaprazHizalama !== null) el.style.alignItems = flexAlignValue(props.çaprazHizalama);
+          if (props.yön !== undefined && props.yön !== null) el.style.flexDirection = flexDirectionValue(props.yön);
+          break;
+        }
+        case 'yatayLayout': {
+          el = document.createElement('div');
+          el.className = 'turkui-layout-yatay';
+          if (props.aralık) el.style.gap = props.aralık + 'px';
+          if (props.dolgu) el.style.padding = props.dolgu + 'px';
+          if (props.hizalama !== undefined && props.hizalama !== null) el.style.justifyContent = flexAlignValue(props.hizalama);
+          if (props.çaprazHizalama !== undefined && props.çaprazHizalama !== null) el.style.alignItems = flexAlignValue(props.çaprazHizalama);
+          if (props.sarma !== undefined && props.sarma !== null) el.style.flexWrap = props.sarma ? 'wrap' : 'nowrap';
+          if (props.yön !== undefined && props.yön !== null) el.style.flexDirection = flexDirectionValue(props.yön);
+          break;
+        }
+        case 'gridLayout': {
+          el = document.createElement('div');
+          el.className = 'turkui-layout-grid';
+          if (props.aralık) el.style.gap = props.aralık + 'px';
+          if (props.dolgu) el.style.padding = props.dolgu + 'px';
+          if (props.sütun) el.style.gridTemplateColumns = 'repeat(' + props.sütun + ', minmax(0, 1fr))';
+          if (props.satır) el.style.gridTemplateRows = 'repeat(' + props.satır + ', minmax(0, 1fr))';
+          if (props.hizalama !== undefined && props.hizalama !== null) el.style.justifyContent = flexAlignValue(props.hizalama);
+          if (props.çaprazHizalama !== undefined && props.çaprazHizalama !== null) el.style.alignItems = flexAlignValue(props.çaprazHizalama);
+          break;
+        }
+        case 'webBrowser': {
+          el = document.createElement('div');
+          el.className = 'turkui-webbrowser';
+          break;
+        }
+        case 'audio': {
+          el = document.createElement('audio');
+          el.className = 'turkui-audio';
+          el.preload = 'auto';
+          el.loop = props.döngü === true;
+          el.controls = props.kontroller === true;
+          if (el.controls) el.classList.add('kontrollu');
+          const sesSeviyesi = Number(props.sesSeviyesi);
+          el.volume = Number.isFinite(sesSeviyesi) ? Math.min(1, Math.max(0, sesSeviyesi)) : 1;
+          if (props.kaynak) el.src = String(props.kaynak);
+          let sonKonumBildirimi = 0;
+          el.addEventListener('play', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'çalmayaBaşladığında' });
+          });
+          el.addEventListener('pause', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'duraklatıldığında' });
+          });
+          el.addEventListener('ended', () => {
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'bittiğinde' });
+          });
+          el.addEventListener('timeupdate', () => {
+            const simdi = Date.now();
+            if (simdi - sonKonumBildirimi < 400) return;
+            sonKonumBildirimi = simdi;
+            const sure = Number(el.duration);
+            ipcRenderer.send('turkui:event', {
+              componentId: id,
+              eventName: 'değiştiğinde',
+              props: {
+                konum: Number(el.currentTime) || 0,
+                süre: Number.isFinite(sure) ? sure : 0,
+              },
+            });
+          });
+          break;
+        }
+        case 'table': {
+          el = document.createElement('table');
+          el.className = 'turkui-table';
+          const thead = document.createElement('thead');
+          const tbody = document.createElement('tbody');
+          const baslikSatiri = document.createElement('tr');
+          const basliklar = Array.isArray(props.başlıklar) ? props.başlıklar : [];
+          for (const baslik of basliklar) {
+            const th = document.createElement('th');
+            th.textContent = String(baslik);
+            baslikSatiri.appendChild(th);
+          }
+          thead.appendChild(baslikSatiri);
+          el.appendChild(thead);
+          el.appendChild(tbody);
+          el._thead = thead;
+          el._tbody = tbody;
+          if (props.başlıkGöster === false) thead.style.display = 'none';
+          if (props.şeritli === false) el.classList.add('şeritsiz');
+          if (props.arkaPlan) el.style.background = props.arkaPlan;
+          if (props.renk) el.style.color = props.renk;
+          if (props.yazıBoyutu) el.style.fontSize = props.yazıBoyutu + 'px';
+          break;
+        }
+        case 'modal': {
+          el = document.createElement('div');
+          el.className = 'turkui-modal';
+          const kart = document.createElement('div');
+          kart.className = 'turkui-modal-kart';
+          if (props.genişlik) kart.style.width = props.genişlik + 'px';
+          if (props.arkaPlan) kart.style.background = props.arkaPlan;
+          if (props.renk) kart.style.color = props.renk;
+          if (props.yuvarlaklık) kart.style.borderRadius = props.yuvarlaklık + 'px';
+          if (props.dolgu) kart.style.padding = props.dolgu + 'px';
+          if (props.aralık !== undefined) kart.style.gap = props.aralık + 'px';
+          if (props.karartma !== undefined) el.style.background = 'rgba(0, 0, 0, ' + Number(props.karartma) + ')';
+          const baslik = document.createElement('div');
+          baslik.className = 'turkui-modal-baslik';
+          baslik.textContent = props.başlık || '';
+          if (!props.başlık) baslik.style.display = 'none';
+          const kapat = document.createElement('div');
+          kapat.className = 'turkui-modal-kapat';
+          kapat.textContent = '✕';
+          if (props.kapatmaDüğmesi === false) kapat.style.display = 'none';
+          const ustSatir = document.createElement('div');
+          ustSatir.className = 'turkui-modal-ustsatir';
+          ustSatir.appendChild(baslik);
+          ustSatir.appendChild(kapat);
+          const modalKapat = () => {
+            el.classList.add('turkui-hidden');
+            el.style.opacity = '';
+            ipcRenderer.send('turkui:event', { componentId: id, eventName: 'kapatıldığında' });
+          };
+          kapat.addEventListener('click', (e) => { e.stopPropagation(); modalKapat(); });
+          el.addEventListener('mousedown', (e) => { if (e.target === el) modalKapat(); });
+          kart.appendChild(ustSatir);
+          el.appendChild(kart);
+          el._modalKart = kart;
+          el._modalBaslik = baslik;
+          el._modalKapat = kapat;
+          // Çocuklar kartın içine eklenir (üst satırın altına).
+          el._childContainer = kart;
+          break;
+        }
+        default:
+          return;
+      }
+
+      if (el) {
+        el.id = 'turkui-' + id;
+        // x/y/right verilen bileşenler, nereye konursa konsun sabit kalır:
+        // layout içinde olsalar bile absolute olarak o konuma çivilenir.
+        if (props.x !== undefined && props.x !== null) { el.style.position = 'absolute'; el.style.left = props.x + '%'; }
+        if (props.right !== undefined && props.right !== null) { el.style.position = 'absolute'; el.style.right = props.right + '%'; }
+        if (props.y !== undefined && props.y !== null) { el.style.position = 'absolute'; el.style.top = props.y + '%'; }
+        if (props.şeffaflık !== undefined) el.style.opacity = props.şeffaflık;
+        applyProps(el, props);
+        // Bileşeni önce kayıt et; attachToParent ancak bu kayıttan sonra
+        // çocuğu bulabilir (aksi halde her çocuk pendingChildren'a düşer
+        // ve yaprak bileşenler asla bağlanmaz — pencere bomboş görünür).
+        components[id] = el;
+        if (type === 'custom') bindCustomEvents(el, id);
+        else bindCommonEvents(el, id);
+        if (props._parentId) {
+          attachToParent(id, props._parentId);
+        } else {
+          root.appendChild(el);
+        }
+        // Konumu verilen nesneyi tamamen çivile: eksik ekseni de dondur.
+        konumuDondur(el);
+        // Tarayıcı çerçevesi, bileşen kaydedilip DOM'a bağlandıktan sonra
+        // kurulur; böylece ilk gezinme olayları çalıştırıcıya ulaşabilir.
+        if (type === 'webBrowser') webTarayiciKur(el, id, props);
+        // Bu bileşene bekleyen çocukları bağla
+        if (pendingChildren[id]) {
+          const waiting = pendingChildren[id];
+          delete pendingChildren[id];
+          for (const cid of waiting) attachToParent(cid, id);
+        }
+      }
+    });
+
+    // Bileşen güncellemelerini işle
+    ipcRenderer.on('turkui:updateComponent', (_event, data) => {
+      const { id, prop, value } = data;
+      console.log('[turkui-html] updateComponent', JSON.stringify(id), prop);
+      if (prop === '_title') {
+        document.title = String(value);
+        const baslikYazi = document.getElementById('turkui-baslik-yazi');
+        if (baslikYazi) baslikYazi.textContent = String(value);
+        return;
+      }
+      if (prop === '_show') {
+        root.style.display = '';
+        acilisAnimasyonuUygula(document.body.dataset.anim || '');
+        return;
+      }
+      if (prop === '_arkaPlanResmi') {
+        const resim = String(value || '');
+        document.body.style.backgroundImage = resim ? 'url("' + resim + '")' : 'none';
+        document.body.classList.toggle('arka-plan-resimli', !!resim);
+        return;
+      }
+      if (prop === '_açılışAnimasyon') {
+        document.body.dataset.anim = String(value || '');
+        acilisAnimasyonuUygula(String(value || ''));
+        return;
+      }
+      if (prop === '_başlıkÇubuğu') {
+        document.body.classList.toggle('baslik-cubuklu', value === true);
+        return;
+      }
+      if (prop === '_logo') {
+        // `uygulama.logo("logo.png")`: başlık çubuğunda logo + pencere simgesi.
+        const yol = String(value || '');
+        const logo = document.getElementById('turkui-baslik-logo');
+        if (logo) {
+          // Dosya bulunamazsa kırık resim simgesi görünmesin.
+          logo.onerror = () => {
+            logo.style.display = 'none';
+          };
+          if (yol) {
+            logo.src = yol;
+            logo.style.display = 'block';
+          } else {
+            logo.removeAttribute('src');
+            logo.style.display = 'none';
+          }
+        }
+        // Masaüstü/tarayıcı penceresi simgesi favicon'dan gelir.
+        let simge = document.getElementById('turkui-pencere-simgesi');
+        if (!simge) {
+          simge = document.createElement('link');
+          simge.id = 'turkui-pencere-simgesi';
+          simge.rel = 'icon';
+          document.head.appendChild(simge);
+        }
+        if (yol) simge.href = yol;
+        else simge.removeAttribute('href');
+        return;
+      }
+      if (prop === '_css') {
+        let stil = document.getElementById('turkui-pencere-stil');
+        if (!stil) {
+          stil = document.createElement('style');
+          stil.id = 'turkui-pencere-stil';
+          document.head.appendChild(stil);
+        }
+        const css = turkceCss(value || '');
+        // Kural bloğu yoksa düz bildirim listesi pencere gövdesine uygulanır
+        // (`TürkUI.stil { pencere( arkaPlanRengi: yeşil ) }` gibi).
+        // `&` içeren kurallar pencere gövdesine bağlanır; tam seçiciler
+        // (`body { ... }` gibi) olduğu gibi bırakılır.
+        stil.textContent = !css
+          ? ''
+          : !css.includes('{')
+            ? 'body { ' + css + ' }'
+            : css.includes('&')
+              ? stilKapsamla(css, 'body')
+              : css;
+        return;
+      }
+      if (prop === '_bg') {
+        if (isTransition(value)) {
+          startColorTransition(document.body, 'background', 'background', value.toColor, value.duration);
+        } else {
+          document.body.style.transition = 'none';
+          document.body.style.background = value;
+        }
+        return;
+      }
+      if (prop === '_hide') {
+        root.style.display = 'none';
+        return;
+      }
+      if (prop === '_minimize') {
+        ipcRenderer.send('turkui:windowMinimize');
+        return;
+      }
+      if (prop === '_maximize') {
+        ipcRenderer.send('turkui:windowMaximize');
+        return;
+      }
+      if (prop === '_restore') {
+        ipcRenderer.send('turkui:windowUnmaximize');
+        return;
+      }
+      if (prop === '_close') {
+        ipcRenderer.send('turkui:windowClose');
+        return;
+      }
+      if (prop === '_center') {
+        ipcRenderer.send('turkui:windowCenter');
+        return;
+      }
+
+      if (prop === '_betik') {
+        betikCalistir(value);
+        return;
+      }
+
+      const el = components[id];
+      if (!el) return;
+
+      switch (prop) {
+        case 'içerik': case 'text':
+          if (el._shadow) { el._customHtml = String(value); customYenile(el); }
+          else if (el.classList.contains('turkui-text')) el.textContent = String(value);
+          break;
+        case 'metin':
+          if (el.classList.contains('turkui-button')) el.textContent = String(value);
+          if (el._checkboxBox) el.nextSibling.textContent = String(value);
+          if (el._switchLabel) el._switchLabel.textContent = String(value);
+          break;
+        case 'renk':
+          if (isTransition(value)) {
+            startColorTransition(el._modalKart || el, 'color', 'color', value.toColor, value.duration);
+          } else {
+            const renkHedefi = el._modalKart || el;
+            renkHedefi.style.transition = 'none';
+            renkHedefi.style.color = value;
+          }
+          break;
+        case 'arkaPlan':
+          if (isTransition(value)) {
+            startColorTransition(el._modalKart || el, 'background', 'background', value.toColor, value.duration);
+          } else {
+            const arkaPlanHedefi = el._modalKart || el;
+            arkaPlanHedefi.style.transition = 'none';
+            arkaPlanHedefi.style.background = value;
+          }
+          break;
+        case 'yazıBoyutu':
+          el.style.fontSize = value + 'px';
+          break;
+        case 'yazıTipi':
+          el.style.fontFamily = value;
+          break;
+        case 'kalın':
+          el.style.fontWeight = value ? '700' : '400';
+          break;
+        case 'italik':
+          el.style.fontStyle = value ? 'italic' : 'normal';
+          break;
+        case 'altıÇizili':
+          el.style.textDecoration = value ? 'underline' : 'none';
+          break;
+        case 'hizalama':
+          if (isLayout(el)) el.style.justifyContent = flexAlignValue(value);
+          else el.style.textAlign = value;
+          break;
+        case 'çaprazHizalama':
+          if (isLayout(el)) el.style.alignItems = flexAlignValue(value);
+          break;
+        case 'yön':
+          if (el.classList.contains('turkui-layout-dikey') || el.classList.contains('turkui-layout-yatay')) {
+            el.style.flexDirection = flexDirectionValue(value);
+          }
+          break;
+        case 'sarma':
+          if (el.classList.contains('turkui-layout-yatay')) {
+            el.style.flexWrap = value ? 'wrap' : 'nowrap';
+          }
+          break;
+        case 'sütun':
+          if (el.classList.contains('turkui-layout-grid')) {
+            el.style.gridTemplateColumns = 'repeat(' + value + ', minmax(0, 1fr))';
+          } else if (el.tagName === 'TEXTAREA') {
+            el.cols = value;
+          }
+          break;
+        case 'satır':
+          if (el.classList.contains('turkui-layout-grid')) {
+            el.style.gridTemplateRows = 'repeat(' + value + ', minmax(0, 1fr))';
+          } else if (el.tagName === 'TEXTAREA') {
+            el.rows = value;
+          }
+          break;
+        case 'aralık':
+          (el._modalKart || el).style.gap = value + 'px';
+          break;
+        case 'büyüme':
+          el.style.flexGrow = value;
+          break;
+        case 'genişlik':
+          if (el.tagName === 'CANVAS') {
+            const g = Number(value);
+            if (Number.isFinite(g) && g > 0) {
+              el.width = Math.round(g);
+              el.style.width = g + 'px';
+              canvasYenidenCiz(el);
+            }
+          } else if (el._modalKart) {
+            el._modalKart.style.width = value + 'px';
+          } else {
+            el.style.width = value + 'px';
+          }
+          break;
+        case 'yükseklik':
+          if (el.tagName === 'CANVAS') {
+            const y = Number(value);
+            if (Number.isFinite(y) && y > 0) {
+              el.height = Math.round(y);
+              el.style.height = y + 'px';
+              canvasYenidenCiz(el);
+            }
+          } else {
+            el.style.height = value + 'px';
+          }
+          break;
+        case 'x':
+          el.style.position = 'absolute';
+          el.style.left = value + '%';
+          el.style.right = '';
+          konumuDondur(el);
+          break;
+        case 'right':
+          el.style.position = 'absolute';
+          el.style.right = value + '%';
+          el.style.left = '';
+          konumuDondur(el);
+          break;
+        case 'y':
+          el.style.position = 'absolute';
+          el.style.top = value + '%';
+          konumuDondur(el);
+          break;
+        case 'şeffaflık':
+          el.style.opacity = value;
+          break;
+        case 'yuvarlaklık':
+          (el._modalKart || el).style.borderRadius = value + 'px';
+          break;
+        case 'kenar':
+        case 'kenarKalınlığı':
+          el.style.borderWidth = value + 'px';
+          el.style.borderStyle = value > 0 ? 'solid' : 'none';
+          break;
+        case 'kenarRengi':
+          if (isTransition(value)) {
+            startColorTransition(el, 'border-color', 'borderColor', value.toColor, value.duration);
+          } else {
+            el.style.transition = 'none';
+            el.style.borderColor = value;
+          }
+          break;
+        case 'etkin':
+          if (el.disabled !== undefined) el.disabled = !value;
+          break;
+        case 'değer':
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.value = String(value);
+          } else if (el._fill) {
+            el._değer = Number(value);
+            progressYenile(el);
+          }
+          break;
+        case 'yerTutucu':
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = String(value);
+          break;
+        case 'şifre':
+          if (el.tagName === 'INPUT') el.type = value ? 'password' : 'text';
+          break;
+        case 'saltOkunur':
+          if (el.tagName === 'TEXTAREA') el.readOnly = !!value;
+          break;
+        case 'sözcükKaydırma':
+          if (el.tagName === 'TEXTAREA') el.style.whiteSpace = value ? 'normal' : 'nowrap';
+          break;
+        case 'adım':
+          if (el.tagName === 'INPUT' && el.type === 'range') el.step = String(value);
+          break;
+        case 'minimum':
+          if (el.tagName === 'INPUT' && el.type === 'range') el.min = String(value);
+          else if (el._fill) { el._min = Number(value); progressYenile(el); }
+          break;
+        case 'maksimum':
+          if (el.tagName === 'INPUT' && el.type === 'range') el.max = String(value);
+          else if (el._fill) { el._max = Number(value); progressYenile(el); }
+          break;
+        case 'dikey':
+          if (el.classList.contains('turkui-slider')) el.classList.toggle('dikey', !!value);
+          break;
+        case 'açık':
+          if (el._switchTrack) el._switchTrack.classList.toggle('on', !!value);
+          break;
+        case 'dolgu':
+          (el._modalKart || el).style.padding = value + 'px';
+          break;
+        case 'seçili':
+          if (el._checkboxBox) el._checkboxBox.classList.toggle('checked', !!value);
+          if (el.tagName === 'SELECT' && value !== undefined && value !== null) {
+            el.value = String(value);
+          }
+          if (el.classList.contains('turkui-radio-group')) {
+            el.querySelectorAll('.turkui-radio-item').forEach((it) => {
+              const lbl = it.querySelector('.turkui-radio-label');
+              it.classList.toggle('selected', !!lbl && lbl.textContent === String(value));
+            });
+          }
+          if (el._tabBar) {
+            el._tabBar.querySelectorAll('.turkui-tab-item').forEach((t) => {
+              t.classList.toggle('active', t.textContent === String(value));
+            });
+          }
+          break;
+        case 'adres':
+          if (el._web) {
+            const hedef = String(value ?? '');
+            // Olay geri bildirimi aynı adresi yeniden yüklememeli.
+            if (hedef === String(el._webAdres || '')) break;
+            webGit(el, id, hedef, true);
+          }
+          break;
+        case 'anaSayfa':
+          if (el._web) el._webAnaSayfa = String(value ?? '');
+          break;
+        case 'yakınlaştırma':
+          if (el._web) {
+            const oran = Number(value);
+            el._webYakınlaştırma = Number.isFinite(oran) && oran > 0 ? oran : 1;
+            webYakınlaştırmaUygula(el);
+          }
+          break;
+        case '_webGeri':
+          if (el._web) webGeri(el, id);
+          break;
+        case '_webIleri':
+          if (el._web) webIleri(el, id);
+          break;
+        case '_webYenile':
+          if (el._web) webYenile(el, id);
+          break;
+        case '_webDurdur':
+          if (el._web) webDurdur(el, id);
+          break;
+        case 'kaynak':
+          if (el.tagName === 'IMG') el.src = String(value);
+          if (el.tagName === 'AUDIO') el.src = String(value);
+          break;
+        case 'oran':
+          if (el.tagName === 'IMG') el.style.objectFit = value ? 'contain' : 'fill';
+          break;
+        case 'doldur':
+          if (el.tagName === 'IMG') el.classList.toggle('cover', !!value);
+          break;
+        case '_visibleGeçiş':
+          el._visibleGeçiş = Number(value) > 0 ? Number(value) : 0;
+          break;
+        case '_visible':
+          setVisibleState(el, !!value, el._visibleGeçiş || 0);
+          break;
+        case 'sınıf':
+          sinifUygula(el, value);
+          break;
+        case 'stil':
+          stilUygula(el, value);
+          break;
+        case 'html':
+          if (el._web) webHtmlYukle(el, id, value);
+          else if (el._shadow) { el._customHtml = String(value); customYenile(el); }
+          else if (el.classList.contains('turkui-text')) el.textContent = String(value);
+          break;
+        case 'css':
+          if (el._shadow) { el._customCss = String(value); customYenile(el); }
+          break;
+        case '_canvasKomut':
+          if (el._canvasKomutlar) {
+            el._canvasKomutlar.push(value);
+            canvasKomutCalistir(el, value);
+          }
+          break;
+        case '_canvasTemizle':
+          if (el._canvasKomutlar) {
+            el._canvasKomutlar = [];
+            canvasYenidenCiz(el);
+          }
+          break;
+        case '_focus':
+          el.focus();
+          break;
+        case '_blur':
+          el.blur();
+          break;
+        case '_addItem':
+          if (el.classList.contains('turkui-list')) {
+            const item = document.createElement('div');
+            item.className = 'turkui-list-item';
+            item.textContent = String(value);
+            item.addEventListener('click', () => {
+              el.querySelectorAll('.turkui-list-item').forEach(i => i.classList.remove('selected'));
+              item.classList.add('selected');
+              ipcRenderer.send('turkui:event', { componentId: id, eventName: 'seçildiğinde', props: { seçili: item.textContent } });
+            });
+            el.appendChild(item);
+          } else if (el.tagName === 'SELECT') {
+            const opt = document.createElement('option');
+            opt.textContent = String(value);
+            opt.value = String(value);
+            el.appendChild(opt);
+          } else if (el.classList.contains('turkui-radio-group')) {
+            const item = document.createElement('div');
+            item.className = 'turkui-radio-item';
+            const dot = document.createElement('div');
+            dot.className = 'turkui-radio-dot';
+            const label = document.createElement('span');
+            label.className = 'turkui-radio-label';
+            label.textContent = String(value);
+            item.appendChild(dot);
+            item.appendChild(label);
+            item.addEventListener('click', () => {
+              el.querySelectorAll('.turkui-radio-item').forEach(i => i.classList.remove('selected'));
+              item.classList.add('selected');
+              const items = Array.from(el.querySelectorAll('.turkui-radio-item'));
+              ipcRenderer.send('turkui:event', { componentId: id, eventName: 'seçildiğinde', props: { seçili: label.textContent, seçiliİndeks: items.indexOf(item) } });
+            });
+            el.appendChild(item);
+            const idxNow = el.querySelectorAll('.turkui-radio-item').length - 1;
+            if (el._pendingSelectIndex === idxNow) item.classList.add('selected');
+          }
+          break;
+        case '_removeItem':
+          if (el.classList.contains('turkui-list')) {
+            const items = el.querySelectorAll('.turkui-list-item');
+            if (items[value]) items[value].remove();
+          } else if (el.tagName === 'SELECT') {
+            if (el.options[value]) el.remove(value);
+          } else if (el.classList.contains('turkui-radio-group')) {
+            const items = el.querySelectorAll('.turkui-radio-item');
+            if (items[value]) items[value].remove();
+          }
+          break;
+        case '_clearItems':
+          if (el.classList.contains('turkui-list')) el.innerHTML = '';
+          else if (el.tagName === 'SELECT') el.innerHTML = '';
+          else if (el.classList.contains('turkui-radio-group')) el.innerHTML = '';
+          break;
+        case '_selectIndex':
+          if (el.classList.contains('turkui-list')) {
+            el.querySelectorAll('.turkui-list-item').forEach(i => i.classList.remove('selected'));
+            const items = el.querySelectorAll('.turkui-list-item');
+            if (items[value]) items[value].classList.add('selected');
+          } else if (el.tagName === 'SELECT') {
+            if (el.options[value]) el.selectedIndex = value;
+          } else if (el.classList.contains('turkui-radio-group')) {
+            el.querySelectorAll('.turkui-radio-item').forEach(i => i.classList.remove('selected'));
+            const items = el.querySelectorAll('.turkui-radio-item');
+            if (items[value]) items[value].classList.add('selected');
+          }
+          break;
+        case '_addChild':
+          attachToParent(String(value), id);
+          break;
+        case '_removeChild':
+          removeFromParent(String(value), id);
+          break;
+        case '_addTab':
+          if (el._tabBar) {
+            const tb = document.createElement('div');
+            tb.className = 'turkui-tab-item';
+            tb.textContent = String(value);
+            tb.addEventListener('click', () => {
+              el._tabBar.querySelectorAll('.turkui-tab-item').forEach(t => t.classList.remove('active'));
+              tb.classList.add('active');
+              const sekmeler = Array.from(el._tabBar.querySelectorAll('.turkui-tab-item'));
+              ipcRenderer.send('turkui:event', {
+                componentId: id,
+                eventName: 'değiştiğinde',
+                props: { seçili: tb.textContent, seçiliİndeks: sekmeler.indexOf(tb) },
+              });
+            });
+            el._tabBar.appendChild(tb);
+          }
+          break;
+        case '_removeTab':
+          if (el._tabBar) {
+            const tabs = el._tabBar.querySelectorAll('.turkui-tab-item');
+            if (tabs[value]) tabs[value].remove();
+          }
+          break;
+        case '_clearTabs':
+          if (el._tabBar) el._tabBar.innerHTML = '';
+          break;
+        case '_selectTab':
+          if (el._tabBar) {
+            el._tabBar.querySelectorAll('.turkui-tab-item').forEach(t => {
+              t.classList.toggle('active', t.textContent === String(value));
+            });
+          }
+          break;
+        /* ── Ses bileşeni ──────────────────────────────────────────────── */
+        case 'döngü':
+          if (el.tagName === 'AUDIO') el.loop = !!value;
+          break;
+        case 'kontroller':
+          if (el.tagName === 'AUDIO') {
+            el.controls = !!value;
+            el.classList.toggle('kontrollu', !!value);
+          }
+          break;
+        case 'sesSeviyesi': {
+          if (el.tagName !== 'AUDIO') break;
+          const oran = Number(value);
+          if (Number.isFinite(oran)) el.volume = Math.min(1, Math.max(0, oran));
+          break;
+        }
+        case 'konum': {
+          if (el.tagName !== 'AUDIO') break;
+          const saniye = Number(value);
+          if (Number.isFinite(saniye) && saniye >= 0) {
+            try { el.currentTime = saniye; } catch (_) { /* henüz yüklenmedi */ }
+          }
+          break;
+        }
+        case '_audioKomut': {
+          if (el.tagName !== 'AUDIO' || !value || typeof value !== 'object') break;
+          const komut = String(value.komut || '');
+          if (komut === 'çal') {
+            const soz = el.play();
+            if (soz && typeof soz.catch === 'function') soz.catch(() => undefined);
+          } else if (komut === 'duraklat') {
+            el.pause();
+          } else if (komut === 'durdur') {
+            el.pause();
+            try { el.currentTime = 0; } catch (_) { /* yüklenmedi */ }
+          } else if (komut === 'başaAl') {
+            try { el.currentTime = 0; } catch (_) { /* yüklenmedi */ }
+          }
+          break;
+        }
+        /* ── Tablo bileşeni ───────────────────────────────────────────── */
+        case '_setHeaders': {
+          if (!el._thead) break;
+          const basliklar = Array.isArray(value) ? value : [value];
+          const satir = document.createElement('tr');
+          for (const baslik of basliklar) {
+            const th = document.createElement('th');
+            th.textContent = String(baslik);
+            satir.appendChild(th);
+          }
+          el._thead.innerHTML = '';
+          el._thead.appendChild(satir);
+          break;
+        }
+        case '_addRow': {
+          if (!el._tbody) break;
+          const degerler = Array.isArray(value) ? value : [value];
+          const tr = document.createElement('tr');
+          for (const hucre of degerler) {
+            const td = document.createElement('td');
+            td.textContent = String(hucre);
+            tr.appendChild(td);
+          }
+          tr.addEventListener('click', () => {
+            const satirlar = Array.from(el._tbody.querySelectorAll('tr'));
+            const indeks = satirlar.indexOf(tr);
+            satirlar.forEach((s) => s.classList.remove('secilmis'));
+            tr.classList.add('secilmis');
+            ipcRenderer.send('turkui:event', {
+              componentId: id,
+              eventName: 'seçildiğinde',
+              props: { seçiliİndeks: indeks },
+            });
+          });
+          el._tbody.appendChild(tr);
+          if (el.classList.contains('şeritsiz') === false) {
+            const satirlar = el._tbody.querySelectorAll('tr');
+            tr.classList.toggle('seritli', satirlar.length % 2 === 0);
+          }
+          break;
+        }
+        case '_removeRow': {
+          if (!el._tbody) break;
+          const indeks = Number(value);
+          const satirlar = el._tbody.querySelectorAll('tr');
+          if (satirlar[indeks]) satirlar[indeks].remove();
+          break;
+        }
+        case '_clearRows':
+          if (el._tbody) el._tbody.innerHTML = '';
+          break;
+        case 'şeritli':
+          el.classList.toggle('şeritsiz', value === false);
+          break;
+        case 'başlıkGöster':
+          if (el._thead) el._thead.style.display = value === false ? 'none' : '';
+          break;
+        case '_setCell': {
+          if (!el._tbody || !value || typeof value !== 'object') break;
+          const satir = el._tbody.querySelectorAll('tr')[Number(value.satır)];
+          if (!satir) break;
+          const hucre = satir.children[Number(value.sütun)];
+          if (hucre) hucre.textContent = String(value.değer);
+          break;
+        }
+        case '_selectRow': {
+          if (!el._tbody) break;
+          el._tbody.querySelectorAll('tr').forEach((s) => s.classList.remove('secilmis'));
+          const secili = el._tbody.querySelectorAll('tr')[Number(value)];
+          if (secili) secili.classList.add('secilmis');
+          break;
+        }
+        /* ── Modal bileşeni ───────────────────────────────────────────── */
+        case 'başlık':
+          if (el._modalBaslik) {
+            el._modalBaslik.textContent = String(value ?? '');
+            el._modalBaslik.style.display = String(value ?? '') === '' ? 'none' : '';
+          }
+          break;
+        case 'karartma':
+          if (el.classList.contains('turkui-modal')) {
+            const oran = Number(value);
+            if (Number.isFinite(oran)) el.style.background = 'rgba(0, 0, 0, ' + oran + ')';
+          }
+          break;
+        case 'kapatmaDüğmesi':
+          if (el._modalKapat) el._modalKapat.style.display = value === false ? 'none' : '';
+          break;
+      }
+    });
+
+    // Tüm dinleyiciler bağlandıktan sonra pencere yöneticisine hazır olduğumuzu bildir.
+    // `oturum`, sayfanın her yüklenmesinde yeni bir kimliktir; pencere ayrı bir VS Code
+    // penceresine taşınıp webview yeniden yüklendiğinde geçmişin tekrar oynatılmasını sağlar.
+    const oturum =
+      typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+        ? crypto.randomUUID()
+        : String(Date.now()) + Math.random().toString(16).slice(2);
+    vscodeApi.postMessage({ channel: 'turkui:hazir', data: { oturum } });
+  </script>
+</body>
+</html>

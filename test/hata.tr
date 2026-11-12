@@ -1,0 +1,3 @@
+değişken a := 5
+yazdır("başlıyor")
+yazdır(a + tanımsızDeğişken)

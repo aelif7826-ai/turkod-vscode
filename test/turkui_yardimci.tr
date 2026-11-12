@@ -1,0 +1,12 @@
+# TürkUI kullanan yardımcı modül (test/turkui.cjs tarafından yüklenir).
+içe_aktar TürkUI
+
+değişken yardimciPencere := TürkUI.pencere("Yardımcı")
+değişken yardimciEtiket := yardimciPencere.metin("yardımcı")
+değişken yardimciDugme := yardimciPencere.buton("Yardımcı Düğme")
+
+yardimciDugme.tıklandığında
+    yardimciEtiket.içerik := "yardımcı tıklandı"
+son
+
+yardimciPencere.göster()

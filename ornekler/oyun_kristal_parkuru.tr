@@ -1,0 +1,97 @@
+# Kristal Parkuru: WASD ile ilerle, fareyle etrafa bak ve boşlukla platformlara zıpla.
+# Mavi küreler parkurun hedeflerini gösterir. ESC fareyi serbest bırakır.
+
+içe_aktar Oyun
+
+Oyun.sahne {
+    gökyüzü(
+        renk: lacivert
+    )
+    ışık(
+        renk: beyaz
+        konum: (-3, 8, -4)
+    )
+    oyuncu(
+        konum: (0, 1, 0)
+        hız: 7
+        sıçrama: 8
+    )
+    zemin(
+        renk: yeşil
+        konum: (0, -0.5, 0)
+        boyut: (12, 1, 12)
+    )
+
+    # Başlangıç kapısı
+    duvar(
+        renk: turuncu
+        konum: (-3, 1, 3)
+        boyut: (0.5, 2, 0.5)
+    )
+    duvar(
+        renk: turuncu
+        konum: (3, 1, 3)
+        boyut: (0.5, 2, 0.5)
+    )
+    küp(
+        renk: sarı
+        konum: (0, 2, 3)
+        boyut: (6.5, 0.3, 0.5)
+    )
+
+    # Zıplayarak geçilecek yükseltiler
+    küp(
+        renk: turkuaz
+        konum: (0, 0.2, 7)
+        boyut: (3, 0.5, 2)
+    )
+    küp(
+        renk: mavi
+        konum: (2, 1.2, 10)
+        boyut: (2.5, 0.5, 2)
+    )
+    küp(
+        renk: mor
+        konum: (-1, 2.2, 13)
+        boyut: (2.5, 0.5, 2)
+    )
+    küp(
+        renk: pembe
+        konum: (1, 3.2, 16)
+        boyut: (3, 0.5, 2)
+    )
+
+    # Parkur boyunca görünen kristaller
+    küre(
+        renk: sarı
+        konum: (0, 1.5, 7)
+        boyut: (0.7, 0.7, 0.7)
+    )
+    küre(
+        renk: turkuaz
+        konum: (2, 2.5, 10)
+        boyut: (0.7, 0.7, 0.7)
+    )
+    küre(
+        renk: pembe
+        konum: (-1, 3.5, 13)
+        boyut: (0.7, 0.7, 0.7)
+    )
+    küre(
+        renk: lime
+        konum: (1, 4.5, 16)
+        boyut: (0.9, 0.9, 0.9)
+    )
+
+    # Parkurdan düşmemek için kenar duvarları
+    duvar(
+        renk: lacivert
+        konum: (-6, 1, 8)
+        boyut: (0.4, 2, 20)
+    )
+    duvar(
+        renk: lacivert
+        konum: (6, 1, 8)
+        boyut: (0.4, 2, 20)
+    )
+}

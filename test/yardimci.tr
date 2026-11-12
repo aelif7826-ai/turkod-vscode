@@ -1,0 +1,3 @@
+fonksiyon yardimciTopla(a, b)
+	geri_döndür a + b
+son

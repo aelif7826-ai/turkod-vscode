@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>Girdi</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 14px;
+    }
+    #soru { margin-bottom: 12px; white-space: pre-wrap; }
+    #girdi {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      background: #181825;
+      color: #cdd6f4;
+      font: inherit;
+      outline: none;
+    }
+    #girdi:focus { border-color: #89b4fa; }
+    .dugme { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    button {
+      padding: 6px 16px;
+      border: 1px solid #45475a;
+      border-radius: 6px;
+      background: #313244;
+      color: #cdd6f4;
+      font: inherit;
+      cursor: pointer;
+    }
+    button.ana { background: #89b4fa; border-color: #89b4fa; color: #11111b; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div id="soru"></div>
+  <input id="girdi" autocomplete="off" spellcheck="false" />
+  <div class="dugme">
+    <button id="iptal" type="button">İptal</button>
+    <button id="tamam" class="ana" type="button">Tamam</button>
+  </div>
+  <script>
+    const parametreler = new URLSearchParams(location.search);
+    const soru = parametreler.get('soru') || '';
+    const varsayilan = parametreler.get('varsayilan') || '';
+    const girdi = document.getElementById('girdi');
+    document.getElementById('soru').textContent = soru || 'Bir değer girin';
+    girdi.value = varsayilan;
+
+    const bitir = (deger, iptal) => {
+      window.turkuiPencere.gonder('turkui:sor-cevap', { deger, iptal });
+    };
+    document.getElementById('tamam').addEventListener('click', () => bitir(girdi.value, false));
+    document.getElementById('iptal').addEventListener('click', () => bitir('', true));
+    document.addEventListener('keydown', (olay) => {
+      if (olay.key === 'Enter') bitir(girdi.value, false);
+      if (olay.key === 'Escape') bitir('', true);
+    });
+
+    window.addEventListener('load', () => {
+      girdi.focus();
+      girdi.select();
+    });
+  </script>
+</body>
+</html>

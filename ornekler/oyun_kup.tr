@@ -1,0 +1,11 @@
+# Ursina penceresinde turuncu bir küp gösterir.
+
+içe_aktar Oyun
+
+Oyun.sahne {
+    küp(
+        renk: turuncu
+        konum: (0, 0, 0)
+        boyut: (1, 2, 1)
+    )
+}

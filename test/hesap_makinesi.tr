@@ -1,0 +1,40 @@
+yazdır("Hesap Makinesi")
+yazdır("İşlemler: t(toplama) / ç(çıkarma) / ça(çarpma) / b(bölme)")
+
+değişken işlem := iste("İşleminizi girin (t/ç/ça/b): ")
+
+eğer işlem == "t" ise
+    değişken sayı1 := sayısal.iste("Birinci sayıyı girin: ")
+    değişken sayı2 := sayısal.iste("İkinci sayıyı girin: ")
+    değişken toplam := sayı1 + sayı2
+    yazdır("Toplam: " + toplam)
+son
+
+eğer işlem == "ç" ise
+    değişken sayı1 := sayısal.iste("Birinci sayıyı girin: ")
+    değişken sayı2 := sayısal.iste("İkinci sayıyı girin: ")
+    değişken çıkarma := sayı1 - sayı2
+    yazdır("Çıkarma: " + çıkarma)
+son
+
+eğer işlem == "ça" ise
+    değişken sayı1 := sayısal.iste("Birinci sayıyı girin: ")
+    değişken sayı2 := sayısal.iste("İkinci sayıyı girin: ")
+    değişken çarpma := sayı1 * sayı2
+    yazdır("Çarpma: " + çarpma)
+son
+
+eğer işlem == "b" ise
+    değişken sayı1 := sayısal.iste("Birinci sayıyı girin: ")
+    değişken sayı2 := sayısal.iste("İkinci sayıyı girin: ")
+    eğer sayı2 == 0 ise
+        yazdır("Hata: Sıfıra bölünemez!")
+    değilse
+        değişken bölme := sayı1 / sayı2
+        yazdır("Bölme: " + bölme)
+    son
+son
+
+eğer işlem != "t" ve işlem != "ç" ve işlem != "ça" ve işlem != "b" ise
+    yazdır("Geçersiz işlem seçtiniz!")
+son

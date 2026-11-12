@@ -1,0 +1,36 @@
+# Modül, girdi ve hata durumları
+içe_aktar yardimci
+yazdır("modülden:", yardimciTopla(2, 3))
+
+değişken cevap := iste("Adın: ")
+yazdır("Merhaba", cevap)
+
+değişken n := 0
+SonsuzDöngü Doğru ise
+	n := n + 1
+	eğer n > 5 ise
+		dur
+	son
+son
+yazdır("döngü sonu:", n)
+
+için i içinde [1, 2, 3, 4]
+	eğer i == 2 ise
+		devam_et
+	son
+	yazdır("i:", i)
+son
+
+fonksiyon faktoriyelHesap(n)
+	eğer n <= 1 ise
+		geri_döndür 1
+	son
+	geri_döndür n * faktoriyelHesap(n - 1)
+son
+yazdır("5! =", faktoriyelHesap(5))
+
+dene
+	değişken x := 10 / 0
+yakala h
+	yazdır("hata yakalandı:", h)
+son

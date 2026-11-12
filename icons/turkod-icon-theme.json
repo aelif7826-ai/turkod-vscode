@@ -1,0 +1,9 @@
+{
+  "iconDefinitions": {
+    "_turkod": { "iconPath": "../src/images/turkod.png" }
+  },
+  "fileExtensions": {
+    "tr": "_turkod"
+  }
+}
+

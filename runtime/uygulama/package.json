@@ -1,0 +1,8 @@
+{
+  "name": "turkod-uygulama",
+  "productName": "Türkod Uygulaması",
+  "version": "1.0.0",
+  "description": "Türkod TürkUI uygulaması",
+  "main": "main.js",
+  "private": true
+}

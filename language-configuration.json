@@ -1,0 +1,63 @@
+{
+  "comments": {
+    "lineComment": "#"
+  },
+  "brackets": [
+    [
+      "{",
+      "}"
+    ],
+    [
+      "[",
+      "]"
+    ],
+    [
+      "(",
+      ")"
+    ]
+  ],
+  "autoClosingPairs": [
+    {
+      "open": "{",
+      "close": "}"
+    },
+    {
+      "open": "[",
+      "close": "]"
+    },
+    {
+      "open": "(",
+      "close": ")"
+    },
+    {
+      "open": "\"",
+      "close": "\"",
+      "notIn": [
+        "string"
+      ]
+    }
+  ],
+  "surroundingPairs": [
+    [
+      "{",
+      "}"
+    ],
+    [
+      "[",
+      "]"
+    ],
+    [
+      "(",
+      ")"
+    ],
+    [
+      "\"",
+      "\""
+    ]
+  ],
+  "wordPattern": "(-?\\d*\\.\\d\\w*)|([A-Za-z0-9_ğüşıöçĞÜŞİÖÇ]+)",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(eğer|değilse-eğer|değilse\\s+eğer|döngü|SonsuzDöngü|fonksiyon|nesne|dene|için|değilse|yakala)(?=\\s|$)",
+    "decreaseIndentPattern": "^\\s*(son|değilse-eğer|değilse\\s+eğer|değilse|yakala)(?=\\s|$)"
+  }
+}
